@@ -140,11 +140,8 @@
             "No make-up quizzes without prior email. If you need an extension for documented reasons, contact me before the deadline.",
         },
       ],
-      gradeCategories: [
-        { id: "seed-g1", name: "Assignments", weight: 30, average: 90 },
-        { id: "seed-g2", name: "Projects", weight: 35, average: 85 },
-        { id: "seed-g3", name: "Exams", weight: 35, average: 82 },
-      ],
+      /* Grade builder inputs start empty — overview stats still use course cards for the demo snapshot. */
+      gradeCategories: [],
     };
   }
 
