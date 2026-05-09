@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DegreePilot AI">
+  <defs>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0056b3"/>
+      <stop offset="100%" stop-color="#28a745"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="url(#ring)" stroke-width="3"/>
+  <text x="32" y="29" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="18" font-weight="800" fill="#0056b3">D</text>
+  <text x="42" y="42" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="18" font-weight="800" fill="#28a745">P</text>
+  <path d="M18 46 Q28 34 46 28" fill="none" stroke="#0056b3" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="46,28 42,33 48,34" fill="#0056b3"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" role="img" aria-label="DegreePilot AI">
+  <rect x="2" y="6" width="36" height="36" rx="10" fill="#f1f5f9"/>
+  <text x="12" y="31" font-family="Segoe UI,system-ui,sans-serif" font-size="20" font-weight="800" fill="#0056b3">D</text>
+  <text x="26" y="34" font-family="Segoe UI,system-ui,sans-serif" font-size="20" font-weight="800" fill="#28a745">P</text>
+  <path d="M8 38 Q18 26 34 22" fill="none" stroke="#0056b3" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="48" y="31" font-family="Segoe UI,system-ui,sans-serif" font-size="18" font-weight="800">
+    <tspan fill="#003366">Degree</tspan><tspan fill="#28a745">Pilot</tspan><tspan fill="#003366"> </tspan><tspan fill="#003366">AI</tspan>
+  </text>
+</svg>

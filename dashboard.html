@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI dashboard — student academic command center (prototype)." />
+  <title>DegreePilot AI — Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="dash-body">
+  <!-- Dashboard shell: static HTML layout + JS-driven panels (no backend). -->
+
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Dashboard navigation">
+      <div class="sidebar-brand">
+        <img class="sidebar-logo" src="assets/logo-horizontal.svg" width="188" height="34" alt="" />
+        <img class="sidebar-logo-mark" src="assets/logo-mark.svg" width="40" height="40" alt="" />
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Demo data only</span></p>
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <button type="button" class="nav-item is-active" data-view="overview">Overview</button>
+        <button type="button" class="nav-item" data-view="calendar">Calendar</button>
+        <button type="button" class="nav-item" data-view="tasks">Tasks</button>
+        <button type="button" class="nav-item" data-view="courses">Courses</button>
+        <button type="button" class="nav-item" data-view="announcements">Announcements</button>
+        <button type="button" class="nav-item" data-view="grades">Grades</button>
+        <button type="button" class="nav-item" data-view="study">Study Plan</button>
+        <button type="button" class="nav-item" data-view="email">Professor Email</button>
+        <button type="button" class="nav-item" data-view="settings">Settings / Profile</button>
+      </nav>
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-ghost btn-block btn-sm" id="btn-logout">Log out</button>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar">
+        <div class="topbar-left">
+          <p class="topbar-kicker">DegreePilot AI</p>
+          <h1 class="topbar-title" id="view-title">Overview</h1>
+        </div>
+        <div class="topbar-right">
+          <label class="search-wrap">
+            <span class="sr-only">Search dashboard</span>
+            <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, announcements…" autocomplete="off" />
+          </label>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-demo">Reset demo data</button>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <p class="banner-note">No real student records stored · everything below is for demonstration.</p>
+
+        <!-- Overview -->
+        <section class="view view-active" id="view-overview" data-view-panel="overview">
+          <div class="grid-3">
+            <article class="stat-card">
+              <p class="stat-label">Open tasks</p>
+              <p class="stat-value" id="stat-open-tasks">0</p>
+              <p class="stat-hint muted">Demo snapshot</p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-label">Events this month</p>
+              <p class="stat-value" id="stat-events-month">0</p>
+              <p class="stat-hint muted">Calendar preview</p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-label">Estimated course avg</p>
+              <p class="stat-value" id="stat-course-avg">—</p>
+              <p class="stat-hint muted">From course cards</p>
+            </article>
+          </div>
+          <div class="grid-2 mt">
+            <article class="panel">
+              <div class="panel-head">
+                <h2 class="panel-title">Upcoming tasks</h2>
+                <span class="badge-soft">Filtered</span>
+              </div>
+              <div id="overview-tasks" class="stack-list"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <h2 class="panel-title">Next events</h2>
+                <span class="badge-soft">Filtered</span>
+              </div>
+              <div id="overview-events" class="stack-list"></div>
+            </article>
+          </div>
+          <article class="panel mt">
+            <div class="panel-head">
+              <h2 class="panel-title">Announcements preview</h2>
+            </div>
+            <div id="overview-announcements" class="stack-list"></div>
+          </article>
+        </section>
+
+        <!-- Calendar -->
+        <section class="view" id="view-calendar" data-view-panel="calendar">
+          <div class="calendar-toolbar">
+            <button type="button" class="btn btn-secondary btn-sm" id="cal-prev" aria-label="Previous month">←</button>
+            <h2 class="cal-month" id="cal-month-label">Month</h2>
+            <button type="button" class="btn btn-secondary btn-sm" id="cal-next" aria-label="Next month">→</button>
+          </div>
+          <div class="calendar-shell card-elevated">
+            <div class="cal-weekdays">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+            <div class="cal-grid" id="cal-grid" aria-label="Month grid"></div>
+          </div>
+          <div class="grid-2 mt">
+            <article class="panel">
+              <h2 class="panel-title">Add calendar event</h2>
+              <p class="muted">Events inherit course colors for quick scanning.</p>
+              <form id="form-event" class="mt">
+                <div class="field">
+                  <label for="evt-title">Title</label>
+                  <input id="evt-title" type="text" placeholder="Enter event title" />
+                </div>
+                <div class="form-row-2">
+                  <div class="field">
+                    <label for="evt-course">Course</label>
+                    <select id="evt-course"></select>
+                  </div>
+                  <div class="field">
+                    <label for="evt-date">Date</label>
+                    <input id="evt-date" type="date" />
+                  </div>
+                </div>
+                <div class="form-row-2">
+                  <div class="field">
+                    <label for="evt-time">Time (optional)</label>
+                    <input id="evt-time" type="text" placeholder="e.g. 3:00 PM" />
+                  </div>
+                  <div class="field">
+                    <label for="evt-notes">Notes (optional)</label>
+                    <input id="evt-notes" type="text" placeholder="Room, link, or reminder" />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add event</button>
+              </form>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Selected day</h2>
+              <p class="muted" id="cal-selected-label">Click a day on the calendar.</p>
+              <div id="cal-day-events" class="stack-list mt"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Tasks -->
+        <section class="view" id="view-tasks" data-view-panel="tasks">
+          <div class="grid-2">
+            <article class="panel">
+              <h2 class="panel-title">New task</h2>
+              <form id="form-task">
+                <div class="field">
+                  <label for="task-title">Task title</label>
+                  <input id="task-title" type="text" placeholder="Describe the task" />
+                </div>
+                <div class="form-row-2">
+                  <div class="field">
+                    <label for="task-course">Course</label>
+                    <select id="task-course"></select>
+                  </div>
+                  <div class="field">
+                    <label for="task-due">Due date</label>
+                    <input id="task-due" type="date" />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add task</button>
+              </form>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Task list</h2>
+              <p class="muted">Click the checkbox to mark complete.</p>
+              <div id="task-list" class="task-list mt"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Courses -->
+        <section class="view" id="view-courses" data-view-panel="courses">
+          <article class="panel">
+            <div class="panel-head">
+              <h2 class="panel-title">Course roster</h2>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-add-course">Add course</button>
+            </div>
+            <div id="course-grid" class="course-grid"></div>
+          </article>
+        </section>
+
+        <!-- Announcements -->
+        <section class="view" id="view-announcements" data-view-panel="announcements">
+          <div class="grid-2">
+            <article class="panel">
+              <h2 class="panel-title">Compose announcement</h2>
+              <form id="form-announcement">
+                <div class="field">
+                  <label for="ann-title">Title</label>
+                  <input id="ann-title" type="text" placeholder="Enter announcement title" />
+                </div>
+                <div class="field">
+                  <label for="ann-course">Course (optional)</label>
+                  <select id="ann-course">
+                    <option value="">General</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="ann-body">Announcement text</label>
+                  <textarea id="ann-body" rows="6" placeholder="Paste announcement here"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save announcement</button>
+              </form>
+              <article class="panel inset mt">
+                <p class="ai-tag">Simulated AI output</p>
+                <h3 class="panel-title small">Analyzer</h3>
+                <p class="muted">Paste text above, then run analysis.</p>
+                <button type="button" class="btn btn-secondary mt-sm" id="btn-analyze">Run simulated analysis</button>
+                <div id="ann-analysis" class="analysis-output mt"></div>
+              </article>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Saved announcements</h2>
+              <div id="announcement-feed" class="feed"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Grades -->
+        <section class="view" id="view-grades" data-view-panel="grades">
+          <div class="grid-2">
+            <article class="panel">
+              <h2 class="panel-title">Weighted grade builder</h2>
+              <p class="muted">Enter category names, weights (%), and averages.</p>
+              <div id="grade-rows" class="grade-rows"></div>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-add-grade-row">Add category</button>
+              <div class="grade-actions mt">
+                <button type="button" class="btn btn-primary" id="btn-calc-grade">Calculate grade</button>
+              </div>
+              <p class="msg-hint" id="grade-weight-note" hidden></p>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Grade snapshot</h2>
+              <p class="ai-tag">Simulated AI output</p>
+              <div class="grade-snapshot card-inset mt">
+                <div class="snapshot-row">
+                  <span class="snapshot-label">Weighted %</span>
+                  <span class="snapshot-value" id="snap-percent">—</span>
+                </div>
+                <div class="snapshot-row">
+                  <span class="snapshot-label">Status</span>
+                  <span class="pill-status" id="snap-status">—</span>
+                </div>
+                <p class="muted mt" id="snap-feedback">Fill categories and calculate to see simulated coaching.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Study -->
+        <section class="view" id="view-study" data-view-panel="study">
+          <article class="panel">
+            <h2 class="panel-title">Study plan generator</h2>
+            <p class="ai-tag">Simulated AI output</p>
+            <form id="form-study" class="mt">
+              <div class="form-row-2">
+                <div class="field">
+                  <label for="study-course">Course</label>
+                  <input id="study-course" type="text" placeholder="Enter course name or code" />
+                </div>
+                <div class="field">
+                  <label for="study-deadline">Deadline</label>
+                  <input id="study-deadline" type="text" placeholder="Describe your deadline" />
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="field">
+                  <label for="study-confidence">Confidence (1–5)</label>
+                  <input id="study-confidence" type="number" min="1" max="5" step="1" placeholder="Enter confidence level" />
+                </div>
+                <div class="field">
+                  <label for="study-status">Grade status</label>
+                  <select id="study-status">
+                    <option value="Strong">Strong</option>
+                    <option value="Good standing" selected>Good standing</option>
+                    <option value="Recoverable">Recoverable</option>
+                    <option value="At risk">At risk</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="study-time">Available study time</label>
+                <input id="study-time" type="text" placeholder="Enter available study time" />
+              </div>
+              <button type="submit" class="btn btn-primary">Generate study plan</button>
+            </form>
+            <div id="study-output" class="study-output mt"></div>
+          </article>
+        </section>
+
+        <!-- Email -->
+        <section class="view" id="view-email" data-view-panel="email">
+          <div class="grid-2">
+            <article class="panel">
+              <h2 class="panel-title">Professor email assistant</h2>
+              <p class="ai-tag">Simulated AI output</p>
+              <form id="form-email" class="mt">
+                <div class="form-row-2">
+                  <div class="field">
+                    <label for="email-prof">Professor name</label>
+                    <input id="email-prof" type="text" placeholder="Enter professor name" />
+                  </div>
+                  <div class="field">
+                    <label for="email-course">Course</label>
+                    <input id="email-course" type="text" placeholder="Enter course code or title" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="email-reason">Reason</label>
+                  <input id="email-reason" type="text" placeholder="Describe your reason for writing" />
+                </div>
+                <div class="field">
+                  <label for="email-situation">Situation</label>
+                  <textarea id="email-situation" rows="5" placeholder="Describe your question"></textarea>
+                </div>
+                <div class="field">
+                  <label for="email-tone">Tone</label>
+                  <select id="email-tone">
+                    <option value="formal">Formal</option>
+                    <option value="neutral" selected>Neutral</option>
+                    <option value="warm">Warm</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Generate draft</button>
+              </form>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Draft preview</h2>
+              <pre class="email-preview" id="email-output">Generate a draft to preview it here.</pre>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-email">Copy draft</button>
+            </article>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section class="view" id="view-settings" data-view-panel="settings">
+          <article class="panel">
+            <h2 class="panel-title">Profile (mock)</h2>
+            <p class="muted">Saved locally in this browser — not a real account system.</p>
+            <form id="form-profile" class="mt">
+              <div class="form-row-2">
+                <div class="field">
+                  <label for="pf-name">Preferred name</label>
+                  <input id="pf-name" type="text" placeholder="Enter preferred name" />
+                </div>
+                <div class="field">
+                  <label for="pf-uni">University</label>
+                  <input id="pf-uni" type="text" placeholder="Enter university" />
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="field">
+                  <label for="pf-major">Major</label>
+                  <input id="pf-major" type="text" placeholder="Enter major" />
+                </div>
+                <div class="field">
+                  <label for="pf-sem">Semester label</label>
+                  <input id="pf-sem" type="text" placeholder="Enter semester label" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="pf-goal">Goal</label>
+                <textarea id="pf-goal" rows="3" placeholder="Describe your academic goal"></textarea>
+              </div>
+              <div class="field">
+                <label for="pf-theme">Accent theme</label>
+                <select id="pf-theme">
+                  <option value="ocean">Ocean (blue + green)</option>
+                  <option value="sage">Sage (soft green)</option>
+                  <option value="slate">Slate (minimal gray)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Save profile</button>
+              <p class="msg-hint" id="profile-saved" hidden>Profile saved locally.</p>
+            </form>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Course modal -->
+  <div class="modal" id="course-modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card card-elevated" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+      <div class="modal-head">
+        <h2 id="course-modal-title">Course</h2>
+        <button type="button" class="icon-btn" id="course-modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="form-course-modal">
+        <input type="hidden" id="course-edit-id" value="" />
+        <div class="form-row-2">
+          <div class="field">
+            <label for="c-code">Course code</label>
+            <input id="c-code" type="text" placeholder="Enter course code" required />
+          </div>
+          <div class="field">
+            <label for="c-name">Course name</label>
+            <input id="c-name" type="text" placeholder="Enter course name" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="c-prof">Professor</label>
+          <input id="c-prof" type="text" placeholder="Enter professor name" />
+        </div>
+        <div class="form-row-2">
+          <div class="field">
+            <label for="c-color">Color</label>
+            <input id="c-color" type="color" value="#2563eb" />
+          </div>
+          <div class="field">
+            <label for="c-grade">Current grade (%)</label>
+            <input id="c-grade" type="number" min="0" max="100" step="0.1" placeholder="Enter current grade" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="c-priority">Priority</label>
+          <select id="c-priority">
+            <option>High</option>
+            <option selected>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="c-notes">Notes</label>
+          <textarea id="c-notes" rows="3" placeholder="Enter notes"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="btn-delete-course" hidden>Delete</button>
+          <button type="submit" class="btn btn-primary">Save course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Event detail modal -->
+  <div class="modal" id="detail-modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card card-elevated modal-sm" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <div class="modal-head">
+        <h2 id="detail-title">Event</h2>
+        <button type="button" class="icon-btn" id="detail-close" aria-label="Close">×</button>
+      </div>
+      <p class="muted" id="detail-meta"></p>
+      <p id="detail-body"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="detail-delete">Delete event</button>
+        <button type="button" class="btn btn-secondary" data-close-modal>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/seed.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
