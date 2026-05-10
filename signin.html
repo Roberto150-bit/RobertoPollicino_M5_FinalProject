@@ -7,6 +7,7 @@
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="signin.html" />
 <title>Sign In - DegreePilot AI</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -112,15 +113,12 @@
         }
     </style>
 </head>
-<body class="bg-background font-body-md text-on-surface">
+<body id="top" class="bg-background font-body-md text-on-surface">
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 dark:border-outline/20">
 <div class="max-w-container-max mx-auto px-gutter py-4 flex justify-between items-center">
-<a href="home.html" class="flex items-center gap-2 no-underline text-inherit">
-<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">school</span>
-</div>
-<span class="text-headline-md font-headline-md font-extrabold text-on-surface dark:text-on-surface-variant">DegreePilot AI</span>
+<a href="home.html" class="flex shrink-0 items-center no-underline text-inherit">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto block" />
 </a>
 <nav class="hidden md:flex items-center gap-stack-lg">
 <a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors font-label-md text-label-md no-underline" href="features.html">Features</a>
@@ -129,7 +127,7 @@
 </nav>
 <div class="flex items-center gap-4">
 <a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary font-label-md text-label-md px-2 py-1 no-underline" href="signin.html">Sign in</a>
-<a href="signin.html" class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2 rounded-full font-label-md text-label-md transition-all active:scale-[0.98] no-underline inline-flex items-center">Get Started</a>
+<a href="get-started.html" class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2 rounded-full font-label-md text-label-md transition-all active:scale-[0.98] no-underline inline-flex items-center">Get Started</a>
 </div>
 </div>
 </header>
@@ -347,21 +345,18 @@
 <footer class="bg-surface dark:bg-surface-container-lowest border-t border-outline-variant/30 dark:border-outline/20">
 <div class="max-w-container-max mx-auto px-gutter py-section-padding grid grid-cols-1 md:grid-cols-4 gap-stack-lg">
 <div class="space-y-4">
-<div class="flex items-center gap-2">
-<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">school</span>
-</div>
-<span class="text-headline-md font-headline-md font-extrabold text-on-surface dark:text-on-surface-variant">DegreePilot AI</span>
-</div>
+<a href="home.html" class="inline-block no-underline">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto block" />
+</a>
 <p class="text-on-surface-variant text-body-md leading-relaxed">Your AI-powered academic command center. Helping students manage courses, tasks, and grades with ease.</p>
 <div class="flex gap-4 pt-4">
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#top" title="Back to top">
 <span class="material-symbols-outlined text-[20px]">group</span>
 </a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#top" title="Back to top">
 <span class="material-symbols-outlined text-[20px]">public</span>
 </a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#top" title="Back to top">
 <span class="material-symbols-outlined text-[20px]">alternate_email</span>
 </a>
 </div>
@@ -372,22 +367,23 @@
 <li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="features.html">Features</a></li>
 <li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="how-it-works.html">How It Works</a></li>
 <li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="for-students.html">For Students</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="get-started.html">Get started</a></li>
 </ul>
 </div>
 <div class="md:pl-10">
 <h4 class="font-label-md text-on-surface mb-6">Resources</h4>
 <ul class="space-y-4">
-<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Help Center</a></li>
-<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Blog</a></li>
-<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Guides</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#top">Help Center</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#top">Blog</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#top">Guides</a></li>
 </ul>
 </div>
 <div class="md:pl-10">
 <h4 class="font-label-md text-on-surface mb-6">Company</h4>
 <ul class="space-y-4">
-<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">About Us</a></li>
-<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Privacy Policy</a></li>
-<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Terms of Service</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#top">About Us</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#top">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#top">Terms of Service</a></li>
 </ul>
 </div>
 </div>

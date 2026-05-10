@@ -7,6 +7,7 @@
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="features.html" />
 <title>Features - DegreePilot AI</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -108,11 +109,13 @@
         .glass-bg { backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="text-on-surface">
+<body id="top" class="text-on-surface">
 <!-- TopNavBar -->
 <nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md docked full-width top-0 sticky z-50 border-b border-outline-variant/30">
 <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-<a href="home.html" class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed no-underline">DegreePilot AI</a>
+<a href="home.html" class="flex shrink-0 items-center no-underline text-inherit">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto" />
+</a>
 <div class="hidden md:flex items-center gap-stack-lg">
 <a class="text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="features.html">Features</a>
 <a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 font-label-md text-label-md no-underline" href="how-it-works.html">How It Works</a>
@@ -120,7 +123,7 @@
 </div>
 <div class="flex items-center gap-stack-md">
 <a href="signin.html" class="text-primary font-label-md text-label-md hover:opacity-80 transition-all no-underline">Sign in</a>
-<a href="signin.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md active:scale-95 transition-all no-underline inline-flex items-center">Get Started</a>
+<a href="get-started.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md active:scale-95 transition-all no-underline inline-flex items-center">Get Started</a>
 </div>
 </div>
 </nav>
@@ -322,7 +325,9 @@
 <footer class="bg-surface dark:bg-surface-container-lowest border-t border-outline-variant/20">
 <div class="grid grid-cols-2 md:grid-cols-4 gap-stack-lg px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto">
 <div>
-<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed mb-4">DegreePilot AI</div>
+<a href="home.html" class="inline-block mb-4 no-underline">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto" />
+</a>
 <p class="font-body-sm text-body-sm text-on-surface-variant">Your AI-powered academic command center.</p>
 </div>
 <div class="flex flex-col gap-2">
@@ -330,18 +335,19 @@
 <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="features.html">Features</a>
 <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="how-it-works.html">How It Works</a>
 <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="for-students.html">For Students</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="get-started.html">Get started</a>
 </div>
 <div class="flex flex-col gap-2">
-<span class="font-label-md text-label-md mb-2">Support</span>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Help Center</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Blog</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Guides</a>
+<span class="font-label-md text-label-md mb-2">Resources</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#top">Help Center</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#top">Blog</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#top">Guides</a>
 </div>
 <div class="flex flex-col gap-2">
 <span class="font-label-md text-label-md mb-2">Company</span>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">About Us</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Privacy Policy</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#top">About Us</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#top">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#top">Terms of Service</a>
 </div>
 </div>
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-6 border-t border-outline-variant/10 text-center">

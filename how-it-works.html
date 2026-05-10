@@ -7,6 +7,7 @@
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="how-it-works.html" />
 <title>How It Works - DegreePilot AI</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -118,13 +119,12 @@
         }
     </style>
 </head>
-<body class="bg-background text-on-surface antialiased">
+<body id="top" class="bg-background text-on-surface antialiased">
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-gutter py-4">
 <div class="max-w-container-max mx-auto flex justify-between items-center">
-<a href="home.html" class="flex items-center gap-2 no-underline text-inherit">
-<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
-<span class="text-headline-md font-headline-md font-extrabold text-on-surface">DegreePilot AI</span>
+<a href="home.html" class="flex shrink-0 items-center no-underline text-inherit">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto block" />
 </a>
 <nav class="hidden md:flex items-center gap-stack-lg">
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors no-underline" href="features.html">Features</a>
@@ -133,7 +133,7 @@
 </nav>
 <div class="flex items-center gap-stack-md">
 <a href="signin.html" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors no-underline">Sign in</a>
-<a href="signin.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md hover:opacity-90 transition-all active:scale-[0.98] no-underline inline-flex items-center">Get Started</a>
+<a href="get-started.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md hover:opacity-90 transition-all active:scale-[0.98] no-underline inline-flex items-center">Get Started</a>
 </div>
 </div>
 </header>
@@ -394,7 +394,7 @@
 </div>
 <button class="w-full bg-primary text-on-primary py-4 rounded-xl font-label-md text-body-md hover:bg-opacity-90 transition-all shadow-lg active:scale-[0.98]">Get Started — It's Free</button>
 <p class="text-center text-sm text-on-surface-variant pt-2">
-                                Already have an account? <a class="text-primary font-bold hover:underline" href="#">Sign in</a>
+                                Already have an account? <a class="text-primary font-bold hover:underline" href="signin.html">Sign in</a>
 </p>
 </form>
 </div>
@@ -406,39 +406,39 @@
 <footer class="bg-surface-container-lowest border-t border-outline-variant/30 py-section-padding px-gutter">
 <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-stack-lg">
 <div class="space-y-stack-md col-span-1 md:col-span-1">
-<div class="flex items-center gap-2 mb-4">
-<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
-<span class="text-headline-md font-headline-md font-extrabold text-on-surface">DegreePilot AI</span>
-</div>
+<a href="home.html" class="inline-block mb-4 no-underline">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto block" />
+</a>
 <p class="font-body-md text-body-md text-on-surface-variant">Your AI-powered academic command center. Organized, prioritized, and simplified.</p>
 <div class="flex gap-4">
-<a class="text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined">public</span></a>
-<a class="text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
-<a class="text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined">brand_awareness</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#top" title="Back to top"><span class="material-symbols-outlined">public</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#top" title="Back to top"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#top" title="Back to top"><span class="material-symbols-outlined">brand_awareness</span></a>
 </div>
 </div>
 <div class="space-y-stack-md">
 <h6 class="font-label-md text-label-md text-on-surface uppercase tracking-widest text-[11px]">Product</h6>
 <ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
-<li><a class="text-primary font-semibold" href="#">How It Works</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">For Students</a></li>
+<li><a class="hover:text-primary transition-colors" href="features.html">Features</a></li>
+<li><a class="text-primary font-semibold" href="how-it-works.html">How It Works</a></li>
+<li><a class="hover:text-primary transition-colors" href="for-students.html">For Students</a></li>
+<li><a class="hover:text-primary transition-colors" href="get-started.html">Get started</a></li>
 </ul>
 </div>
 <div class="space-y-stack-md">
 <h6 class="font-label-md text-label-md text-on-surface uppercase tracking-widest text-[11px]">Resources</h6>
 <ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Guides</a></li>
+<li><a class="hover:text-primary transition-colors" href="#top">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#top">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#top">Guides</a></li>
 </ul>
 </div>
 <div class="space-y-stack-md">
 <h6 class="font-label-md text-label-md text-on-surface uppercase tracking-widest text-[11px]">Company</h6>
 <ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#top">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#top">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#top">Terms of Service</a></li>
 </ul>
 </div>
 </div>

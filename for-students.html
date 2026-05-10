@@ -7,6 +7,7 @@
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="for-students.html" />
 <title>For Students | DegreePilot AI</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -108,15 +109,12 @@
         .card-shadow { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
     </style>
 </head>
-<body class="bg-background text-on-surface">
+<body id="top" class="bg-background text-on-surface">
 <!-- TopNavBar Shell -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
 <div class="max-w-container-max mx-auto px-gutter py-4 flex justify-between items-center">
-<a href="home.html" class="flex items-center gap-2 no-underline text-inherit">
-<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-<span class="text-white font-bold text-lg">Dp</span>
-</div>
-<span class="text-headline-md font-headline-md font-extrabold text-on-surface">DegreePilot AI</span>
+<a href="home.html" class="flex shrink-0 items-center no-underline text-inherit">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto block" />
 </a>
 <nav class="hidden md:flex items-center gap-8">
 <a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors no-underline" href="features.html">Features</a>
@@ -125,7 +123,7 @@
 </nav>
 <div class="flex items-center gap-4">
 <a href="signin.html" class="hidden md:block text-on-surface-variant font-label-md text-label-md px-4 py-2 hover:bg-surface-container-low rounded-xl transition-all no-underline">Sign in</a>
-<a href="signin.html" class="bg-primary text-white font-label-md text-label-md px-6 py-2.5 rounded-xl hover:shadow-lg transition-all active:scale-95 no-underline inline-flex items-center">Get Started</a>
+<a href="get-started.html" class="bg-primary text-white font-label-md text-label-md px-6 py-2.5 rounded-xl hover:shadow-lg transition-all active:scale-95 no-underline inline-flex items-center">Get Started</a>
 </div>
 </div>
 </header>
@@ -411,18 +409,15 @@
 <footer class="bg-surface border-t border-outline-variant/30 py-section-padding">
 <div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-stack-lg">
 <div class="space-y-6">
-<div class="flex items-center gap-2">
-<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-<span class="text-white font-bold text-lg">Dp</span>
-</div>
-<span class="text-headline-md font-headline-md font-extrabold text-on-surface">DegreePilot AI</span>
-</div>
+<a href="home.html" class="inline-block no-underline">
+<img src="assets/logo-horizontal.svg" width="200" height="34" alt="DegreePilot AI" class="h-8 w-auto block" />
+</a>
 <p class="font-body-md text-body-md text-on-surface-variant">Your AI-powered academic command center.</p>
 <div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#top" title="Back to top">
 <span class="material-symbols-outlined text-lg">language</span>
 </a>
-<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#top" title="Back to top">
 <span class="material-symbols-outlined text-lg">public</span>
 </a>
 </div>
@@ -430,25 +425,26 @@
 <div class="space-y-4">
 <h6 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Product</h6>
 <ul class="space-y-3">
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Features</a></li>
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">How It Works</a></li>
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">For Students</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="features.html">Features</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="how-it-works.html">How It Works</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="for-students.html">For Students</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="get-started.html">Get started</a></li>
 </ul>
 </div>
 <div class="space-y-4">
 <h6 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Resources</h6>
 <ul class="space-y-3">
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Help Center</a></li>
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Blog</a></li>
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Guides</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#top">Help Center</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#top">Blog</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#top">Guides</a></li>
 </ul>
 </div>
 <div class="space-y-4">
 <h6 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Company</h6>
 <ul class="space-y-3">
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">About Us</a></li>
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Privacy Policy</a></li>
-<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Terms of Service</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#top">About Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#top">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#top">Terms of Service</a></li>
 </ul>
 </div>
 </div>
