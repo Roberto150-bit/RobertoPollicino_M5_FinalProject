@@ -139,6 +139,8 @@
     var n = state.notificationsUnread || 0;
     badge.hidden = n <= 0;
     badge.textContent = String(Math.min(n, 9));
+    var wn = document.getElementById("ov-welcome-name");
+    if (wn) wn.textContent = p.displayName || "Student";
   }
 
   function updateSidebarProgress() {
@@ -148,6 +150,8 @@
       "Week " + (sm.currentWeek || 1) + " of " + (sm.totalWeeks || 16);
     var pct = sm.totalWeeks ? Math.round(((sm.currentWeek || 1) / sm.totalWeeks) * 100) : 0;
     document.getElementById("sidebar-progress-fill").style.width = pct + "%";
+    var sp = document.getElementById("sidebar-sem-pct");
+    if (sp) sp.textContent = pct + "% complete";
   }
 
   /* ---------- Overview ---------- */
@@ -169,6 +173,41 @@
     document.getElementById("ov-grade-snap").textContent = ovGrade == null ? "—" : ovGrade + "%";
     var gh = document.getElementById("ov-grade-hint");
     if (gh) gh.textContent = ovGrade == null ? "No grade data available" : "Avg across courses with entries";
+    var donut = document.getElementById("ov-grade-donut");
+    if (donut) {
+      if (ovGrade == null) donut.style.background = "conic-gradient(#cbd5e1 0 100%)";
+      else {
+        var gg = Math.min(100, Math.max(0, ovGrade));
+        donut.style.background = "conic-gradient(#0066ff 0 " + gg + "%, #e2e8f0 " + gg + "% 100%)";
+      }
+    }
+    var sub = document.getElementById("ov-page-sub");
+    if (sub) {
+      var sm = state.semesterMeta || { label: "", totalWeeks: 16, currentWeek: 1 };
+      var ws = D.startOfWeekMonday(new Date());
+      var we = D.addDays(ws, 6);
+      sub.textContent =
+        (sm.label || "Semester") +
+        " · Week " +
+        (sm.currentWeek || 1) +
+        " of " +
+        (sm.totalWeeks || 16) +
+        " · " +
+        ws.toLocaleDateString(undefined, { month: "short", day: "numeric" }) +
+        " – " +
+        we.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+    }
+    var mom = document.getElementById("ov-momentum-line");
+    if (mom) {
+      var doneWeek = state.tasks.filter(function (t) {
+        return t.completed;
+      }).length;
+      mom.innerHTML =
+        "<strong>You're building momentum.</strong> " +
+        (doneWeek
+          ? "Keep completing tasks — your dashboard updates everywhere."
+          : "Add tasks to track progress week over week.");
+    }
 
     var fl = document.getElementById("ov-focus-list");
     fl.innerHTML = "";
@@ -1044,6 +1083,22 @@
       });
 
     document.getElementById("withdraw-note").textContent = state.withdrawalDeadlineNote || "";
+    var gwi = document.getElementById("grades-withdraw-inline");
+    if (gwi) gwi.textContent = state.withdrawalDeadlineNote || "Withdrawal deadline — configure in demo seed.";
+
+    var avgAll = D.overallGpaSnapshot(state.courses, state.gradeEntries);
+    var gpaEl = document.getElementById("grades-kpi-gpa");
+    if (gpaEl) gpaEl.textContent = avgAll == null ? "—" : (Math.round((avgAll / 100) * 4 * 100) / 100).toFixed(2);
+    var gkc = document.getElementById("grades-kpi-courses");
+    if (gkc) gkc.textContent = String(state.courses.length);
+    var gka = document.getElementById("grades-kpi-avg");
+    if (gka) gka.textContent = avgAll == null ? "—" : avgAll + "%";
+    var gke = document.getElementById("grades-kpi-entries");
+    if (gke) gke.textContent = String(state.gradeEntries.length);
+    var gks = document.getElementById("grades-kpi-stand");
+    if (gks)
+      gks.textContent =
+        avgAll == null ? "—" : avgAll >= 85 ? "Strong" : avgAll >= 75 ? "Good" : avgAll >= 65 ? "Solid" : "Watch";
   }
 
   /* ---------- Study ---------- */
@@ -1054,6 +1109,46 @@
       hint.textContent = hasData
         ? "Sessions below align with your current tasks, deadlines, and grade snapshot."
         : "Add courses, tasks, or grades to personalize study tools.";
+    }
+    var sd = document.getElementById("study-deadlines-placeholder");
+    if (sd) {
+      var soon = state.tasks
+        .filter(function (t) {
+          return !t.completed;
+        })
+        .sort(function (a, b) {
+          return a.due.localeCompare(b.due);
+        })
+        .slice(0, 4);
+      sd.innerHTML = "";
+      if (!soon.length) {
+        sd.innerHTML =
+          '<div class="stack-item"><p style="margin:0;font-weight:650;">No upcoming tasks</p><p class="muted" style="margin:0;font-size:0.82rem;">Add tasks or enable sample data.</p></div>';
+      } else {
+        soon.forEach(function (t) {
+          var c = courseById(t.courseId);
+          var row = document.createElement("div");
+          row.className = "stack-item";
+          row.innerHTML =
+            "<p style=\"margin:0;font-weight:650;\">" +
+            escapeHtml(t.title) +
+            "</p><p class=\"muted\" style=\"margin:0;font-size:0.82rem;\">" +
+            escapeHtml(c ? c.code : "") +
+            " · Due " +
+            escapeHtml(t.due) +
+            "</p>";
+          sd.appendChild(row);
+        });
+      }
+    }
+    var spSel = document.getElementById("sp-mode");
+    var modeBtns = document.querySelectorAll(".dp-mode-toggle button");
+    if (spSel && modeBtns.length) {
+      var modes = ["deadlines", "grades", "confidence"];
+      var ix = modes.indexOf(spSel.value);
+      modeBtns.forEach(function (b, i) {
+        b.classList.toggle("is-active", i === (ix >= 0 ? ix : 0));
+      });
     }
     var fl = document.getElementById("flash-list");
     fl.innerHTML = "";
@@ -1093,6 +1188,11 @@
         document.getElementById("comm-draft").value = d.body || "";
       });
       h.appendChild(row);
+    });
+    var cs = document.getElementById("comm-scenario");
+    var scenIds = ["intro", "clarify", "extension", "grade", "advisor"];
+    document.querySelectorAll(".dp-scenario-item").forEach(function (btn, i) {
+      btn.classList.toggle("is-active", !!(cs && cs.value === scenIds[i]));
     });
   }
 
@@ -1196,6 +1296,19 @@
         al.appendChild(row);
       });
     if (!al.children.length) al.innerHTML = '<p class="muted">No deadlines in the next two weeks.</p>';
+
+    var nMatch = D.scholarshipSuggestions(state.profile && state.profile.major).length;
+    var fk = document.getElementById("fin-kpi-matches");
+    if (fk) fk.textContent = String(nMatch);
+    var fp = document.getElementById("fin-kpi-progress");
+    if (fp) fp.textContent = String(state.scholarships.length);
+    var fd = document.getElementById("fin-kpi-deadlines");
+    if (fd) {
+      var n30 = state.scholarships.filter(function (s) {
+        return s.deadline && s.deadline <= D.isoFromDate(D.addDays(new Date(), 30));
+      }).length;
+      fd.textContent = String(n30);
+    }
   }
 
   function syncSampleCheckboxes() {
@@ -1308,6 +1421,49 @@
     document.getElementById("global-search").addEventListener("input", function (e) {
       ui.searchQuery = e.target.value || "";
       renderAll();
+    });
+
+    document.body.addEventListener("click", function (e) {
+      var navEl = e.target.closest("[data-nav]");
+      if (navEl && navEl.getAttribute("data-nav")) {
+        e.preventDefault();
+        switchView(navEl.getAttribute("data-nav"));
+      }
+    });
+
+    var ovStart = document.getElementById("btn-ov-start-focus");
+    if (ovStart)
+      ovStart.addEventListener("click", function () {
+        switchView("tasks");
+      });
+    var syllBtn = document.getElementById("btn-add-course-syllabus");
+    if (syllBtn)
+      syllBtn.addEventListener("click", function () {
+        document.getElementById("btn-add-course").click();
+      });
+
+    document.querySelectorAll(".dp-mode-toggle button").forEach(function (btn, idx) {
+      btn.addEventListener("click", function () {
+        document.querySelectorAll(".dp-mode-toggle button").forEach(function (b) {
+          b.classList.remove("is-active");
+        });
+        btn.classList.add("is-active");
+        var sel = document.getElementById("sp-mode");
+        var modes = ["deadlines", "grades", "confidence"];
+        if (sel && modes[idx] !== undefined) sel.value = modes[idx];
+      });
+    });
+
+    document.querySelectorAll(".dp-scenario-item").forEach(function (btn, idx) {
+      btn.addEventListener("click", function () {
+        document.querySelectorAll(".dp-scenario-item").forEach(function (b) {
+          b.classList.remove("is-active");
+        });
+        btn.classList.add("is-active");
+        var sel = document.getElementById("comm-scenario");
+        var scenarios = ["intro", "clarify", "extension", "grade", "advisor"];
+        if (sel && scenarios[idx] !== undefined) sel.value = scenarios[idx];
+      });
     });
 
     document.getElementById("btn-notifications").addEventListener("click", function () {

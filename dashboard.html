@@ -36,8 +36,9 @@
         <h3>Semester Progress</h3>
         <p class="sem-label" id="sidebar-sem-label">Spring 2025</p>
         <p class="muted" id="sidebar-week-label" style="margin:0.35rem 0 0;font-size:0.85rem;">Week — of —</p>
+        <p class="sem-pct" id="sidebar-sem-pct">—</p>
         <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="sidebar-progress-fill" style="width:0%"></div></div>
-        <button type="button" class="btn btn-secondary btn-sm btn-block" id="btn-sidebar-view-plan">View Plan</button>
+        <button type="button" class="btn btn-secondary btn-sm btn-block" id="btn-sidebar-view-plan">View Plan →</button>
       </div>
 
       <div class="sidebar-footer">
@@ -75,197 +76,376 @@
       </header>
 
       <main class="dash-content">
-        <p class="banner-note">No cloud sync · data stays in this browser · design reference: <code>assets/dashboard-ref/</code></p>
+        <p class="banner-note">No cloud sync · data stays in this browser · prototype UI aligned to design reference mocks.</p>
 
         <!-- Overview -->
-        <section class="view view-active" id="view-overview" data-view-panel="overview">
-          <div class="grid-3">
-            <article class="stat-card"><p class="stat-label">Today's focus</p><p class="stat-value" id="ov-focus-count">0</p><p class="stat-hint muted">Top priority items</p></article>
-            <article class="stat-card"><p class="stat-label">Grade snapshot</p><p class="stat-value" id="ov-grade-snap">—</p><p class="stat-hint muted" id="ov-grade-hint">No grade data available</p></article>
-            <article class="stat-card"><p class="stat-label">Open tasks</p><p class="stat-value" id="ov-open-tasks">0</p><p class="stat-hint muted">Incomplete</p></article>
-          </div>
-          <div class="grid-2 mt">
-            <article class="panel">
-              <div class="panel-head"><h2 class="panel-title">Today's top focus</h2></div>
-              <div id="ov-focus-list" class="stack-list"></div>
+        <section class="view view-active dp-view" id="view-overview" data-view-panel="overview">
+          <header class="dp-page-head">
+            <div class="dp-page-head-main">
+              <h1 class="dp-page-title">Welcome back, <span id="ov-welcome-name">Student</span> <span aria-hidden="true">👋</span></h1>
+              <p class="dp-page-sub muted" id="ov-page-sub">Loading…</p>
+            </div>
+            <aside class="dp-callout-card" aria-label="Tip">
+              <p class="dp-callout-text"><em>Small, consistent study habits lead to big academic wins.</em></p>
+            </aside>
+          </header>
+
+          <div class="dp-grid-overview">
+            <article class="dp-card">
+              <div class="dp-card-head">
+                <h2 class="dp-card-title">Today's focus</h2>
+                <span class="dp-pill dp-pill-blue"><span id="ov-focus-count">0</span> items</span>
+              </div>
+              <p class="dp-card-kicker muted">Top priority · <strong id="ov-open-tasks">0</strong> open tasks</p>
+              <div id="ov-focus-list" class="dp-stack stack-list"></div>
+              <footer class="dp-card-foot"><button type="button" class="dp-link-btn" data-nav="tasks">View all tasks</button></footer>
             </article>
-            <article class="panel">
-              <div class="panel-head"><h2 class="panel-title">Upcoming deadlines</h2></div>
-              <div id="ov-deadlines" class="stack-list"></div>
+
+            <article class="dp-card">
+              <div class="dp-card-head">
+                <h2 class="dp-card-title">Upcoming deadlines</h2>
+                <span class="dp-pill dp-pill-warn-soft">Next 7 days</span>
+              </div>
+              <div id="ov-deadlines" class="dp-stack stack-list"></div>
+              <footer class="dp-card-foot"><button type="button" class="dp-link-btn" data-nav="calendar">View full calendar</button></footer>
             </article>
-          </div>
-          <div class="grid-2 mt">
-            <article class="panel">
-              <div class="panel-head"><h2 class="panel-title">Course alerts</h2></div>
+
+            <article class="dp-card">
+              <div class="dp-card-head">
+                <h2 class="dp-card-title">Grade snapshot</h2>
+              </div>
+              <div class="dp-grade-donut-wrap">
+                <div class="dp-donut" id="ov-grade-donut" aria-hidden="true"></div>
+                <div class="dp-grade-stat">
+                  <p class="dp-grade-big" id="ov-grade-snap">—</p>
+                  <p class="muted dp-grade-hint" id="ov-grade-hint" style="margin:0.15rem 0 0;font-size:0.82rem;">No grade data available</p>
+                  <ul class="dp-grade-legend muted">
+                    <li><span class="dp-dot dp-dot-a"></span> A range</li>
+                    <li><span class="dp-dot dp-dot-b"></span> B range</li>
+                    <li><span class="dp-dot dp-dot-c"></span> C range</li>
+                  </ul>
+                </div>
+              </div>
+              <footer class="dp-card-foot"><button type="button" class="dp-link-btn" data-nav="grades">View all grades</button></footer>
+            </article>
+
+            <article class="dp-card">
+              <div class="dp-card-head">
+                <h2 class="dp-card-title">Course alerts</h2>
+                <span class="dp-badge-risk">Requires attention</span>
+              </div>
               <div id="ov-alerts"></div>
+              <footer class="dp-card-foot"><span class="dp-link-muted">Alerts from grades, tasks, and course notes</span></footer>
             </article>
-            <article class="panel">
-              <div class="panel-head"><h2 class="panel-title">Calendar preview</h2></div>
-              <div id="ov-cal-preview" class="stack-list"></div>
+
+            <article class="dp-card">
+              <div class="dp-card-head">
+                <h2 class="dp-card-title">Calendar preview</h2>
+                <span class="muted dp-card-kicker-sm">Next events</span>
+              </div>
+              <div id="ov-cal-preview" class="dp-stack stack-list"></div>
+              <footer class="dp-card-foot"><button type="button" class="dp-link-btn" data-nav="calendar">Go to full calendar</button></footer>
+            </article>
+
+            <article class="dp-card dp-ai-card">
+              <div class="dp-card-head">
+                <div><span class="dp-sparkle" aria-hidden="true">✦</span><span class="dp-ai-tag" style="margin-left:0.25rem;">Simulated assistant</span></div>
+              </div>
+              <h2 class="dp-card-title" style="margin-bottom:0.35rem;">AI priority suggestion</h2>
+              <p class="dp-ai-lead" id="ov-ai-line">Add tasks to receive a suggestion.</p>
+              <div class="dp-ai-tags">
+                <span class="dp-tag">High impact</span>
+                <span class="dp-tag">Due soon</span>
+                <span class="dp-tag">Grade weighted</span>
+              </div>
+              <p id="ov-study-rec" class="muted dp-rec-text" style="margin-top:0;">Build your schedule to see study recommendations.</p>
+              <button type="button" class="btn btn-primary dp-ai-cta" id="btn-ov-start-focus">Start now ✨</button>
             </article>
           </div>
-          <div class="grid-2 mt">
-            <article class="panel">
-              <span class="dp-ai-tag">Simulated assistant</span>
-              <h2 class="panel-title">AI priority suggestion</h2>
-              <p id="ov-ai-line" class="muted" style="margin:0;">Add tasks to receive a suggestion.</p>
-            </article>
-            <article class="panel">
-              <h2 class="panel-title">Study recommendations</h2>
-              <p id="ov-study-rec" class="muted" style="margin:0;">Build your schedule to see recommendations.</p>
-            </article>
+
+          <div class="dp-strip-banner">
+            <span class="dp-strip-icon" aria-hidden="true">◎</span>
+            <p class="dp-strip-text" id="ov-momentum-line"></p>
+            <button type="button" class="btn btn-secondary btn-sm" data-nav="tasks">View progress</button>
           </div>
         </section>
 
         <!-- Calendar -->
-        <section class="view" id="view-calendar" data-view-panel="calendar">
-          <div class="dp-toolbar">
-            <button type="button" class="btn btn-secondary btn-sm" id="cal-view-month">Month</button>
-            <button type="button" class="btn btn-secondary btn-sm is-active" id="cal-view-week">Week</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="cal-view-day">Day</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="cal-prev">←</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="cal-next">→</button>
-            <h2 class="cal-month" id="cal-range-label" style="margin:0;flex:1;text-align:center;">Calendar</h2>
-          </div>
-          <div class="dp-filter-row" id="cal-filters">
-            <label><input type="checkbox" data-cal-filter="course" checked /> Courses</label>
-            <label><input type="checkbox" data-cal-filter="exam" checked /> Exams</label>
-            <label><input type="checkbox" data-cal-filter="assignment" checked /> Assignments</label>
-            <label><input type="checkbox" data-cal-filter="study" checked /> Study</label>
-            <label><input type="checkbox" data-cal-filter="school" checked /> School events</label>
-          </div>
-          <div id="cal-host"></div>
-          <div class="grid-2 mt">
-            <article class="panel">
-              <h2 class="panel-title">Add event</h2>
-              <form id="form-event">
-                <div class="field"><label for="evt-title">Title</label><input id="evt-title" type="text" required /></div>
-                <div class="form-row-2">
-                  <div class="field"><label for="evt-type">Type</label>
-                    <select id="evt-type"><option value="assignment">Assignment</option><option value="exam">Exam</option><option value="study">Study block</option><option value="school">School event</option></select>
+        <section class="view dp-view" id="view-calendar" data-view-panel="calendar">
+          <header class="dp-cal-page-head">
+            <div>
+              <h1 class="dp-page-title">What's coming up?</h1>
+              <p class="dp-page-sub muted">Stay ahead with your schedule and important dates.</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('evt-title').focus();">+ Add event</button>
+          </header>
+
+          <div class="dp-cal-layout">
+            <aside class="dp-cal-aside">
+              <article class="dp-card">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">April 2025</h3>
+                <p class="muted" style="font-size:0.78rem;margin:0;">Mini calendar (placeholder)</p>
+                <div class="dp-mini-cal-grid">
+                  <span class="dp-mini-cal-dow">M</span><span class="dp-mini-cal-dow">T</span><span class="dp-mini-cal-dow">W</span><span class="dp-mini-cal-dow">T</span><span class="dp-mini-cal-dow">F</span><span class="dp-mini-cal-dow">S</span><span class="dp-mini-cal-dow">S</span>
+                  <span class="dp-mini-cal-cell is-muted">31</span><span class="dp-mini-cal-cell">1</span><span class="dp-mini-cal-cell">2</span><span class="dp-mini-cal-cell">3</span><span class="dp-mini-cal-cell">4</span><span class="dp-mini-cal-cell">5</span><span class="dp-mini-cal-cell">6</span>
+                  <span class="dp-mini-cal-cell">7</span><span class="dp-mini-cal-cell">8</span><span class="dp-mini-cal-cell">9</span><span class="dp-mini-cal-cell">10</span><span class="dp-mini-cal-cell">11</span><span class="dp-mini-cal-cell">12</span><span class="dp-mini-cal-cell">13</span><span class="dp-mini-cal-cell">14</span>
+                  <span class="dp-mini-cal-cell">15</span><span class="dp-mini-cal-cell">16</span><span class="dp-mini-cal-cell">17</span><span class="dp-mini-cal-cell">18</span><span class="dp-mini-cal-cell">19</span><span class="dp-mini-cal-cell">20</span><span class="dp-mini-cal-cell">21</span><span class="dp-mini-cal-cell">22</span>
+                  <span class="dp-mini-cal-cell">23</span><span class="dp-mini-cal-cell">24</span><span class="dp-mini-cal-cell">25</span><span class="dp-mini-cal-cell">26</span><span class="dp-mini-cal-cell">27</span><span class="dp-mini-cal-cell">28</span><span class="dp-mini-cal-cell is-today">29</span><span class="dp-mini-cal-cell">30</span>
+                </div>
+              </article>
+              <article class="dp-card dp-filter-block" id="cal-filters">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">Filters</h3>
+                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="course" checked /><span class="dp-dot-course" style="background:#0066ff;"></span> My courses</label>
+                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="exam" checked /><span class="dp-dot-course" style="background:#ef4444;"></span> Exams</label>
+                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="assignment" checked /><span class="dp-dot-course" style="background:#f59e0b;"></span> Assignments</label>
+                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="study" checked /><span class="dp-dot-course" style="background:#14b8a6;"></span> Study blocks</label>
+                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="school" checked /><span class="dp-dot-course" style="background:#6366f1;"></span> School events</label>
+              </article>
+              <article class="dp-card">
+                <h3 class="panel-title small">Quick add</h3>
+                <form id="form-event">
+                  <div class="field"><label for="evt-title">Title</label><input id="evt-title" type="text" required /></div>
+                  <div class="form-row-2">
+                    <div class="field"><label for="evt-type">Type</label>
+                      <select id="evt-type"><option value="assignment">Assignment</option><option value="exam">Exam</option><option value="study">Study block</option><option value="school">School event</option></select>
+                    </div>
+                    <div class="field"><label for="evt-course">Course</label><select id="evt-course"><option value="">—</option></select></div>
                   </div>
-                  <div class="field"><label for="evt-course">Course</label><select id="evt-course"><option value="">—</option></select></div>
-                </div>
-                <div class="form-row-2">
-                  <div class="field"><label for="evt-date">Date</label><input id="evt-date" type="date" required /></div>
-                  <div class="field"><label for="evt-time">Time</label><input id="evt-time" type="text" placeholder="3:00 PM" /></div>
-                </div>
-                <div class="field"><label for="evt-priority">Priority</label>
-                  <select id="evt-priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
-                </div>
-                <button type="submit" class="btn btn-primary">Add event</button>
-              </form>
-            </article>
-            <article class="panel">
-              <h2 class="panel-title">Selected day</h2>
-              <p class="muted" id="cal-selected-label">Select a day</p>
-              <div id="cal-day-events" class="stack-list mt"></div>
-              <h3 class="panel-title small mt">Upcoming</h3>
-              <div id="cal-upcoming" class="stack-list"></div>
-            </article>
+                  <div class="form-row-2">
+                    <div class="field"><label for="evt-date">Date</label><input id="evt-date" type="date" required /></div>
+                    <div class="field"><label for="evt-time">Time</label><input id="evt-time" type="text" placeholder="3:00 PM" /></div>
+                  </div>
+                  <div class="field"><label for="evt-priority">Priority</label>
+                    <select id="evt-priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block">Add event</button>
+                </form>
+              </article>
+              <button type="button" class="btn btn-secondary btn-sm btn-block">Subscribe</button>
+            </aside>
+
+            <div class="dp-cal-main">
+              <div class="dp-toolbar">
+                <button type="button" class="btn btn-secondary btn-sm" id="cal-view-month">Month</button>
+                <button type="button" class="btn btn-secondary btn-sm is-active" id="cal-view-week">Week</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="cal-view-day">Day</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="cal-prev">←</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="cal-next">→</button>
+                <h2 class="cal-month" id="cal-range-label" style="margin:0;flex:1;text-align:center;">Calendar</h2>
+              </div>
+              <div id="cal-host"></div>
+            </div>
+
+            <aside class="dp-cal-right">
+              <article class="dp-card">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">Today's schedule</h3>
+                <p class="muted" style="font-size:0.82rem;margin:0;" id="cal-selected-label">Select a day</p>
+                <p class="muted" style="font-size:0.78rem;margin:0.35rem 0 0;">Weather · 62°F partly cloudy (demo)</p>
+                <div id="cal-day-events" class="stack-list mt"></div>
+                <button type="button" class="dp-link-btn" style="margin-top:0.5rem;">View full day</button>
+              </article>
+              <article class="dp-card">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">Upcoming this week</h3>
+                <div id="cal-upcoming" class="stack-list"></div>
+                <button type="button" class="dp-link-btn" style="margin-top:0.5rem;">View all</button>
+              </article>
+              <article class="dp-card dp-smart-suggest">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">✦ Smart suggestions</h3>
+                <p>You have exams coming up — add study blocks on lighter days.</p>
+                <button type="button" class="btn btn-primary btn-sm btn-block">Add study block</button>
+              </article>
+            </aside>
           </div>
         </section>
 
         <!-- Courses -->
-        <section class="view" id="view-courses" data-view-panel="courses">
+        <section class="view dp-view" id="view-courses" data-view-panel="courses">
+          <header class="dp-page-head">
+            <div>
+              <h1 class="dp-page-title">Courses</h1>
+              <p class="dp-page-sub muted">What is happening in each class?</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm">Filter</button>
+          </header>
+          <div class="dp-course-toolbar">
+            <button type="button" class="dp-course-tab is-active">All courses</button>
+            <button type="button" class="dp-course-tab">This semester</button>
+            <button type="button" class="dp-course-tab">Next semester</button>
+            <button type="button" class="dp-course-tab">Completed</button>
+          </div>
           <div class="dp-split">
-            <article class="panel">
-              <div class="panel-head"><h2 class="panel-title">Courses</h2><button type="button" class="btn btn-secondary btn-sm" id="btn-add-course">Add course</button></div>
+            <article class="panel dp-card">
+              <div class="panel-head"><h2 class="panel-title">Your courses</h2><button type="button" class="btn btn-primary btn-sm" id="btn-add-course">+ Add course</button></div>
               <div id="course-list-host"></div>
+              <div class="dp-syllabus-banner">
+                <p class="muted" style="margin:0 0 0.5rem;"><strong>Upload a syllabus</strong> to supercharge this course.</p>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-add-course-syllabus">Upload syllabus →</button>
+              </div>
             </article>
-            <article class="panel" id="course-detail-panel">
-              <h2 class="panel-title">Course detail</h2>
+            <article class="panel dp-card" id="course-detail-panel">
+              <h2 class="panel-title">Course overview</h2>
               <div id="course-detail-body"><p class="dp-empty">Select a course or add one.</p></div>
             </article>
           </div>
         </section>
 
         <!-- Tasks -->
-        <section class="view" id="view-tasks" data-view-panel="tasks">
-          <div class="dp-task-layout">
-            <article class="panel">
-              <h2 class="panel-title">New task</h2>
-              <form id="form-task">
-                <div class="field"><label for="task-title">Title</label><input id="task-title" required /></div>
-                <div class="form-row-2">
-                  <div class="field"><label for="task-course">Course</label><select id="task-course"></select></div>
-                  <div class="field"><label for="task-type">Type</label>
-                    <select id="task-type"><option value="assignment">Assignment</option><option value="reading">Reading</option><option value="quiz">Quiz</option><option value="project">Project</option><option value="reminder">Reminder</option></select>
+        <section class="view dp-view" id="view-tasks" data-view-panel="tasks">
+          <header class="dp-task-page-head">
+            <div>
+              <h1 class="dp-page-title">Tasks</h1>
+              <p class="dp-page-sub muted">What work do you need to finish?</p>
+            </div>
+            <div>
+              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('task-title').focus();">+ Add task</button>
+            </div>
+          </header>
+          <div class="dp-task-tabs" aria-label="Task categories (demo)">
+            <span class="dp-task-tab is-active">All (0)</span>
+            <span class="dp-task-tab">Assignments</span>
+            <span class="dp-task-tab">Readings</span>
+            <span class="dp-task-tab">Quizzes</span>
+            <span class="dp-task-tab">Projects</span>
+            <span class="dp-task-tab">Reminders</span>
+          </div>
+          <div class="dp-task-layout-page">
+            <div class="dp-task-col-main">
+              <article class="panel dp-card">
+                <h2 class="panel-title">New task</h2>
+                <form id="form-task">
+                  <div class="field"><label for="task-title">Title</label><input id="task-title" required /></div>
+                  <div class="form-row-2">
+                    <div class="field"><label for="task-course">Course</label><select id="task-course"></select></div>
+                    <div class="field"><label for="task-type">Type</label>
+                      <select id="task-type"><option value="assignment">Assignment</option><option value="reading">Reading</option><option value="quiz">Quiz</option><option value="project">Project</option><option value="reminder">Reminder</option></select>
+                    </div>
                   </div>
-                </div>
-                <div class="form-row-2">
-                  <div class="field"><label for="task-due">Due date</label><input id="task-due" type="date" required /></div>
-                  <div class="field"><label for="task-priority">Priority</label>
-                    <select id="task-priority"><option>High</option><option selected>Medium</option><option>Low</option></select>
+                  <div class="form-row-2">
+                    <div class="field"><label for="task-due">Due date</label><input id="task-due" type="date" required /></div>
+                    <div class="field"><label for="task-priority">Priority</label>
+                      <select id="task-priority"><option>High</option><option selected>Medium</option><option>Low</option></select>
+                    </div>
                   </div>
+                  <div class="form-row-2">
+                    <div class="field"><label for="task-est">Est. minutes</label><input id="task-est" type="number" min="5" step="5" value="60" /></div>
+                    <div class="field"><label for="task-notes">Notes</label><input id="task-notes" /></div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Add task</button>
+                </form>
+              </article>
+              <article class="panel dp-card">
+                <div class="panel-head"><h2 class="panel-title">Task board</h2></div>
+                <div class="dp-filter-row">
+                  <label>Filter</label>
+                  <select id="task-filter-type"><option value="all">All</option><option value="assignment">Assignments</option><option value="reading">Readings</option><option value="quiz">Quizzes</option><option value="project">Projects</option><option value="reminder">Reminders</option></select>
+                  <select id="task-filter-course"><option value="">All courses</option></select>
                 </div>
-                <div class="form-row-2">
-                  <div class="field"><label for="task-est">Est. minutes</label><input id="task-est" type="number" min="5" step="5" value="60" /></div>
-                  <div class="field"><label for="task-notes">Notes</label><input id="task-notes" /></div>
-                </div>
-                <button type="submit" class="btn btn-primary">Add task</button>
-              </form>
-            </article>
-            <article class="panel">
-              <div class="panel-head"><h2 class="panel-title">Task board</h2></div>
-              <div class="dp-filter-row">
-                <label>Filter</label>
-                <select id="task-filter-type"><option value="all">All</option><option value="assignment">Assignments</option><option value="reading">Readings</option><option value="quiz">Quizzes</option><option value="project">Projects</option><option value="reminder">Reminders</option></select>
-                <select id="task-filter-course"><option value="">All courses</option></select>
-              </div>
-              <p class="muted" style="font-size:0.85rem;">Click a task row for details (sorted by due date within each group).</p>
-              <div id="task-board"></div>
-            </article>
-            <article class="panel" id="task-detail-aside">
+                <p class="muted" style="font-size:0.85rem;">Click a task row for details (sorted by due date within each group).</p>
+                <div id="task-board"></div>
+              </article>
+            </div>
+            <article class="panel dp-card" id="task-detail-aside">
               <h2 class="panel-title">Task detail</h2>
               <div id="task-detail-body"><p class="dp-empty">Select a task from the board.</p></div>
             </article>
+            <aside class="dp-task-widgets">
+              <article class="dp-card">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">Task progress</h3>
+                <div class="dp-donut-sm" aria-hidden="true"></div>
+                <p class="muted" style="font-size:0.82rem;text-align:center;margin:0;">Completed vs open (visual)</p>
+              </article>
+              <article class="dp-card">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">Auto-created tasks</h3>
+                <p class="muted" style="font-size:0.82rem;margin:0;">From syllabus &amp; announcements — approve in Updates.</p>
+              </article>
+              <article class="dp-card">
+                <h3 class="dp-card-title" style="font-size:0.95rem;">Deadline alerts</h3>
+                <p class="muted" style="font-size:0.82rem;margin:0;">Due soon highlights appear here.</p>
+              </article>
+            </aside>
           </div>
         </section>
 
         <!-- Updates -->
-        <section class="view" id="view-updates" data-view-panel="updates">
-          <div class="grid-3">
-            <article class="panel">
+        <section class="view dp-view" id="view-updates" data-view-panel="updates">
+          <header class="dp-page-head">
+            <div>
+              <h1 class="dp-page-title">Updates</h1>
+              <p class="dp-page-sub muted">What changed, and what do you need to do about it?</p>
+            </div>
+          </header>
+          <div class="dp-updates-grid-top">
+            <article class="panel dp-card">
               <span class="dp-ai-tag">Announcement analyzer</span>
               <h2 class="panel-title">Paste announcement</h2>
               <div class="field"><label for="upd-course">Course context</label><select id="upd-course"><option value="">General</option></select></div>
-              <div class="field"><textarea id="upd-announce-body" rows="8" placeholder="Paste instructor announcement text…"></textarea></div>
-              <button type="button" class="btn btn-primary" id="btn-analyze-announce">Analyze announcement</button>
+              <div class="field"><textarea id="upd-announce-body" rows="6" placeholder="Paste announcement or email content…"></textarea></div>
+              <p class="muted" style="font-size:0.78rem;margin:0;">0 / 5000 characters</p>
+              <button type="button" class="btn btn-primary btn-block mt-sm" id="btn-analyze-announce">Analyze announcement</button>
               <div id="upd-announce-summary" class="panel inset mt" hidden>
                 <h3 class="panel-title small">Extracted summary</h3>
                 <ul id="upd-summary-list" class="muted" style="margin:0;padding-left:1.1rem;"></ul>
               </div>
             </article>
-            <article class="panel">
-              <span class="dp-ai-tag">Screenshot simulation</span>
+            <article class="panel dp-card">
+              <span class="dp-ai-tag">Screenshot</span>
               <h2 class="panel-title">Screenshot upload</h2>
-              <p class="muted">Simulated — no file leaves your browser.</p>
+              <div class="dp-drop-zone">PNG, JPG · Max 10MB · simulated OCR</div>
               <input type="file" id="upd-shot-file" accept="image/*" />
-              <button type="button" class="btn btn-secondary mt-sm" id="btn-analyze-shot">Analyze screenshot</button>
+              <button type="button" class="btn btn-secondary btn-block mt-sm" id="btn-analyze-shot">Analyze screenshot</button>
             </article>
-            <article class="panel">
-              <span class="dp-ai-tag">Audio simulation</span>
-              <h2 class="panel-title">Class audio</h2>
-              <p class="muted">Simulated lecture capture.</p>
+            <article class="panel dp-card">
+              <span class="dp-ai-tag">Class audio</span>
+              <h2 class="panel-title">Audio upload</h2>
+              <div class="dp-drop-zone">MP3, M4A, WAV · Max 100MB · simulated</div>
               <input type="file" id="upd-audio-file" accept="audio/*" />
-              <button type="button" class="btn btn-secondary mt-sm" id="btn-analyze-audio">Generate notes</button>
+              <button type="button" class="btn btn-secondary btn-block mt-sm" id="btn-analyze-audio">Generate notes</button>
               <div id="upd-audio-out" class="mt"></div>
             </article>
           </div>
-          <article class="panel mt">
-            <div class="panel-head"><h2 class="panel-title">Change detection</h2>
-              <button type="button" class="btn btn-primary btn-sm" id="btn-save-updates">Save to dashboard</button>
-            </div>
-            <p id="upd-save-msg" class="msg-hint" hidden></p>
-            <div id="pending-changes-host"></div>
-          </article>
+          <div class="dp-updates-split">
+            <article class="panel dp-card">
+              <div class="panel-head">
+                <h2 class="panel-title">Change detection</h2>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-save-updates">Save to dashboard ✨</button>
+              </div>
+              <p id="upd-save-msg" class="msg-hint" hidden></p>
+              <div id="pending-changes-host"></div>
+            </article>
+            <aside class="dp-card">
+              <h3 class="dp-card-title" style="font-size:1rem;">Summary of changes</h3>
+              <div class="dp-summary-donut" aria-hidden="true"></div>
+              <ul class="dp-impact-list">
+                <li>Calendar events from detected dates</li>
+                <li>Tasks from assignments &amp; quizzes</li>
+                <li>Study items from lecture notes</li>
+              </ul>
+              <p class="muted" style="font-size:0.78rem;margin:1rem 0 0;">🔒 Review before saving — nothing leaves your browser.</p>
+            </aside>
+          </div>
         </section>
 
         <!-- Grades -->
-        <section class="view" id="view-grades" data-view-panel="grades">
-          <div class="grid-2">
-            <article class="panel">
+        <section class="view dp-view" id="view-grades" data-view-panel="grades">
+          <header class="dp-page-head">
+            <div>
+              <h1 class="dp-page-title">My grades</h1>
+              <p class="dp-page-sub muted">Where do you stand academically?</p>
+            </div>
+            <div class="dp-withdraw-pill" id="grades-withdraw-chip">
+              <span aria-hidden="true">📅</span>
+              <span id="grades-withdraw-inline">Withdrawal deadline — set in profile seed.</span>
+            </div>
+          </header>
+          <div class="dp-kpi-row">
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Overall GPA (est.)</p><p class="dp-kpi-value" id="grades-kpi-gpa">—</p><p class="dp-kpi-hint">From entered grades</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Courses</p><p class="dp-kpi-value" id="grades-kpi-courses">0</p><p class="dp-kpi-hint">In planner</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Avg course %</p><p class="dp-kpi-value" id="grades-kpi-avg">—</p><p class="dp-kpi-hint">Snapshot</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Grade entries</p><p class="dp-kpi-value" id="grades-kpi-entries">0</p><p class="dp-kpi-hint">Logged items</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Standing</p><p class="dp-kpi-value" id="grades-kpi-stand">—</p><p class="dp-kpi-hint">Demo estimate</p></div>
+          </div>
+          <div class="dp-grades-main-split">
+            <article class="panel dp-card">
               <h2 class="panel-title">Add grade entry</h2>
               <form id="form-grade">
                 <div class="field"><label for="g-course">Course</label><select id="g-course" required></select></div>
@@ -284,7 +464,7 @@
               </form>
               <div id="grades-table-host" class="mt"></div>
             </article>
-            <article class="panel">
+            <article class="panel dp-card">
               <h2 class="panel-title">Standing &amp; what-if</h2>
               <div id="grades-by-course"></div>
               <h3 class="panel-title small mt">Category breakdown</h3>
@@ -309,70 +489,147 @@
         </section>
 
         <!-- Study -->
-        <section class="view" id="view-study" data-view-panel="study">
-          <div class="grid-2">
-            <article class="panel">
+        <section class="view dp-view" id="view-study" data-view-panel="study">
+          <header class="dp-study-head">
+            <div>
+              <h1 class="dp-page-title">Study Center <span aria-hidden="true">📚</span></h1>
+              <p class="dp-page-sub muted">Your personalized hub to study smarter.</p>
+            </div>
+            <aside class="dp-callout-card" style="max-width:340px;">
+              <p class="dp-callout-text"><em>Small, consistent study habits lead to big academic wins.</em></p>
+            </aside>
+          </header>
+          <div class="dp-study-grid">
+            <article class="panel dp-card">
               <span class="dp-ai-tag">Study plan generator</span>
               <h2 class="panel-title">Generate sessions</h2>
-              <form id="form-study-plan">
+              <p class="muted" style="font-size:0.82rem;margin:0 0 0.65rem;">Based on</p>
+              <div class="dp-mode-toggle" role="group" aria-label="Prioritize mode">
+                <button type="button" class="is-active">Deadlines</button>
+                <button type="button">Grades</button>
+                <button type="button">Confidence</button>
+              </div>
+              <form id="form-study-plan" class="mt-sm">
                 <div class="field"><label for="sp-mode">Prioritize by</label>
                   <select id="sp-mode"><option value="deadlines">Deadlines</option><option value="grades">Grades</option><option value="confidence">Confidence</option></select>
                 </div>
-                <div class="field"><label for="sp-hours">Hours available / day</label><input id="sp-hours" type="number" step="0.25" value="2" /></div>
+                <div class="field"><label for="sp-hours">Time available / day</label><input id="sp-hours" type="number" step="0.25" value="2" /></div>
                 <div class="field"><label for="sp-conf">Confidence 1–5</label><input id="sp-conf" type="number" min="1" max="5" value="3" /></div>
                 <label class="field"><input type="checkbox" id="sp-add-cal" /> Add study blocks to calendar</label>
-                <button type="submit" class="btn btn-primary">Generate my study plan</button>
+                <button type="submit" class="btn btn-primary btn-block">Generate my study plan ✨</button>
               </form>
               <div id="study-plan-out" class="study-output mt"></div>
+              <p id="study-context-hint" class="muted mt-sm" style="font-size:0.82rem;margin-bottom:0;">Add courses, tasks, or grades to personalize study tools.</p>
             </article>
-            <article class="panel" id="study-empty-hint">
-              <p id="study-context-hint" class="dp-empty">Add courses, tasks, or grades to personalize study tools.</p>
+            <article class="panel dp-card">
+              <h2 class="panel-title">Upcoming deadlines</h2>
+              <p class="muted" style="font-size:0.78rem;margin:0;">Next 7 days (placeholder list)</p>
+              <div class="stack-list mt" id="study-deadlines-placeholder">
+                <div class="stack-item"><p style="margin:0;font-weight:650;">Connect courses &amp; tasks</p><p class="muted" style="margin:0;font-size:0.82rem;">Live list mirrors Tasks + Calendar.</p></div>
+              </div>
+              <button type="button" class="dp-link-btn mt-sm" data-nav="calendar">Go to full calendar</button>
             </article>
-            <article class="panel">
+            <article class="panel dp-card">
+              <h2 class="panel-title">Study focus</h2>
+              <p class="muted" style="font-size:0.78rem;margin:0;">Today</p>
+              <div class="dp-ring-score"><span>68%</span></div>
+              <p class="muted" style="text-align:center;margin:0;font-size:0.82rem;">Study score (demo)</p>
+              <ul class="muted" style="font-size:0.82rem;margin:0.75rem 0 0;padding-left:1rem;">
+                <li>Focus · Retention · Consistency</li>
+              </ul>
+            </article>
+            <article class="panel dp-card">
               <span class="dp-ai-tag">Exam prep toolkit</span>
               <h2 class="panel-title">Toolkit</h2>
-              <div class="field"><input id="prep-topic" placeholder="Topic or exam name" /></div>
+              <div class="dp-prep-tabs">
+                <span class="dp-prep-tab is-active">Notes</span>
+                <span class="dp-prep-tab">Flashcards</span>
+                <span class="dp-prep-tab">Practice</span>
+                <span class="dp-prep-tab">Review guides</span>
+              </div>
+              <div class="field"><label for="prep-topic">Topic</label><input id="prep-topic" placeholder="Topic or exam name" /></div>
               <button type="button" class="btn btn-secondary btn-sm" id="btn-prep-gen">Generate outline &amp; cards</button>
               <div id="prep-out" class="mt"></div>
               <h3 class="panel-title small mt">Flashcards</h3>
               <div id="flash-list"></div>
             </article>
-          </div>
-          <div class="grid-2 mt">
-            <article class="panel">
+            <article class="panel dp-card">
               <span class="dp-ai-tag">Exam feedback</span>
-              <h2 class="panel-title">Simulated results debrief</h2>
+              <h2 class="panel-title">Upload results</h2>
               <textarea id="exam-result-paste" rows="4" placeholder="Paste brief results or comments…"></textarea>
               <button type="button" class="btn btn-secondary mt-sm" id="btn-exam-feedback">Analyze</button>
               <div id="exam-feedback-out" class="mt"></div>
             </article>
-            <article class="panel">
+          </div>
+          <div class="dp-study-grid-2">
+            <article class="panel dp-card">
+              <h2 class="panel-title">Flashcard decks</h2>
+              <p class="muted" style="font-size:0.82rem;margin:0;">Recent decks (demo)</p>
+              <div class="stack-list mt">
+                <div class="stack-item"><strong>Algorithms</strong><p class="muted" style="margin:0;font-size:0.8rem;">24 cards · 85% mastery</p></div>
+                <div class="stack-item"><strong>Databases</strong><p class="muted" style="margin:0;font-size:0.8rem;">18 cards · 70%</p></div>
+              </div>
+            </article>
+            <article class="panel dp-card">
               <span class="dp-ai-tag">Smart notes</span>
               <h2 class="panel-title">Notes workspace</h2>
-              <p class="muted">Simulated import — files stay in-browser only.</p>
-              <input type="file" id="smart-notes-file" accept=".txt,.md,.pdf" class="mt-sm" />
-              <textarea id="smart-notes-area" rows="8" placeholder="Paste lecture notes or outlines…"></textarea>
-              <button type="button" class="btn btn-secondary btn-sm mt-sm" id="btn-smart-audio-sim">Simulated voice memo</button>
+              <div class="dp-fin-metrics" style="grid-template-columns:repeat(3,1fr);margin-bottom:0.75rem;">
+                <button type="button" class="btn btn-secondary btn-sm">Upload notes</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-smart-audio-sim">Record audio</button>
+                <button type="button" class="btn btn-secondary btn-sm">Paste text</button>
+              </div>
+              <input type="file" id="smart-notes-file" accept=".txt,.md,.pdf" />
+              <textarea id="smart-notes-area" rows="6" placeholder="Paste lecture notes or outlines…" class="mt-sm"></textarea>
               <button type="button" class="btn btn-primary btn-sm mt-sm" id="btn-save-notes">Save notes locally</button>
             </article>
-            <article class="panel">
+            <article class="panel dp-card">
               <h2 class="panel-title">Visual study aids</h2>
-              <p class="muted">Placeholder diagrams for demo decks.</p>
-              <div class="dp-visual-placeholder grid-3">
-                <div class="dp-viz-card">Concept map</div>
-                <div class="dp-viz-card">Formula sheet</div>
-                <div class="dp-viz-card">Timeline</div>
+              <p class="muted" style="font-size:0.82rem;">Diagrams &amp; charts (placeholders)</p>
+              <div class="dp-viz-gallery">
+                <div class="dp-viz-thumb">B+ Tree · DB</div>
+                <div class="dp-viz-thumb">Big-O · Algo</div>
+                <div class="dp-viz-thumb">ER diagram</div>
+                <div class="dp-viz-thumb">Scheduling</div>
+              </div>
+            </article>
+            <article class="panel dp-card">
+              <h2 class="panel-title">Recommended for you</h2>
+              <div class="stack-list">
+                <div class="stack-item" style="display:flex;justify-content:space-between;align-items:center;"><span>Spaced repetition</span><button type="button" class="btn btn-secondary btn-sm">Start</button></div>
+                <div class="stack-item" style="display:flex;justify-content:space-between;align-items:center;"><span>Pomodoro timer</span><button type="button" class="btn btn-secondary btn-sm">Start</button></div>
+                <div class="stack-item" style="display:flex;justify-content:space-between;align-items:center;"><span>Study with AI tutor</span><button type="button" class="btn btn-secondary btn-sm">Ask</button></div>
               </div>
             </article>
           </div>
         </section>
 
         <!-- Communication -->
-        <section class="view" id="view-communication" data-view-panel="communication">
-          <div class="grid-2">
-            <article class="panel">
-              <span class="dp-ai-tag">Draft assistant</span>
-              <h2 class="panel-title">Email composer</h2>
+        <section class="view dp-view" id="view-communication" data-view-panel="communication">
+          <header class="dp-page-head">
+            <div>
+              <h1 class="dp-page-title">Communication assistant</h1>
+              <p class="dp-page-sub muted">Professional outreach — who to contact and what to say.</p>
+            </div>
+          </header>
+          <div class="dp-comm-layout">
+            <aside class="dp-card">
+              <h3 class="dp-card-title" style="font-size:1rem;">Scenarios</h3>
+              <div class="dp-scenario-list">
+                <button type="button" class="dp-scenario-item is-active">Introduction email</button>
+                <button type="button" class="dp-scenario-item">Clarification</button>
+                <button type="button" class="dp-scenario-item">Extension request</button>
+                <button type="button" class="dp-scenario-item">Grade concern</button>
+                <button type="button" class="dp-scenario-item">Advisor</button>
+              </div>
+              <div class="dp-callout-card mt-sm" style="margin-top:1rem;">
+                <p class="dp-callout-text" style="font-size:0.82rem;margin:0;">Not sure who to email? Pick a course below — drafts stay local.</p>
+              </div>
+            </aside>
+            <article class="panel dp-card dp-comm-editor">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+                <span class="dp-ai-tag">Professor email assistant</span>
+                <span class="dp-pill dp-pill-blue">AI generated</span>
+              </div>
               <form id="form-comm">
                 <div class="field"><label for="comm-scenario">Scenario</label>
                   <select id="comm-scenario">
@@ -393,27 +650,55 @@
                     <option value="casual">Casual</option>
                   </select>
                 </div>
-                <div class="field"><label for="comm-ctx">Reason / context</label><textarea id="comm-ctx" rows="5"></textarea></div>
+                <div class="field"><label for="comm-ctx">Reason / context</label><textarea id="comm-ctx" rows="4"></textarea></div>
                 <button type="submit" class="btn btn-primary">Generate draft</button>
               </form>
+              <label class="field mt-sm" for="comm-draft">Draft</label>
+              <textarea id="comm-draft" class="email-preview" style="width:100%;min-height:220px;"></textarea>
               <div class="mt">
-                <button type="button" class="btn btn-secondary btn-sm" id="btn-comm-copy">Copy email</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="btn-comm-save-tpl">Save as template</button>
                 <button type="button" class="btn btn-secondary btn-sm" id="btn-comm-regen">Regenerate</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-comm-save-tpl">Save as template</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-comm-copy">Copy email</button>
+              </div>
+              <div class="dp-chip-row">
+                <span class="dp-chip">+ Class topic</span>
+                <span class="dp-chip">+ Thoughtful question</span>
+                <span class="dp-chip">+ Learning goals</span>
               </div>
               <h3 class="panel-title small mt">Saved templates</h3>
               <div id="email-templates-host"></div>
             </article>
-            <article class="panel">
-              <h2 class="panel-title">Draft</h2>
-              <textarea id="comm-draft" class="email-preview" style="width:100%;min-height:280px;"></textarea>
-            </article>
+            <aside class="dp-card">
+              <h3 class="dp-card-title" style="font-size:1rem;">Tone</h3>
+              <p class="muted" style="font-size:0.82rem;margin:0 0 0.5rem;">Matches your composer selection.</p>
+              <h3 class="dp-card-title small mt">Best practices</h3>
+              <ul class="muted" style="font-size:0.82rem;margin:0;padding-left:1rem;">
+                <li>Clear subject line</li>
+                <li>Respectful &amp; concise</li>
+                <li>Include course &amp; section</li>
+              </ul>
+            </aside>
           </div>
         </section>
 
         <!-- Financial -->
-        <section class="view" id="view-financial" data-view-panel="financial">
-          <article class="panel mb">
+        <section class="view dp-view" id="view-financial" data-view-panel="financial">
+          <header class="dp-page-head">
+            <div>
+              <h1 class="dp-page-title">Financial Aid</h1>
+              <p class="dp-page-sub muted">Find opportunities. Track deadlines. Fund your future.</p>
+            </div>
+            <aside class="dp-callout-card" style="max-width:300px;">
+              <p class="dp-callout-text" style="font-size:0.85rem;margin:0;"><em>Every application is a step closer to less debt and more freedom.</em></p>
+            </aside>
+          </header>
+          <div class="dp-fin-metrics">
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Estimated aid</p><p class="dp-kpi-value">—</p><p class="dp-kpi-hint">Demo placeholder</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Matches</p><p class="dp-kpi-value" id="fin-kpi-matches">—</p><p class="dp-kpi-hint">Suggestions below</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">In progress</p><p class="dp-kpi-value" id="fin-kpi-progress">0</p><p class="dp-kpi-hint">Tracked scholarships</p></div>
+            <div class="dp-kpi-card"><p class="dp-kpi-label">Deadlines (30d)</p><p class="dp-kpi-value" id="fin-kpi-deadlines">0</p><p class="dp-kpi-hint">From tracker</p></div>
+          </div>
+          <article class="panel dp-card mb">
             <h2 class="panel-title">Suggested scholarships</h2>
             <p class="muted">Demo matches based on your profile major — fictional opportunities only.</p>
             <div id="sch-suggestions" class="stack-list"></div>
@@ -451,12 +736,26 @@
               <button type="button" class="btn btn-secondary btn-sm mt-sm" id="btn-essay-refine">Simulated refine</button>
             </article>
           </div>
-          <article class="panel mt"><h2 class="panel-title">Aid deadline alerts</h2><div id="aid-alerts"></div></article>
+          <article class="panel dp-card mt"><h2 class="panel-title">Aid deadline alerts</h2><div id="aid-alerts"></div></article>
+          <div class="dp-fin-banner">
+            <p class="dp-strip-text" style="margin:0;"><strong>You're building a debt-free future.</strong> Track deadlines and essays in one place.</p>
+            <button type="button" class="btn btn-secondary btn-sm">Explore opportunities →</button>
+          </div>
         </section>
 
         <!-- Settings -->
-        <section class="view" id="view-settings" data-view-panel="settings">
-          <article class="panel">
+        <section class="view dp-view" id="view-settings" data-view-panel="settings">
+          <header class="dp-page-head">
+            <div>
+              <h1 class="dp-page-title">Profile / Settings</h1>
+              <p class="dp-page-sub muted">Manage preferences and how DegreePilot AI personalizes your experience.</p>
+            </div>
+            <aside class="dp-callout-card" style="max-width:280px;">
+              <p class="dp-callout-text" style="font-size:0.85rem;margin:0;"><em>Personalized support. Smarter planning.</em></p>
+            </aside>
+          </header>
+          <div class="dp-settings-grid">
+          <article class="panel dp-card">
             <h2 class="panel-title">Profile</h2>
             <form id="form-profile">
               <div class="form-row-2">
@@ -478,34 +777,36 @@
               </div>
               <button type="submit" class="btn btn-primary">Save profile</button>
               <p id="profile-saved" class="msg-hint" hidden>Saved locally.</p>
+              <div class="field mt"><label for="pf-theme">Accent theme</label>
+                <select id="pf-theme"><option value="ocean">Ocean</option><option value="sage">Sage</option><option value="slate">Slate</option></select>
+              </div>
             </form>
-
-            <h3 class="panel-title mt">Course preferences</h3>
+          </article>
+          <article class="panel dp-card">
+            <h3 class="panel-title">Course preferences</h3>
             <label class="switch-row"><input type="checkbox" id="set-compact-cal" /> Compact calendar density</label>
-
-            <h3 class="panel-title mt">Notifications (visual)</h3>
+            <p class="muted" style="font-size:0.82rem;margin:0.75rem 0 0;">More display options can layer on top of your courses tab.</p>
+          </article>
+          <article class="panel dp-card">
+            <h3 class="panel-title">Notifications</h3>
             <label class="switch-row"><input type="checkbox" id="set-n-assign" checked /> Assignment reminders</label>
             <label class="switch-row"><input type="checkbox" id="set-n-grade" checked /> Grade updates</label>
             <label class="switch-row"><input type="checkbox" id="set-n-fin" checked /> Financial aid alerts</label>
-
-            <h3 class="panel-title mt">Demo data</h3>
+          </article>
+          <article class="panel dp-card">
+            <h3 class="panel-title">Demo data</h3>
             <label class="switch-row"><strong>Sample data mode</strong><input type="checkbox" id="toggle-sample-data" /></label>
-            <p class="muted">OFF = blank dashboard with your entries · ON = fictional “Caleb White” snapshot.</p>
-
+            <p class="muted">OFF = blank · ON = fictional “Caleb White” snapshot.</p>
             <div class="panel inset mt">
               <h3 class="panel-title small">Privacy</h3>
-              <p class="muted" style="margin:0;">DegreePilot AI stores profile and academic demo data only in this browser (localStorage). Nothing is sent to a server in this prototype. Clear data anytime with Reset demo data.</p>
+              <p class="muted" style="margin:0;">Data stays in this browser (localStorage). Nothing is sent to a server in this prototype.</p>
             </div>
-
-            <div class="dp-danger-zone">
+            <div class="dp-danger-zone mt">
               <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-demo">Reset demo data</button>
               <p class="muted" style="margin:0.5rem 0 0;">Clears local storage and returns to blank mode.</p>
             </div>
-
-            <div class="field mt"><label for="pf-theme">Accent theme</label>
-              <select id="pf-theme"><option value="ocean">Ocean</option><option value="sage">Sage</option><option value="slate">Slate</option></select>
-            </div>
           </article>
+          </div>
         </section>
       </main>
     </div>
