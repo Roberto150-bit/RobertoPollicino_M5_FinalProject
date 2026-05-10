@@ -177,8 +177,8 @@
 <div class="relative">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
 <input id="password" name="password" autocomplete="current-password" class="w-full pl-12 pr-12 py-3.5 rounded-xl border border-outline-variant bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline/60" placeholder="Enter your password" type="password"/>
-<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline" type="button" aria-label="Toggle password visibility (visual only)">
-<span class="material-symbols-outlined text-[20px]">visibility</span>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary border-none bg-transparent p-0 cursor-pointer flex items-center justify-center" type="button" data-password-toggle data-target="password" aria-label="Show password" aria-pressed="false">
+<span class="material-symbols-outlined text-[20px] icon-password-toggle">visibility</span>
 </button>
 </div>
 </div>
@@ -397,5 +397,6 @@
 </div>
 </div>
 </footer>
+<script src="js/password-toggle.js"></script>
 <script src="js/auth.js"></script>
 </body></html>

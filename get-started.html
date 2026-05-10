@@ -192,23 +192,23 @@
 </div>
 </div>
 <div class="space-y-2">
-<label class="text-label-md font-label-md text-on-surface-variant ml-1">Password</label>
+<label class="text-label-md font-label-md text-on-surface-variant ml-1" for="signup-password">Password</label>
 <div class="relative">
-<input class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 pr-10 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Create a password" type="password"/>
-<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 text-outline">
-<span class="material-symbols-outlined text-[20px]">lock</span>
-<span class="material-symbols-outlined text-[20px] cursor-pointer">visibility</span>
-</div>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px] pointer-events-none">lock</span>
+<input id="signup-password" class="w-full bg-surface border border-outline-variant rounded-xl pl-12 pr-12 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Create a password" type="password" autocomplete="new-password"/>
+<button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary border-none bg-transparent p-0 cursor-pointer flex items-center justify-center" data-password-toggle data-target="signup-password" aria-label="Show password" aria-pressed="false">
+<span class="material-symbols-outlined text-[20px] icon-password-toggle">visibility</span>
+</button>
 </div>
 </div>
 <div class="space-y-2 pb-4">
-<label class="text-label-md font-label-md text-on-surface-variant ml-1">Confirm Password</label>
+<label class="text-label-md font-label-md text-on-surface-variant ml-1" for="signup-password-confirm">Confirm Password</label>
 <div class="relative">
-<input class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 pr-10 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Confirm your password" type="password"/>
-<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 text-outline">
-<span class="material-symbols-outlined text-[20px]">lock</span>
-<span class="material-symbols-outlined text-[20px] cursor-pointer">visibility</span>
-</div>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px] pointer-events-none">lock</span>
+<input id="signup-password-confirm" class="w-full bg-surface border border-outline-variant rounded-xl pl-12 pr-12 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Confirm your password" type="password" autocomplete="new-password"/>
+<button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary border-none bg-transparent p-0 cursor-pointer flex items-center justify-center" data-password-toggle data-target="signup-password-confirm" aria-label="Show password" aria-pressed="false">
+<span class="material-symbols-outlined text-[20px] icon-password-toggle">visibility</span>
+</button>
 </div>
 </div>
 <button class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md text-headline-md hover:bg-primary-container transition-all active:scale-[0.99]" type="submit">
@@ -458,4 +458,5 @@
 </div>
 </div>
 </footer>
+<script src="js/password-toggle.js"></script>
 </body></html>
