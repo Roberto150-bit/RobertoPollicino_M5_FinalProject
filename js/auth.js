@@ -1,8 +1,8 @@
 /**
  * DegreePilot AI — landing page gate (static prototype only).
  * Sign-in compares SHA-256 digests of the fields you type; no passwords are
- * stored in this file or in the HTML. “Try demo” still opens the dashboard
- * for presentations. This is not real server authentication.
+ * stored in this file or in the HTML. Successful sign-in unlocks dashboard.html
+ * via sessionStorage only (not real server authentication).
  */
 
 (function () {
@@ -35,14 +35,6 @@
       /* sessionStorage may be blocked in strict modes */
     }
     window.location.href = "dashboard.html";
-  }
-
-  function bindTryDemo(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener("click", function () {
-      goDashboard();
-    });
   }
 
   function showLoginError(msg) {
@@ -86,9 +78,6 @@
       });
     });
   }
-
-  bindTryDemo("btn-try-demo");
-  bindTryDemo("btn-try-demo-2");
 
   var forgot = document.getElementById("btn-forgot");
   var forgotMsg = document.getElementById("forgot-msg");

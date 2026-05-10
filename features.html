@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Explore DegreePilot AI features: course dashboard, grade insights, announcements, study plans, and email drafts (prototype)." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="features.html" />
+<title>Features - DegreePilot AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#0050cb",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#0054d6",
+                        "on-surface-variant": "#424656",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#6c737a",
+                        "surface-container-high": "#e8e8ea",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "tertiary-fixed": "#dce3eb",
+                        "surface-dim": "#dadadc",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "background": "#f9f9fc",
+                        "on-secondary-container": "#00732c",
+                        "outline": "#727687",
+                        "secondary-container": "#5cfd80",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "inverse-primary": "#b3c5ff",
+                        "on-tertiary-container": "#f4f9ff",
+                        "on-surface": "#1a1c1e",
+                        "surface": "#f9f9fc",
+                        "secondary-fixed-dim": "#3ce36a",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#003fa4",
+                        "secondary": "#006e2a",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "tertiary": "#535a61",
+                        "surface-container-highest": "#e2e2e5",
+                        "surface-container": "#eeeef0",
+                        "on-primary-fixed": "#001849",
+                        "on-tertiary-fixed": "#151c22",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c2c6d8",
+                        "on-error": "#ffffff",
+                        "primary-container": "#0066ff",
+                        "surface-container-low": "#f3f3f6",
+                        "primary-fixed": "#dae1ff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#f8f7ff",
+                        "secondary-fixed": "#69ff87",
+                        "on-secondary-fixed": "#002108",
+                        "inverse-surface": "#2f3133",
+                        "surface-variant": "#e2e2e5",
+                        "surface-bright": "#f9f9fc",
+                        "on-background": "#1a1c1e",
+                        "on-secondary-fixed-variant": "#00531e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-padding": "80px",
+                        "margin-mobile": "20px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #f9f9fc; }
+        .feature-card-shadow { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
+        .glass-bg { backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md docked full-width top-0 sticky z-50 border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<a href="home.html" class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed no-underline">DegreePilot AI</a>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1 font-label-md text-label-md" href="features.html">Features</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 font-label-md text-label-md no-underline" href="how-it-works.html">How It Works</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 font-label-md text-label-md no-underline" href="for-students.html">For Students</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<a href="signin.html" class="text-primary font-label-md text-label-md hover:opacity-80 transition-all no-underline">Sign in</a>
+<a href="signin.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md active:scale-95 transition-all no-underline inline-flex items-center">Get Started</a>
+</div>
+</div>
+</nav>
+<!-- Hero Content (Section Header) -->
+<header class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-section-padding pb-stack-lg text-center">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-background mb-stack-md">
+            Powerful features for every part of your semester
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto">
+            DegreePilot AI brings your courses, assignments, announcements, grades, and planning tools together in one place.
+        </p>
+</header>
+<!-- Features Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-section-padding">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- 1. Course Dashboard (Large Card) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-stack-lg feature-card-shadow border border-outline-variant/10 flex flex-col justify-between group hover:border-primary/20 transition-all">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="dashboard">dashboard</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Course Dashboard</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">See all your courses, grades, and upcoming tasks in one at-a-glance view.</p>
+</div>
+<div class="bg-background rounded-xl p-6 border border-outline-variant/20 shadow-sm overflow-hidden">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Calculus II</span>
+<span class="font-label-md text-label-md text-secondary">78%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full">
+<div class="bg-secondary h-2.5 rounded-full" style="width: 78%"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Chemistry 101</span>
+<span class="font-label-md text-label-md text-primary">65%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full">
+<div class="bg-primary h-2.5 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">English Comp.</span>
+<span class="font-label-md text-label-md text-secondary">90%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full">
+<div class="bg-secondary h-2.5 rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Biology</span>
+<span class="font-label-md text-label-md text-primary">72%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full">
+<div class="bg-primary h-2.5 rounded-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Grade Insights (Square Card) -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-stack-lg feature-card-shadow border border-outline-variant/10 flex flex-col group hover:border-primary/20 transition-all">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-4">
+<div class="p-2 bg-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary" data-icon="monitoring">monitoring</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Grade Insights</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Understand your academic standing and know what to focus on next.</p>
+</div>
+<div class="mt-auto flex flex-col items-center justify-center py-6 bg-surface-container-low rounded-xl border border-outline-variant/10">
+<div class="relative w-32 h-32 flex items-center justify-center mb-4">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-dasharray="351.8" stroke-dashoffset="42" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-lg text-headline-lg text-on-surface">B+</span>
+<span class="font-label-md text-label-md text-on-surface-variant">88%</span>
+</div>
+</div>
+<div class="text-center">
+<p class="font-label-md text-label-md text-secondary">You're doing great!</p>
+<p class="text-[12px] text-on-surface-variant px-4">Keep it up to maintain an A- average.</p>
+</div>
+</div>
+</div>
+<!-- 3. Announcement Helper (Full Row Height or Split) -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl p-stack-lg feature-card-shadow border border-outline-variant/10 flex flex-col group hover:border-primary/20 transition-all">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Announcement-to-Task Helper</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Turn course announcements into clear action items so nothing important slips through.</p>
+</div>
+<div class="bg-background rounded-xl p-4 border border-outline-variant/20 flex flex-col gap-3">
+<div class="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/10 text-[13px] relative">
+<div class="flex justify-between mb-1">
+<span class="font-bold text-primary">Chemistry 101 Announcement</span>
+<span class="text-outline">Today</span>
+</div>
+<p class="text-on-surface-variant">Lab report is due next Friday. Please include all graphs and analysis.</p>
+<div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="arrow_downward">arrow_downward</span>
+</div>
+</div>
+<div class="mt-4 bg-primary/5 p-3 rounded-lg border border-primary/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="check_circle" data-weight="fill">check_circle</span>
+<div>
+<p class="font-bold text-[13px]">Created Task: Lab Report</p>
+<p class="text-[11px] text-on-surface-variant">Due: May 10 • Chemistry 101</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="edit">edit</span>
+</div>
+</div>
+</div>
+<!-- 4. Study Plan Suggestions (Vertical Card) -->
+<div class="md:col-span-3 bg-surface-container-lowest rounded-xl p-stack-lg feature-card-shadow border border-outline-variant/10 flex flex-col group hover:border-primary/20 transition-all">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-4">
+<div class="p-2 bg-tertiary/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary" data-icon="menu_book">menu_book</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Study Plan</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Personalized suggestions based on workload.</p>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded border border-outline"></div>
+<span class="text-[13px]">Review Notes</span>
+</div>
+<span class="text-[11px] text-outline">45 min</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded border border-outline"></div>
+<span class="text-[13px]">Practice Problems</span>
+</div>
+<span class="text-[11px] text-outline">60 min</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded border border-outline"></div>
+<span class="text-[13px]">Watch Lecture</span>
+</div>
+<span class="text-[11px] text-outline">30 min</span>
+</div>
+<div class="pt-2 text-center">
+<button class="text-[12px] font-bold text-primary hover:underline">View full plan</button>
+</div>
+</div>
+</div>
+<!-- 5. Email Drafts (Compact Card) -->
+<div class="md:col-span-3 bg-surface-container-lowest rounded-xl p-stack-lg feature-card-shadow border border-outline-variant/10 flex flex-col group hover:border-primary/20 transition-all">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-4">
+<div class="p-2 bg-error/10 rounded-lg">
+<span class="material-symbols-outlined text-error" data-icon="mail">mail</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Email Drafts</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Draft clear, respectful emails quickly.</p>
+</div>
+<div class="mt-auto bg-surface-container-low rounded-lg p-3 border border-outline-variant/20">
+<div class="border-b border-outline-variant/30 pb-2 mb-2">
+<div class="flex gap-2 items-center mb-1">
+<span class="text-[10px] text-outline">To:</span>
+<span class="text-[10px] bg-surface-container-high px-1 rounded">prof.johnson@...</span>
+</div>
+<div class="flex gap-2 items-center">
+<span class="text-[10px] text-outline">Subj:</span>
+<span class="text-[10px]">Question about Lab...</span>
+</div>
+</div>
+<p class="text-[10px] leading-tight text-on-surface-variant line-clamp-3">
+                        Hi Professor Johnson, I hope you're doing well. I had a question about the Lab Report requirements...
+                    </p>
+<button class="mt-3 w-full bg-primary text-on-primary py-1.5 rounded-lg text-[11px] font-bold">Draft with AI</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-stack-lg px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto">
+<div>
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed mb-4">DegreePilot AI</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your AI-powered academic command center.</p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md mb-2">Product</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="features.html">Features</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="how-it-works.html">How It Works</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="for-students.html">For Students</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md mb-2">Support</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Help Center</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Blog</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Guides</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md mb-2">Company</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">About Us</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-6 border-t border-outline-variant/10 text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 DegreePilot AI. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

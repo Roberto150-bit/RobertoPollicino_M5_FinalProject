@@ -10,7 +10,7 @@
   var SESSION_KEY = "dp_authenticated";
 
   if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(SESSION_KEY) !== "true") {
-    window.location.href = "index.html";
+    window.location.href = "signin.html";
     return;
   }
 
@@ -758,7 +758,7 @@
   function bindForms() {
     document.getElementById("btn-logout").addEventListener("click", function () {
       sessionStorage.removeItem(SESSION_KEY);
-      window.location.href = "index.html";
+      window.location.href = "signin.html";
     });
 
     document.getElementById("btn-reset-demo").addEventListener("click", function () {

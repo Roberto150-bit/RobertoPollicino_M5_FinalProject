@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="DegreePilot AI for students — organize deadlines, grades, and study plans in one prototype dashboard." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="for-students.html" />
+<title>For Students | DegreePilot AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#f8f7ff",
+                        "background": "#f9f9fc",
+                        "on-surface": "#1a1c1e",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-low": "#f3f3f6",
+                        "error": "#ba1a1a",
+                        "outline": "#727687",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "inverse-surface": "#2f3133",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#002108",
+                        "tertiary": "#535a61",
+                        "outline-variant": "#c2c6d8",
+                        "surface-container-high": "#e8e8ea",
+                        "surface": "#f9f9fc",
+                        "on-background": "#1a1c1e",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#424656",
+                        "tertiary-container": "#6c737a",
+                        "secondary-fixed-dim": "#3ce36a",
+                        "primary": "#0050cb",
+                        "tertiary-fixed": "#dce3eb",
+                        "secondary-container": "#5cfd80",
+                        "on-secondary-container": "#00732c",
+                        "surface-container": "#eeeef0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#0066ff",
+                        "surface-dim": "#dadadc",
+                        "secondary-fixed": "#69ff87",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-tint": "#0054d6",
+                        "on-secondary-fixed-variant": "#00531e",
+                        "on-tertiary-container": "#f4f9ff",
+                        "on-primary-fixed": "#001849",
+                        "on-tertiary-fixed": "#151c22",
+                        "primary-fixed": "#dae1ff",
+                        "secondary": "#006e2a",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9fc",
+                        "on-primary-fixed-variant": "#003fa4",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "inverse-primary": "#b3c5ff",
+                        "surface-container-highest": "#e2e2e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px",
+                        "stack-sm": "8px",
+                        "section-padding": "80px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Hanken Grotesk"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #f9f9fc; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .card-shadow { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-gutter py-4 flex justify-between items-center">
+<a href="home.html" class="flex items-center gap-2 no-underline text-inherit">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="text-white font-bold text-lg">Dp</span>
+</div>
+<span class="text-headline-md font-headline-md font-extrabold text-on-surface">DegreePilot AI</span>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors no-underline" href="features.html">Features</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors no-underline" href="how-it-works.html">How It Works</a>
+<a class="text-primary font-bold font-label-md text-label-md border-b-2 border-primary no-underline" href="for-students.html">For Students</a>
+</nav>
+<div class="flex items-center gap-4">
+<a href="signin.html" class="hidden md:block text-on-surface-variant font-label-md text-label-md px-4 py-2 hover:bg-surface-container-low rounded-xl transition-all no-underline">Sign in</a>
+<a href="signin.html" class="bg-primary text-white font-label-md text-label-md px-6 py-2.5 rounded-xl hover:shadow-lg transition-all active:scale-95 no-underline inline-flex items-center">Get Started</a>
+</div>
+</div>
+</header>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-gutter py-section-padding flex flex-col md:flex-row items-center gap-16">
+<div class="flex-1 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-container/10 text-primary-container rounded-full">
+<span class="material-symbols-outlined text-sm" data-weight="fill">favorite</span>
+<span class="font-label-md text-label-md">Built for real student life</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight">
+                    Made for students who <span class="text-secondary">juggle a lot.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    DegreePilot AI helps you stay organized across classes, deadlines, work, and everything else on your plate—so you can focus on what matters most: your goals.
+                </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="bg-primary text-white font-label-md text-label-md px-8 py-4 rounded-xl hover:shadow-xl transition-all">Get Started — It's Free</button>
+<button class="border border-outline-variant text-primary font-label-md text-label-md px-8 py-4 rounded-xl hover:bg-surface-container-low transition-all">Try Demo</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12 border-t border-outline-variant/30">
+<div class="space-y-2">
+<span class="material-symbols-outlined text-secondary">all_inbox</span>
+<p class="font-label-md text-label-md text-on-surface-variant">All your classes, in one place</p>
+</div>
+<div class="space-y-2">
+<span class="material-symbols-outlined text-secondary">lightbulb</span>
+<p class="font-label-md text-label-md text-on-surface-variant">AI-powered insights you can act on</p>
+</div>
+<div class="space-y-2">
+<span class="material-symbols-outlined text-secondary">lock</span>
+<p class="font-label-md text-label-md text-on-surface-variant">Private &amp; secure by design</p>
+</div>
+<div class="space-y-2">
+<span class="material-symbols-outlined text-secondary">school</span>
+<p class="font-label-md text-label-md text-on-surface-variant">Built for students, not corporate tools</p>
+</div>
+</div>
+</div>
+<div class="flex-1 relative">
+<div class="relative z-10 card-shadow rounded-[32px] overflow-hidden bg-white p-4">
+<img alt="DegreePilot Dashboard Interface" class="w-full h-auto rounded-2xl" data-alt="A high-fidelity digital rendering of a modern educational dashboard displayed on a sleek laptop screen. The interface features vibrant progress rings in green, clear task lists with colorful icons, and a clean white aesthetic. Surrounding the laptop are physical student items like a stack of blue and yellow textbooks and a organized paper calendar. The lighting is bright and airy, reflecting a productive and professional light-mode student workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBliHXKkdaKYZwF9IPjdMvZVXc0TNbDaj67f8BDAKdEMRTvvy1suKZTwglQQKMSuiS1TQM6jLGpde_gkBE3VjQIznTG0uDzC6tkgc2TVEh0bkskPvMEfB6A6nqvZx5RBuizguoTvLM-ZITHTIKrlZ76AnOnsHVz7j2jIchRT_NbgwfFi-J_AQXp5n2LMi8v-AkdMjLIsT-VEbCHD3zWYmNGFKZGm5ykWPi2qF-dedbsByTqMS4ULUK8ZddU9KhEjNHN73_o0k3V1YA"/>
+</div>
+<!-- Abstract blobs for depth -->
+<div class="absolute -top-10 -right-10 w-64 h-64 bg-secondary-container/20 blur-3xl rounded-full -z-10"></div>
+<div class="absolute -bottom-10 -left-10 w-80 h-80 bg-primary-container/10 blur-3xl rounded-full -z-10"></div>
+</div>
+</section>
+<!-- Daily Struggles Section -->
+<section class="bg-surface-container-lowest py-section-padding">
+<div class="max-w-container-max mx-auto px-gutter text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">The daily struggles are real.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">You're not alone. Here's what students tell us they deal with every week.</p>
+</div>
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="bg-white p-8 rounded-[24px] card-shadow space-y-4 hover:-translate-y-1 transition-transform">
+<div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">calendar_month</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Staying on top of deadlines</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">It's easy to lose track of due dates, especially with multiple classes and activities.</p>
+</div>
+<div class="bg-white p-8 rounded-[24px] card-shadow space-y-4 hover:-translate-y-1 transition-transform">
+<div class="w-12 h-12 bg-secondary-container/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-3xl">menu_book</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Managing multiple courses</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Juggling lectures, assignments, and exams across different subjects gets overwhelming.</p>
+</div>
+<div class="bg-white p-8 rounded-[24px] card-shadow space-y-4 hover:-translate-y-1 transition-transform">
+<div class="w-12 h-12 bg-on-tertiary-container/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl">bar_chart</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Understanding grades</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">It's hard to know how you're doing and what to focus on to improve.</p>
+</div>
+<div class="bg-white p-8 rounded-[24px] card-shadow space-y-4 hover:-translate-y-1 transition-transform">
+<div class="w-12 h-12 bg-error-container/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-3xl">mail</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Reaching out to professors</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Writing clear emails and knowing when to follow up can feel intimidating.</p>
+</div>
+</div>
+</section>
+<!-- Who It Helps (Personas) -->
+<section class="py-section-padding">
+<div class="max-w-container-max mx-auto px-gutter text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">Who it helps</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">DegreePilot AI is built for students from all walks of life.</p>
+</div>
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- First-Year -->
+<div class="flex flex-col h-full bg-white rounded-[32px] overflow-hidden card-shadow group">
+<div class="h-64 bg-primary/5 overflow-hidden">
+<img alt="Student studying in library" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A friendly, diverse first-year student wearing a casual hoodie, sitting in a modern University library filled with soft, warm sunlight. They are looking at a laptop with a focused yet confident expression. The environment is organized and clean, featuring light wood textures and soft blue accents, representing a fresh start in academic life with a calm and professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn9_i0ed1SwLjnEOrFpiCtIlWpq7VN6A0frAlFwqkOMEdP0VWpa0X0FZrmwhoBz-3_EAFX9_YB7htVKRw7tbHIXkV1o-bcg5oLrZ9xTtswBQvCrtfRAZ4DV-vUPDwpGz33Xs66Xipn0XOXkExrkaLfV5mf4UYhuKSV-YV_LmGQLB5mjySADdCq5R9v91Y_cLtIHfbiYSXxZtwnyYir7VmVKwXYEY1-Kr60lYNdwH3TGnqkowBWCbbBFS5jiswakwUt8EkC0fkOU5WE"/>
+</div>
+<div class="p-8 space-y-4">
+<div class="w-10 h-10 bg-primary-container text-white rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h4 class="font-headline-md text-headline-md">First-Year Students</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Get a strong start with structure, reminders, and confidence as you adjust.</p>
+</div>
+</div>
+<!-- Busy Working -->
+<div class="flex flex-col h-full bg-white rounded-[32px] overflow-hidden card-shadow group">
+<div class="h-64 bg-secondary/5 overflow-hidden">
+<img alt="Student working at a desk" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A focused young professional woman balancing work and studies, sitting at a clean desk in a modern home office with a city view. She has a laptop and a notepad open, illuminated by cool morning light. The scene is professional and organized, using a palette of whites and soft greens to symbolize productivity and successful time management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE_J_tqMiSSpq3ox-suLIa105MgYyUguvM_LewEV8ScYJaK2rZcNcet8YrmUwE4ZpFDdXNjlBjjgBIC18l36Ea62LBHFofGKhHNDBrLSiYqH0AAD9_y7Wzi5hNUEEYRe4EKH2J1tYg0kg2knVfMznSI0c7ZDM2dA34dErdFDX4ILBPy6FHZ3kMl9Ys1zxwFhxJwYq8-2inseCmp-eA_QlSHHDFisr9lIMJaxmAsU_px4oOqW6cKyP6yfqh4fv4JDyYJkJYS2-6nBir"/>
+</div>
+<div class="p-8 space-y-4">
+<div class="w-10 h-10 bg-secondary text-white rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">work</span>
+</div>
+<h4 class="font-headline-md text-headline-md">Busy Working Students</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Balance classes, work, and life with smarter planning and fewer surprises.</p>
+</div>
+</div>
+<!-- Commuters -->
+<div class="flex flex-col h-full bg-white rounded-[32px] overflow-hidden card-shadow group">
+<div class="h-64 bg-tertiary/5 overflow-hidden">
+<img alt="Student on public transit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A student wearing noise-canceling headphones sitting on a clean, modern train or bus, focused on their smartphone. Soft morning light filters through the window. The style is cinematic and calm, emphasizing the ability to manage tasks on the go with a professional, mobile-friendly interface visible on the screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc3JsmYKul_Oo5lJfM0HWzhrrIV2DtQILUijnB0Q8F11qmScdncCeGZkJKfG2IjwQcZSTThAPNadk-fqc13w-XTx8Wd3UOce6oiigzSwLPc51F7f1D2m82qw8AouFlL02qKLvedYMby6u5I3oiiaRLuMFYq8qeBJOIIcRmjhCnkMoXh73dXLxUQsrPLoPGsJ5M1n8IZ7Gu09BelCWgGOxhYPhOmF_FLfFt4imMKCPAp4-Io9LytyD0PbSSqLwJQOLOlk7Bgq_w1C82"/>
+</div>
+<div class="p-8 space-y-4">
+<div class="w-10 h-10 bg-tertiary text-white rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">directions_bus</span>
+</div>
+<h4 class="font-headline-md text-headline-md">Commuters</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Make the most of your time on the go with mobile-friendly tools that keep you in sync.</p>
+</div>
+</div>
+<!-- Goal-Focused -->
+<div class="flex flex-col h-full bg-white rounded-[32px] overflow-hidden card-shadow group">
+<div class="h-64 bg-error-container/5 overflow-hidden">
+<img alt="Student checking off goals" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An ambitious student looking determined while marking off a goal on a digital tablet in a bright, modern cafe setting. The lighting is energetic and inspiring. The overall aesthetic is focused and professional, with clean lines and a high-contrast palette that highlights achievements and progress tracking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNFxCA5AQng7-cpgDBz3gEhrWs_50P4QYn2jCN8gGtisZo3K6NqvV9HgSeLBvs0HG68oKoBxu53_TbkuAE57uPbfpuJoYEbBZYQhemPY8Y6OewtVWbENHzQCCAuwz-tsCt3wKwfoSvHFxWrCcdYnGpTu1UjU13tGgrc_QXk3bvSgv61qRDbmi3erFnGJ6IraeEb2PxAF0t8d_MHPiy4NbiQXWqzy8LrSHad__k5REJs8hTgORHiAXL81c9IG2HGnsQ382vmoS8-Hwp"/>
+</div>
+<div class="p-8 space-y-4">
+<div class="w-10 h-10 bg-on-tertiary-container text-white rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">target</span>
+</div>
+<h4 class="font-headline-md text-headline-md">Goal-Focused Students</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Stay organized, track progress, and build habits that move you toward your goals.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Summary Bento Grid -->
+<section class="bg-surface-container-low py-section-padding">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">What you can do with DegreePilot AI</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Tools that make a real difference—so you can focus on learning and living.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white p-8 rounded-[24px] space-y-4 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-4xl">schedule</span>
+<h4 class="font-headline-md text-headline-md">Plan your study time</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Smart schedules and time blocks help you stay ahead without the stress.</p>
+</div>
+<div class="bg-white p-8 rounded-[24px] space-y-4 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-4xl">checklist</span>
+<h4 class="font-headline-md text-headline-md">Track assignments</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Never miss a due date with clear task lists and helpful reminders.</p>
+</div>
+<div class="bg-white p-8 rounded-[24px] space-y-4 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-4xl">notifications_active</span>
+<h4 class="font-headline-md text-headline-md">Organize announcements</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Keep all important updates in one place so you're always in the loop.</p>
+</div>
+<div class="bg-white p-8 rounded-[24px] space-y-4 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-4xl">verified_user</span>
+<h4 class="font-headline-md text-headline-md">Build confidence</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Know what to focus on and see your progress over time—one win at a time.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-section-padding">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">What students are saying</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Real students. Real results.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="bg-white p-8 rounded-[32px] card-shadow space-y-6">
+<div class="flex gap-1 text-secondary">
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+</div>
+<p class="font-body-md text-body-md italic text-on-surface">"DegreePilot AI keeps me so organized. I finally feel in control of my assignments and deadlines."</p>
+<div class="flex items-center gap-4 pt-4 border-t border-outline-variant/20">
+<img alt="Student Maya" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuqA_IrlvvoqDKMLxXUVIVF_QqBzK5pV_GNuwX3M6i1iwcaMUDHdTIEOStZZysScGxmtDpFyAeRC1b9SyarKwlcXmaJ-Uul5apnVRtCY8kxFcl1DCzux3wfTO10BDUlBhSpU7pjm4b5HXoUNVBPdKHoAfl_LPSROiZINV75NQSiBff1tv3I-mRyvrT7UZvEAZlkdao64RTRqDZz9XL8ekIFI3-nGkwOip8wkeEMVf8ctLTlByNH1_eV_UtN952DyD_f78KI7ywc0UC"/>
+<div>
+<h5 class="font-label-md text-label-md">Maya R.</h5>
+<p class="text-[12px] text-on-surface-variant">Sophomore, Nursing</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-white p-8 rounded-[32px] card-shadow border-2 border-primary/10 space-y-6">
+<div class="flex gap-1 text-secondary">
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+</div>
+<p class="font-body-md text-body-md italic text-on-surface">"The dashboard shows me exactly what I need to focus on. It's like having a personal assistant for school."</p>
+<div class="flex items-center gap-4 pt-4 border-t border-outline-variant/20">
+<img alt="Student Ethan" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP-Kc233jLA_BTCrNhMZ_DCGRMR8EbWsxY5Jp-DnU7jjY-Ei5JfD7aveaKyzkax9iURTQLh-0lZ2SUd7Cat1EDz3v5PfmRTrhWLL6KeZhSgkoVR0X0sgKZ3ktjPVcrF9dOE0KxQxyFNLvMgFs45PfxHrEZIeY-fpFIuTgJaY9rmVgRjPrtJw33vWL4IGvJRH0x-ZGVl9ugiGWMy4d7TVPsTcKt6aMO1Vzp4K8LfPrtqZiooWyi590UsSYJiqE30tGT00kR1jCokchg"/>
+<div>
+<h5 class="font-label-md text-label-md">Ethan L.</h5>
+<p class="text-[12px] text-on-surface-variant">Junior, Computer Science</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-white p-8 rounded-[32px] card-shadow space-y-6">
+<div class="flex gap-1 text-secondary">
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+</div>
+<p class="font-body-md text-body-md italic text-on-surface">"I love how easy it is to stay on top of everything—even with work and classes."</p>
+<div class="flex items-center gap-4 pt-4 border-t border-outline-variant/20">
+<img alt="Student Jasmine" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZgrk9Ica2sCD0yrhCAzEwa3RYXpmCzeFnFIXYCTz64VlQmwVF65d1jkyJ8sItaPzn3JyN_9HFW9TzFnX9FKOb9C2un4sEnYkfjfr_yhopzCynx-02zG1xPgFHtwx32OjeiWddjGAqkQtlJcisnlES2GZZicpqv1VzWeK4le3o4YJ7RxDVK-GJ3e0GWd1CFQTZQJrNkw_I8ZJCEx-Z7kKDiGqdJiJP5Jwyx89Zx-aMtsSmVrdc7hZwDiErnAAImj4i7goN3rwGFY1G"/>
+<div>
+<h5 class="font-label-md text-label-md">Jasmine K.</h5>
+<p class="text-[12px] text-on-surface-variant">Senior, Business</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="max-w-container-max mx-auto px-gutter mb-20">
+<div class="bg-primary rounded-[40px] p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 text-white relative overflow-hidden">
+<!-- Decorative element -->
+<div class="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-12 transform origin-top-right"></div>
+<div class="flex-1 space-y-6 relative z-10">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-lg lg:text-display-lg leading-tight">Smarter organization.<br/>Less stress. Better results.</h2>
+<p class="font-body-lg text-body-lg opacity-90">Create your free account and see the difference.</p>
+</div>
+<div class="flex-1 w-full max-w-md bg-white rounded-[32px] p-8 text-on-surface relative z-10">
+<h3 class="font-headline-md text-headline-md mb-6">Create your free account</h3>
+<div class="space-y-4">
+<div>
+<input class="w-full px-4 py-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Enter your school email" type="email"/>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary text-white font-label-md text-label-md py-4 rounded-xl hover:shadow-lg transition-all">Get Started — It's Free</button>
+<button class="w-full text-primary font-label-md text-label-md py-2 hover:underline">Try Demo Instead</button>
+</div>
+<div class="space-y-2 pt-4 border-t border-outline-variant/10">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-sm" data-weight="fill">check_circle</span>
+<span class="text-label-md">Free forever</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-sm" data-weight="fill">check_circle</span>
+<span class="text-label-md">No credit card required</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-sm" data-weight="fill">check_circle</span>
+<span class="text-label-md">Set up in under a minute</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-surface border-t border-outline-variant/30 py-section-padding">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-stack-lg">
+<div class="space-y-6">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="text-white font-bold text-lg">Dp</span>
+</div>
+<span class="text-headline-md font-headline-md font-extrabold text-on-surface">DegreePilot AI</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Your AI-powered academic command center.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">language</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+</div>
+</div>
+<div class="space-y-4">
+<h6 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Product</h6>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Features</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">How It Works</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">For Students</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Resources</h6>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Help Center</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Blog</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Guides</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Company</h6>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">About Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-all" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter mt-16 pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-md text-label-md text-on-surface-variant">© 2024 DegreePilot AI. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

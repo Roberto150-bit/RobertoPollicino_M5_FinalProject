@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Sign in to DegreePilot AI to open your academic dashboard (browser-only prototype)." />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="signin.html" />
+<title>Sign In - DegreePilot AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#f8f7ff",
+                        "background": "#f9f9fc",
+                        "on-surface": "#1a1c1e",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-low": "#f3f3f6",
+                        "error": "#ba1a1a",
+                        "outline": "#727687",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "inverse-surface": "#2f3133",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#002108",
+                        "tertiary": "#535a61",
+                        "outline-variant": "#c2c6d8",
+                        "surface-container-high": "#e8e8ea",
+                        "surface": "#f9f9fc",
+                        "on-background": "#1a1c1e",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#424656",
+                        "tertiary-container": "#6c737a",
+                        "secondary-fixed-dim": "#3ce36a",
+                        "primary": "#0050cb",
+                        "tertiary-fixed": "#dce3eb",
+                        "secondary-container": "#5cfd80",
+                        "on-secondary-container": "#00732c",
+                        "surface-container": "#eeeef0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#0066ff",
+                        "surface-dim": "#dadadc",
+                        "secondary-fixed": "#69ff87",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-tint": "#0054d6",
+                        "on-secondary-fixed-variant": "#00531e",
+                        "on-tertiary-container": "#f4f9ff",
+                        "on-primary-fixed": "#001849",
+                        "on-tertiary-fixed": "#151c22",
+                        "primary-fixed": "#dae1ff",
+                        "secondary": "#006e2a",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9fc",
+                        "on-primary-fixed-variant": "#003fa4",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "inverse-primary": "#b3c5ff",
+                        "surface-container-highest": "#e2e2e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px",
+                        "stack-sm": "8px",
+                        "section-padding": "80px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Hanken Grotesk"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-bg-gradient {
+            background: radial-gradient(circle at 80% 20%, rgba(0, 84, 214, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 10% 80%, rgba(0, 84, 214, 0.03) 0%, transparent 40%);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 dark:border-outline/20">
+<div class="max-w-container-max mx-auto px-gutter py-4 flex justify-between items-center">
+<a href="home.html" class="flex items-center gap-2 no-underline text-inherit">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<span class="text-headline-md font-headline-md font-extrabold text-on-surface dark:text-on-surface-variant">DegreePilot AI</span>
+</a>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors font-label-md text-label-md no-underline" href="features.html">Features</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors font-label-md text-label-md no-underline" href="how-it-works.html">How It Works</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors font-label-md text-label-md no-underline" href="for-students.html">For Students</a>
+</nav>
+<div class="flex items-center gap-4">
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary font-label-md text-label-md px-2 py-1 no-underline" href="signin.html">Sign in</a>
+<a href="signin.html" class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2 rounded-full font-label-md text-label-md transition-all active:scale-[0.98] no-underline inline-flex items-center">Get Started</a>
+</div>
+</div>
+</header>
+<main class="pt-[72px] hero-bg-gradient">
+<!-- Hero / Sign In Section -->
+<section class="max-w-container-max mx-auto px-gutter py-section-padding grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
+<div class="space-y-stack-md order-2 lg:order-1">
+<div class="inline-flex items-center gap-2 bg-primary-fixed px-4 py-1.5 rounded-full text-on-primary-fixed font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+                    Welcome back
+                </div>
+<h1 class="font-display-lg text-display-lg text-on-surface leading-tight">
+                    Sign in and pick up <br class="hidden md:block"/> where you left off
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                    Access your personalized dashboard, tasks, progress, and everything you need to stay organized and succeed this semester.
+                </p>
+<ul class="space-y-stack-sm pt-4">
+<li class="flex items-center gap-3 text-on-surface-variant font-label-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Demo data stays in this browser until you clear it
+                    </li>
+<li class="flex items-center gap-3 text-on-surface-variant font-label-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Pick up right where you left off
+                    </li>
+<li class="flex items-center gap-3 text-on-surface-variant font-label-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Stay organized and on track
+                    </li>
+</ul>
+</div>
+<!-- Sign In Card -->
+<div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+<div class="w-full max-w-[480px] bg-surface-container-lowest rounded-[32px] p-10 shadow-[0px_4px_40px_rgba(0,0,0,0.06)] border border-outline-variant/20">
+<h2 class="font-headline-md text-headline-md text-center mb-8">Sign in to your account</h2>
+<form id="login-form" class="space-y-6" novalidate>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant px-1" for="username">Username</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">person</span>
+<input id="username" name="username" autocomplete="username" class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-outline-variant bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline/60" placeholder="Enter your username" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant px-1" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
+<input id="password" name="password" autocomplete="current-password" class="w-full pl-12 pr-12 py-3.5 rounded-xl border border-outline-variant bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline/60" placeholder="Enter your password" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline" type="button" aria-label="Toggle password visibility (visual only)">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<p id="login-error" class="text-red-600 text-center text-sm font-semibold" role="alert" hidden></p>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary py-4 rounded-xl font-headline-md text-[18px] transition-all shadow-lg shadow-primary/20 active:scale-[0.98]" type="submit">
+                            Sign in
+                        </button>
+<div class="text-center pt-2">
+<button type="button" id="btn-forgot" class="text-primary font-label-md hover:underline underline-offset-4 transition-all bg-transparent border-none cursor-pointer">Forgot password?</button>
+</div>
+<p id="forgot-msg" class="text-center text-sm text-on-surface-variant" role="status" hidden></p>
+</form>
+</div>
+</div>
+</section>
+<!-- Feature Summary Section -->
+<section class="max-w-container-max mx-auto px-gutter py-section-padding">
+<div class="text-center mb-16 space-y-2">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Everything you can access after signing in</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Your all-in-one academic command center.</p>
+</div>
+<!-- Feature Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+<!-- Dashboard -->
+<div class="bg-surface-container-lowest p-8 rounded-[24px] shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-outline-variant/10 hover:shadow-xl transition-all group">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-[28px]">dashboard</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-3">Dashboard Overview</h3>
+<p class="text-on-surface-variant text-body-md">See your courses, current grades, upcoming deadlines, and overall progress at a glance.</p>
+</div>
+<!-- Tasks -->
+<div class="bg-surface-container-lowest p-8 rounded-[24px] shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-outline-variant/10 hover:shadow-xl transition-all group">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-[28px]">calendar_today</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-3">Tasks &amp; Deadlines</h3>
+<p class="text-on-surface-variant text-body-md">Stay on top of assignments, quizzes, and exams with smart reminders and priority indicators.</p>
+</div>
+<!-- Grade Insights -->
+<div class="bg-surface-container-lowest p-8 rounded-[24px] shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-outline-variant/10 hover:shadow-xl transition-all group">
+<div class="w-12 h-12 rounded-xl bg-[#e3f2fd] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[#1976d2] text-[28px]">monitoring</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-3">Grade Insights</h3>
+<p class="text-on-surface-variant text-body-md">Track your performance, spot trends, and identify areas to focus on for better results.</p>
+</div>
+<!-- Study Plan -->
+<div class="bg-surface-container-lowest p-8 rounded-[24px] shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-outline-variant/10 hover:shadow-xl transition-all group">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-primary-fixed-variant text-[28px]">menu_book</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-3">Study Plan</h3>
+<p class="text-on-surface-variant text-body-md">Get personalized study plans and suggestions tailored to your goals and course load.</p>
+</div>
+</div>
+<!-- Small Badge Feature Row -->
+<div class="mt-stack-lg grid grid-cols-1 md:grid-cols-3 gap-stack-md">
+<div class="flex items-center gap-4 bg-surface-container-low px-8 py-6 rounded-2xl border border-outline-variant/20">
+<span class="material-symbols-outlined text-secondary p-2 bg-secondary-container/20 rounded-full">verified</span>
+<div>
+<p class="font-label-md text-on-surface">Secure &amp; private</p>
+<p class="text-body-md text-on-surface-variant text-[14px]">Your data is encrypted and never shared.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low px-8 py-6 rounded-2xl border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary p-2 bg-primary-container/10 rounded-full">bolt</span>
+<div>
+<p class="font-label-md text-on-surface">Quick &amp; easy</p>
+<p class="text-body-md text-on-surface-variant text-[14px]">Sign in in seconds and get back to learning.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low px-8 py-6 rounded-2xl border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-fixed-variant p-2 bg-primary-fixed/30 rounded-full">school</span>
+<div>
+<p class="font-label-md text-on-surface">Built for students</p>
+<p class="text-body-md text-on-surface-variant text-[14px]">Designed to help you stay organized and succeed.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Preview/Detail Section -->
+<section class="max-w-container-max mx-auto px-gutter py-section-padding">
+<div class="bg-surface-container-lowest rounded-[40px] p-8 lg:p-16 border border-outline-variant/20 shadow-sm flex flex-col lg:flex-row items-center gap-16 relative overflow-hidden">
+<!-- Abstract visual element -->
+<div class="absolute -right-20 top-20 w-[400px] h-[400px] border border-primary/5 rounded-full"></div>
+<div class="w-full lg:w-1/2 relative z-10">
+<img class="w-full rounded-3xl shadow-2xl border border-outline-variant/30" data-alt="A clean and modern web dashboard interface for DegreePilot AI showing a student overview. The UI features a left navigation bar, a top profile header, and multiple information cards displaying active courses, pending tasks, current grades, and a visual progress bar. The aesthetic is light and professional with soft blue accents and plenty of white space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDavexUdpzFKy2bR603qRAuKeqXDmO6MC7Jxy2qqo8tE8oX-gmLeC6C7VmkGWfSED_lBSuCFo4R1TuMHjO9lebXlXoTnISwXC6v3dqHTfUiLVVlV2OJRBdGs5guUbWLQ_td-wkPEdpkWd7YxaRAtyPB5tha7p7sGWnTzX9Vug-w0FTSXtXFqwCyXgPlNBgmDC1rD7rO7UJ3aBIevuvVUIIbakm2vRsEo3sSiUn_cmfTiERzGEnBE3-o7W1s7J3ys6bFDCNCK4SjDm6s"/>
+</div>
+<div class="w-full lg:w-1/2 space-y-6 relative z-10">
+<div class="inline-flex items-center gap-2 bg-primary/10 px-4 py-1.5 rounded-full text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                        Why sign in?
+                    </div>
+<h2 class="font-headline-lg text-headline-lg">Your success, <br/> all in one place</h2>
+<p class="text-body-lg text-on-surface-variant">DegreePilot AI brings everything you need to stay organized and achieve your goals into a single, intelligent dashboard.</p>
+<ul class="space-y-4">
+<li class="flex items-center gap-4">
+<span class="w-6 h-6 bg-secondary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+<span class="font-label-md text-on-surface-variant">See what matters most, instantly</span>
+</li>
+<li class="flex items-center gap-4">
+<span class="w-6 h-6 bg-secondary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+<span class="font-label-md text-on-surface-variant">Smart tools that save you time</span>
+</li>
+<li class="flex items-center gap-4">
+<span class="w-6 h-6 bg-secondary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+<span class="font-label-md text-on-surface-variant">Focus more on learning, less on planning</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- New Here Card -->
+<section class="max-w-container-max mx-auto px-gutter py-section-padding">
+<div class="bg-surface-container-low rounded-[32px] p-10 flex flex-col md:flex-row items-center justify-between gap-8 border border-outline-variant/10">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="w-24 h-24 bg-surface-container-lowest rounded-2xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary text-[48px]">person_add</span>
+</div>
+<div class="text-center md:text-left">
+<p class="text-primary font-label-md mb-1">New here?</p>
+<h2 class="font-headline-md text-headline-md">Get started for free</h2>
+<p class="text-on-surface-variant text-body-md mt-1">Create your free account in seconds and take control of your semester.</p>
+</div>
+</div>
+<div class="text-center space-y-2">
+<button class="bg-primary hover:bg-primary-container text-on-primary px-8 py-4 rounded-xl font-label-md flex items-center gap-3 group">
+                        Get Started Free — It's Free
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<p class="text-outline text-[12px] font-label-md">No credit card required</p>
+</div>
+</div>
+</section>
+<!-- Call to Action Banner -->
+<section class="bg-[#007b8a] py-16 mt-section-padding overflow-hidden relative">
+<!-- Decorative circle -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full"></div>
+<div class="max-w-container-max mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+<div class="text-white">
+<h2 class="font-headline-lg text-headline-lg mb-2">Start your semester with more clarity.</h2>
+<p class="text-white/80 font-body-lg">Less stress. More focus. Better results.</p>
+</div>
+<div class="flex items-center gap-6">
+<button class="bg-white text-[#007b8a] px-8 py-4 rounded-xl font-label-md flex items-center gap-3 hover:bg-white/90 transition-all shadow-lg">
+                        Get Started — It's Free
+                        <span class="material-symbols-outlined text-[#007b8a]">arrow_forward</span>
+</button>
+<div class="hidden lg:block">
+<span class="material-symbols-outlined text-white/40 text-[64px]">school</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-surface-container-lowest border-t border-outline-variant/30 dark:border-outline/20">
+<div class="max-w-container-max mx-auto px-gutter py-section-padding grid grid-cols-1 md:grid-cols-4 gap-stack-lg">
+<div class="space-y-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<span class="text-headline-md font-headline-md font-extrabold text-on-surface dark:text-on-surface-variant">DegreePilot AI</span>
+</div>
+<p class="text-on-surface-variant text-body-md leading-relaxed">Your AI-powered academic command center. Helping students manage courses, tasks, and grades with ease.</p>
+<div class="flex gap-4 pt-4">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">alternate_email</span>
+</a>
+</div>
+</div>
+<div class="md:pl-10">
+<h4 class="font-label-md text-on-surface mb-6">Product</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="features.html">Features</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="how-it-works.html">How It Works</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="for-students.html">For Students</a></li>
+</ul>
+</div>
+<div class="md:pl-10">
+<h4 class="font-label-md text-on-surface mb-6">Resources</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Help Center</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Blog</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Guides</a></li>
+</ul>
+</div>
+<div class="md:pl-10">
+<h4 class="font-label-md text-on-surface mb-6">Company</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">About Us</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors hover:underline decoration-primary underline-offset-4 text-body-md" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter py-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-on-surface-variant text-body-md">© 2024 DegreePilot AI. All rights reserved.</p>
+<div class="flex gap-6">
+<span class="text-on-surface-variant text-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">language</span>
+                    English (US)
+                </span>
+</div>
+</div>
+</footer>
+<script src="js/auth.js"></script>
+</body></html>
