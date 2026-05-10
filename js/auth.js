@@ -65,7 +65,7 @@
         });
       }).then(function (h) {
         if (!h.userHash || !h.passHash) {
-          showLoginError("This browser cannot complete sign-in (crypto unavailable). Use “Try demo”.");
+          showLoginError("This browser cannot complete sign-in (crypto unavailable). Try another browser.");
           return;
         }
         if (h.userHash === EXPECTED_USER_SHA256 && h.passHash === EXPECTED_PASS_SHA256) {

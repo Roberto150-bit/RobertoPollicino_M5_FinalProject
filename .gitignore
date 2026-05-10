@@ -1,3 +1,7 @@
 # Local Stitch export (design reference — site HTML is committed separately)
 stitch_integrated_image_gallery.zip
+dashboard_image.zip
 _stitch_extract/
+
+# Dashboard UI mock PNGs (extract dashboard_image.zip locally — files optional in clone)
+assets/dashboard-ref/*.png
