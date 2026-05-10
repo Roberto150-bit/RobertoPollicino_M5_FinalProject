@@ -20,19 +20,21 @@
 }
 
 .dash-sidebar .sidebar-logo-badge {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  background: var(--dash-accent, #0056d2);
+  background: #fff;
+  border: 1px solid var(--dp-gray-200);
   display: grid;
   place-items: center;
   flex-shrink: 0;
 }
 
 .dash-sidebar .sidebar-logo-badge img {
-  width: 26px;
-  height: 26px;
-  filter: brightness(0) invert(1);
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  filter: none;
 }
 
 .dash-sidebar .sidebar-brand-text {
@@ -375,6 +377,13 @@ body[data-current-view="overview"] .dash-topbar .topbar-title {
   cursor: pointer;
 }
 
+.ov-ai-hero .ov-ai-study-rec {
+  margin: 0.85rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+}
+
 .ov-ai-metric {
   flex: 0 0 auto;
   width: min(140px, 38%);
@@ -453,13 +462,23 @@ body[data-current-view="overview"] .dash-topbar .topbar-title {
   place-items: center;
 }
 
-.ov-today-item {
+button.ov-today-item {
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
   padding: 0.75rem 0.85rem;
   border-radius: 12px;
   margin-bottom: 0.65rem;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.ov-today-item:focus-visible {
+  outline: 2px solid var(--ov-blue);
+  outline-offset: 2px;
 }
 
 .ov-today-item--blue {
@@ -498,6 +517,17 @@ body[data-current-view="overview"] .dash-topbar .topbar-title {
   margin: 0.2rem 0 0;
   font-size: 0.78rem;
   color: var(--dp-gray-500);
+}
+
+.ov-today-desc {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: var(--dp-gray-600);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .ov-btn-schedule {
@@ -701,11 +731,15 @@ body[data-current-view="overview"] .dash-topbar .topbar-title {
 .ov-alerts-head {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.15rem;
   margin-bottom: 0.85rem;
   color: #b91c1c;
   font-weight: 750;
   font-size: 1rem;
+}
+
+.ov-alerts-bang {
+  font-weight: 900;
 }
 
 .ov-alert-card {
@@ -854,6 +888,60 @@ body[data-current-view="overview"] .dash-topbar .topbar-title {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.45rem;
+}
+
+/* Month preview (Overview) */
+.ov-month-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ov-month-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--dp-gray-500);
+  text-align: center;
+}
+
+.ov-month-cells {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.ov-month-cell {
+  border: 1px solid var(--dp-gray-100);
+  border-radius: 10px;
+  min-height: 72px;
+  padding: 0.35rem;
+  background: var(--dp-gray-50);
+  font-size: 0.68rem;
+}
+
+.ov-month-cell.is-muted {
+  opacity: 0.45;
+}
+
+.ov-month-cell.is-today {
+  border-color: rgba(0, 86, 210, 0.45);
+  background: #fff;
+  box-shadow: inset 0 -2px 0 var(--ov-blue);
+}
+
+.ov-month-daynum {
+  font-weight: 750;
+  color: var(--dp-navy);
+  margin-bottom: 0.25rem;
+}
+
+.ov-month-cell .ov-week-chip {
+  margin-bottom: 0.25rem;
+  font-size: 0.6rem;
+  padding: 0.25rem;
 }
 
 @media (max-width: 900px) {

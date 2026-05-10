@@ -127,6 +127,7 @@
     if (!Array.isArray(state.recLetterRequests)) state.recLetterRequests = [];
     if (!Array.isArray(state.fafsaChecklist)) state.fafsaChecklist = blank.fafsaChecklist;
     if (!Array.isArray(state.pendingAiQuestions)) state.pendingAiQuestions = [];
+    if (typeof state.smartNotesText !== "string") state.smartNotesText = blank.smartNotesText || "";
     return state;
   }
 

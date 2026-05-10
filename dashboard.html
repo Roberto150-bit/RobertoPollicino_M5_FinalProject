@@ -15,7 +15,7 @@
   <div class="dash-app">
     <aside class="dash-sidebar" aria-label="Primary">
       <div class="sidebar-brand sidebar-brand--enhanced">
-        <span class="sidebar-logo-badge"><img src="assets/logo-mark.svg" width="28" height="28" alt="" /></span>
+        <span class="sidebar-logo-badge"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></span>
         <div class="sidebar-brand-text">
           <span class="sidebar-brand-title">DegreePilot AI</span>
           <span class="sidebar-brand-sub">Academic Center</span>
@@ -90,9 +90,10 @@
           <h1 class="topbar-title" id="view-title">Overview</h1>
         </div>
         <div class="topbar-right">
-          <label class="search-wrap">
+          <label class="search-wrap dp-search-wrap">
             <span class="sr-only">Search</span>
-            <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, resources…" autocomplete="off" />
+            <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, syllabi, notes…" autocomplete="off" />
+            <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
           </label>
           <div class="dp-notify-wrap">
             <button type="button" class="dp-notify-btn" id="btn-notifications" aria-label="Notifications" aria-expanded="false" aria-haspopup="true">
@@ -143,7 +144,7 @@
                   <button type="button" class="btn-ai-primary" id="btn-ov-study-session">Start Study Session</button>
                   <button type="button" class="btn-ai-ghost" id="btn-ov-ai-details">View Details</button>
                 </div>
-                <p id="ov-study-rec" class="muted" style="margin:0.85rem 0 0;font-size:0.82rem;line-height:1.45;"></p>
+                <p id="ov-study-rec" class="ov-ai-study-rec"></p>
               </div>
               <div class="ov-ai-metric" aria-hidden="true">
                 <div class="ov-ai-metric-val" id="ov-suggested-mins">90</div>
@@ -169,7 +170,6 @@
             <article class="ov-panel-card">
               <div class="ov-panel-head">
                 <h2>Upcoming Deadlines</h2>
-                <button type="button" class="ov-link-quiet" id="ov-deadlines-all">View all</button>
               </div>
               <div id="ov-deadlines"></div>
             </article>
@@ -202,7 +202,7 @@
             </article>
 
             <article class="ov-panel-card ov-alerts-host">
-              <div class="ov-alerts-head"><span aria-hidden="true">!</span> Course Alerts</div>
+              <div class="ov-alerts-head">Course Alerts<span class="ov-alerts-bang" aria-hidden="true">!</span></div>
               <div id="ov-alerts"></div>
             </article>
           </div>

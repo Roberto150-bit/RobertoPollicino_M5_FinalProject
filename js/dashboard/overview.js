@@ -6,6 +6,19 @@
   "use strict";
 
   var weekOffset = 0;
+  var monthPreviewCursor = null;
+
+  function getPreviewMode() {
+    var r = document.querySelector('input[name="ov-week-mode"]:checked');
+    return r && r.value === "month" ? "month" : "week";
+  }
+
+  function ensureMonthCursor() {
+    if (!monthPreviewCursor) {
+      var n = new Date();
+      monthPreviewCursor = new Date(n.getFullYear(), n.getMonth(), 1);
+    }
+  }
 
   function priorityRank(p) {
     if (p === "High") return 3;
@@ -177,13 +190,35 @@
     if (btn) btn.setAttribute("aria-expanded", "false");
   }
 
-  function renderWeeklyPreview(ctx) {
+  function eventChipHtml(e, ctx) {
+    var cls =
+      e.type === "exam"
+        ? "is-exam"
+        : e.type === "assignment"
+          ? "is-assign"
+          : e.type === "study"
+            ? "is-study"
+            : "is-other";
+    var title = e.title.length > 18 ? e.title.slice(0, 16) + "…" : e.title;
+    return (
+      '<div class="ov-week-chip ' +
+      cls +
+      '" title="' +
+      ctx.escapeHtml(e.title) +
+      '"><span class="ov-week-chip-time">' +
+      ctx.escapeHtml(e.time || "") +
+      '</span><span class="ov-week-chip-title">' +
+      ctx.escapeHtml(title) +
+      "</span></div>"
+    );
+  }
+
+  function renderWeekPreview(ctx) {
     var host = document.getElementById("ov-week-grid");
     if (!host) return;
+    host.className = "ov-week-grid";
     var D = ctx.D;
-    var state = ctx.state;
-    var courseById = ctx.courseById;
-    var events = typeof ctx.filteredCalendarEvents === "function" ? ctx.filteredCalendarEvents() : state.calendarEvents || [];
+    var events = typeof ctx.filteredCalendarEvents === "function" ? ctx.filteredCalendarEvents() : ctx.state.calendarEvents || [];
     var start = D.startOfWeekMonday(new Date());
     start.setDate(start.getDate() + weekOffset * 7);
 
@@ -204,25 +239,7 @@
         html += '<span class="ov-week-empty">—</span>';
       } else {
         dayEvs.slice(0, 4).forEach(function (e) {
-          var cls =
-            e.type === "exam"
-              ? "is-exam"
-              : e.type === "assignment"
-                ? "is-assign"
-                : e.type === "study"
-                  ? "is-study"
-                  : "is-other";
-          var title = e.title.length > 18 ? e.title.slice(0, 16) + "…" : e.title;
-          html +=
-            '<div class="ov-week-chip ' +
-            cls +
-            '" title="' +
-            ctx.escapeHtml(e.title) +
-            '"><span class="ov-week-chip-time">' +
-            ctx.escapeHtml(e.time || "") +
-            '</span><span class="ov-week-chip-title">' +
-            ctx.escapeHtml(title) +
-            "</span></div>";
+          html += eventChipHtml(e, ctx);
         });
       }
       html += "</div></div>";
@@ -237,6 +254,76 @@
         " – " +
         end.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
     }
+  }
+
+  function renderMonthPreview(ctx) {
+    var host = document.getElementById("ov-week-grid");
+    if (!host) return;
+    ensureMonthCursor();
+    host.className = "ov-month-grid";
+    var D = ctx.D;
+    var events = typeof ctx.filteredCalendarEvents === "function" ? ctx.filteredCalendarEvents() : ctx.state.calendarEvents || [];
+    var y = monthPreviewCursor.getFullYear();
+    var m = monthPreviewCursor.getMonth();
+    var isoToday = D.isoFromDate(new Date());
+
+    var first = new Date(y, m, 1);
+    var startOffset = (first.getDay() + 6) % 7;
+    var prevDays = D.daysInMonth(y, m - 1);
+    var curDays = D.daysInMonth(y, m);
+
+    var html = '<div class="ov-month-weekdays">';
+    ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].forEach(function (dow) {
+      html += "<span>" + dow + "</span>";
+    });
+    html += '</div><div class="ov-month-cells">';
+
+    for (var i = 0; i < 42; i++) {
+      var dayNum = i - startOffset + 1;
+      var cellDate = null;
+      var muted = false;
+      if (dayNum < 1) {
+        cellDate = new Date(y, m - 1, prevDays + dayNum);
+        muted = true;
+      } else if (dayNum > curDays) {
+        cellDate = new Date(y, m + 1, dayNum - curDays);
+        muted = true;
+      } else {
+        cellDate = new Date(y, m, dayNum);
+      }
+      var iso = D.isoFromDate(cellDate);
+      var isToday = iso === isoToday;
+      var dayEvs = events.filter(function (e) {
+        return e.date === iso;
+      });
+      html +=
+        '<div class="ov-month-cell' +
+        (muted ? " is-muted" : "") +
+        (isToday ? " is-today" : "") +
+        '"><div class="ov-month-daynum">' +
+        cellDate.getDate() +
+        "</div>";
+      if (!dayEvs.length) {
+        html += '<span class="ov-week-empty">—</span>';
+      } else {
+        dayEvs.slice(0, 3).forEach(function (e) {
+          html += eventChipHtml(e, ctx);
+        });
+      }
+      html += "</div>";
+    }
+    html += "</div>";
+    host.innerHTML = html;
+
+    var lbl = document.getElementById("ov-week-range-label");
+    if (lbl) {
+      lbl.textContent = first.toLocaleString(undefined, { month: "long", year: "numeric" });
+    }
+  }
+
+  function renderCalendarPreview(ctx) {
+    if (getPreviewMode() === "month") renderMonthPreview(ctx);
+    else renderWeekPreview(ctx);
   }
 
   /**
@@ -269,19 +356,27 @@
     var fc = document.getElementById("ov-focus-count");
     if (fc) fc.textContent = String(Math.min(top3.length, 2));
 
-    var ovGradePct = D.overallGpaSnapshot(state.courses, state.gradeEntries);
-    var gpa4 = percentToGpa4(ovGradePct);
+    var gradeRows = state.gradeEntries || [];
+    var ovGradePct = gradeRows.length ? D.overallGpaSnapshot(state.courses, gradeRows) : null;
+    var gpa4 = ovGradePct != null ? percentToGpa4(ovGradePct) : null;
 
     var ring = document.getElementById("ov-gpa-ring-fill");
-    if (ring && ovGradePct != null && gpa4 != null) {
-      var pctRing = Math.min(100, (gpa4 / 4) * 100);
-      var c = 326.73;
-      ring.style.strokeDasharray = String(c);
-      ring.style.strokeDashoffset = String(c * (1 - pctRing / 100));
+    var cLen = 326.73;
+    if (ring) {
+      ring.style.strokeDasharray = String(cLen);
+      if (gpa4 == null || ovGradePct == null) {
+        ring.style.strokeDashoffset = String(cLen);
+      } else {
+        var pctRing = Math.min(100, (gpa4 / 4) * 100);
+        ring.style.strokeDashoffset = String(cLen * (1 - pctRing / 100));
+      }
     }
 
     var gpaNum = document.getElementById("ov-gpa-number");
     if (gpaNum) gpaNum.textContent = gpa4 == null ? "—" : gpa4.toFixed(1);
+
+    var gpaFoot = document.querySelector(".ov-gpa-foot-title");
+    if (gpaFoot) gpaFoot.style.display = gpa4 == null ? "none" : "";
 
     var gpaSub = document.getElementById("ov-gpa-subcopy");
     if (gpaSub) {
@@ -341,10 +436,15 @@
       } else {
         show.forEach(function (t, idx) {
           var c = courseById(t.courseId);
-          var row = document.createElement("div");
+          var row = document.createElement("button");
+          row.type = "button";
           row.className =
             "ov-today-item " + (idx === 0 ? "ov-today-item--blue" : "ov-today-item--green");
+          row.setAttribute("data-task-id", t.id);
+          row.setAttribute("aria-label", "Open task: " + t.title);
           var timeHint = t.due === D.isoFromDate(new Date()) ? "Due today" : "Due " + t.due;
+          var notes = (t.notes || "").trim();
+          if (notes.length > 140) notes = notes.slice(0, 137) + "…";
           row.innerHTML =
             '<span class="ov-today-ico" aria-hidden="true"></span><div class="ov-today-text-wrap">' +
             '<p class="ov-today-title">' +
@@ -353,7 +453,11 @@
             ctx.escapeHtml(c ? c.code : "Course") +
             " • " +
             ctx.escapeHtml(timeHint) +
-            "</p></div>";
+            "</p>" +
+            (notes
+              ? '<p class="ov-today-desc">' + ctx.escapeHtml(notes) + "</p>"
+              : '<p class="ov-today-desc"><span class="muted">Open for full details and notes.</span></p>') +
+            "</div>";
           fl.appendChild(row);
         });
       }
@@ -367,6 +471,7 @@
       tasksOpen.forEach(function (t) {
         deadlines.push({
           kind: "task",
+          taskId: t.id,
           title: t.title,
           date: t.due,
           sub: courseById(t.courseId) ? courseById(t.courseId).code : "",
@@ -375,6 +480,7 @@
       ctx.filteredCalendarEvents().forEach(function (e) {
         deadlines.push({
           kind: "event",
+          eventId: e.id,
           title: e.title,
           date: e.date,
           sub: (courseById(e.courseId) || {}).code || e.type,
@@ -397,6 +503,8 @@
           var row = document.createElement("button");
           row.type = "button";
           row.className = "ov-deadline-row";
+          if (d.kind === "task" && d.taskId) row.setAttribute("data-task-id", d.taskId);
+          if (d.kind === "event" && d.eventId) row.setAttribute("data-event-id", d.eventId);
           row.innerHTML =
             '<span class="ov-deadline-bar" style="background:' +
             u.bar +
@@ -406,7 +514,8 @@
             ctx.escapeHtml(sub) +
             '</p></div><span class="ov-deadline-chev" aria-hidden="true">›</span>';
           row.addEventListener("click", function () {
-            ctx.switchView("tasks");
+            if (d.kind === "task" && d.taskId && ctx.selectTask) ctx.selectTask(d.taskId);
+            else ctx.switchView("calendar");
           });
           dl.appendChild(row);
         });
@@ -490,7 +599,7 @@
     if (sr)
       sr.textContent = D.studyRecommendationHint(D.isoFromDate(new Date()), state.courses, state.tasks, state.gradeEntries);
 
-    renderWeeklyPreview(ctx);
+    renderCalendarPreview(ctx);
     renderNotifications(ctx);
   }
 
@@ -521,19 +630,38 @@
     });
 
     on("ov-week-prev", "click", function () {
-      weekOffset--;
-      renderWeeklyPreview(ctx);
+      if (getPreviewMode() === "month") {
+        ensureMonthCursor();
+        monthPreviewCursor.setMonth(monthPreviewCursor.getMonth() - 1);
+      } else weekOffset--;
+      renderCalendarPreview(ctx);
     });
     on("ov-week-next", "click", function () {
-      weekOffset++;
-      renderWeeklyPreview(ctx);
+      if (getPreviewMode() === "month") {
+        ensureMonthCursor();
+        monthPreviewCursor.setMonth(monthPreviewCursor.getMonth() + 1);
+      } else weekOffset++;
+      renderCalendarPreview(ctx);
     });
 
     document.querySelectorAll('input[name="ov-week-mode"]').forEach(function (radio) {
       radio.addEventListener("change", function () {
-        renderWeeklyPreview(ctx);
+        if (getPreviewMode() === "month") {
+          monthPreviewCursor = null;
+          ensureMonthCursor();
+        }
+        renderCalendarPreview(ctx);
       });
     });
+
+    var focusList = document.getElementById("ov-focus-list");
+    if (focusList) {
+      focusList.addEventListener("click", function (e) {
+        var hit = e.target.closest("[data-task-id]");
+        if (!hit || !ctx.selectTask) return;
+        ctx.selectTask(hit.getAttribute("data-task-id"));
+      });
+    }
 
     var btnNotify = document.getElementById("btn-notifications");
     var dd = document.getElementById("notify-dropdown");
@@ -554,10 +682,6 @@
 
     on("ov-btn-cal-header", "click", function () {
       ctx.switchView("calendar");
-    });
-
-    on("ov-deadlines-all", "click", function () {
-      ctx.switchView("tasks");
     });
   }
 

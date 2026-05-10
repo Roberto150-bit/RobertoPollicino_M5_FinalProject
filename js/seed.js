@@ -82,6 +82,21 @@
     };
   }
 
+  function fakeSyllabus(code, title) {
+    return (
+      "OFFICIAL SYLLABUS — " +
+      code +
+      " " +
+      title +
+      "\n\nCourse overview: objectives, prerequisites, and outcomes aligned with ABET-style competencies.\n" +
+      "Transfer & credit: students transferring mid-year should archive this syllabus and grade artifacts for articulation.\n" +
+      "Academic integrity & ADA: see student handbook; accommodations coordinated through the accessibility office.\n" +
+      "Assessment breakdown — homework/labs, quizzes/midterm, final project or exam as listed in LMS.\n" +
+      "Late work policy, collaboration rules, and required software/texts are maintained on the course site.\n" +
+      "Keywords for search demo: syllabus archive, withdrawal deadline, internship eligibility, honors contract."
+    );
+  }
+
   function buildSampleState() {
     var today = new Date();
     var s = buildBlankState();
@@ -120,6 +135,7 @@
       links: [{ label: "Syllabus PDF", url: "#" }],
       materials: [{ title: "Textbook", note: "OpenDSA modules online." }],
       syllabusExtracted: null,
+      syllabusPlainText: fakeSyllabus("CS 210", "Data Structures"),
       alerts: [],
     };
     var c2 = {
@@ -136,6 +152,7 @@
       links: [{ label: "GitLab course group", url: "#" }],
       materials: [],
       syllabusExtracted: null,
+      syllabusPlainText: fakeSyllabus("CS 330", "Software Engineering"),
       alerts: [
         { text: "Sprint review Friday — sync slides early.", level: "warn" },
         { text: "Class attendance slipped — in-class labs are weighted heavily.", level: "risk" },
@@ -155,6 +172,7 @@
       links: [],
       materials: [],
       syllabusExtracted: null,
+      syllabusPlainText: fakeSyllabus("MATH 245", "Discrete Math"),
       alerts: [],
     };
     var c4 = {
@@ -171,6 +189,7 @@
       links: [],
       materials: [],
       syllabusExtracted: null,
+      syllabusPlainText: fakeSyllabus("CS 340", "Database Systems"),
       alerts: [{ text: "Professor updated the syllabus for the final project requirements.", level: "warn" }],
     };
     var c5 = {
@@ -187,6 +206,7 @@
       links: [],
       materials: [],
       syllabusExtracted: null,
+      syllabusPlainText: fakeSyllabus("ENG 201", "Technical Writing"),
       alerts: [],
     };
     s.courses = [c1, c2, c3, c4, c5];
@@ -195,6 +215,14 @@
     var d4 = isoFromDate(addDays(today, 4));
     var d6 = isoFromDate(addDays(today, 6));
     var d9 = isoFromDate(addDays(today, 9));
+    var dm3 = isoFromDate(addDays(today, -3));
+    var dm7 = isoFromDate(addDays(today, -7));
+    var d10 = isoFromDate(addDays(today, 10));
+    var d12 = isoFromDate(addDays(today, 12));
+    var d14 = isoFromDate(addDays(today, 14));
+
+    s.smartNotesText =
+      "Transfer planning: compare CS 210 and CS 340 syllabi on file; confirm discrete math substitution with advisor; keep PDF exports of submitted work.";
 
     s.tasks = [
       {
@@ -205,7 +233,7 @@
         due: d4,
         priority: "High",
         estMinutes: 180,
-        notes: "Starter code in repo.",
+        notes: "Use starter repo; implement rotateLeft/rotateRight; write 3 test cases; push before midnight.",
         completed: false,
         source: "manual",
       },
@@ -217,7 +245,7 @@
         due: d2,
         priority: "Medium",
         estMinutes: 45,
-        notes: "",
+        notes: "Focus on action items section; bring two questions to stand-up.",
         completed: false,
         source: "manual",
       },
@@ -229,7 +257,7 @@
         due: d6,
         priority: "High",
         estMinutes: 120,
-        notes: "",
+        notes: "Prove connectivity lemmas; show spanning tree argument from homework hints.",
         completed: false,
         source: "manual",
       },
@@ -241,7 +269,7 @@
         due: d9,
         priority: "Medium",
         estMinutes: 90,
-        notes: "",
+        notes: "Through 3NF; diagram FDs for campus library schema.",
         completed: false,
         source: "manual",
       },
@@ -253,8 +281,164 @@
         due: isoFromDate(addDays(today, -1)),
         priority: "Low",
         estMinutes: 60,
-        notes: "",
+        notes: "Bring printed draft; peer review worksheet attached in LMS.",
         completed: true,
+        source: "manual",
+      },
+      {
+        id: "sam-t6",
+        title: "Heaps & priority queues practice set",
+        courseId: "sam-c1",
+        type: "assignment",
+        due: d2,
+        priority: "High",
+        estMinutes: 60,
+        notes: "Complete odd-numbered problems; compare binary heap vs d-heap build times.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t7",
+        title: "Team charter & roles doc",
+        courseId: "sam-c2",
+        type: "assignment",
+        due: d4,
+        priority: "Medium",
+        estMinutes: 45,
+        notes: "Define Git branching model and code review checklist.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t8",
+        title: "UML sequence diagram for milestone 2",
+        courseId: "sam-c2",
+        type: "assignment",
+        due: d6,
+        priority: "Medium",
+        estMinutes: 90,
+        notes: "Cover login + OAuth happy path; export PNG to repo /docs.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t9",
+        title: "Induction proof portfolio",
+        courseId: "sam-c3",
+        type: "assignment",
+        due: d9,
+        priority: "Medium",
+        estMinutes: 75,
+        notes: "Three short proofs; cite textbook section 5.2.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t10",
+        title: "SQL lab — joins & EXPLAIN",
+        courseId: "sam-c4",
+        type: "assignment",
+        due: d2,
+        priority: "High",
+        estMinutes: 120,
+        notes: "Use sample ’university’ DB; paste query plans into report.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t11",
+        title: "Transaction isolation write-up",
+        courseId: "sam-c4",
+        type: "reading",
+        due: d10,
+        priority: "Low",
+        estMinutes: 40,
+        notes: "Summarize Serializable vs Snapshot Isolation with one example each.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t12",
+        title: "Peer review — technical memo draft",
+        courseId: "sam-c5",
+        type: "assignment",
+        due: d4,
+        priority: "Medium",
+        estMinutes: 50,
+        notes: "Use department rubric; leave inline comments in shared doc.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t13",
+        title: "Abstract & keywords revision",
+        courseId: "sam-c5",
+        type: "assignment",
+        due: d12,
+        priority: "Low",
+        estMinutes: 35,
+        notes: "Target 150–200 words; include transfer pathway keywords if applicable.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t14",
+        title: "Catch-up: hash tables & collision strategies",
+        courseId: "sam-c1",
+        type: "study",
+        due: dm3,
+        priority: "Medium",
+        estMinutes: 90,
+        notes: "Re-watch lecture 11; implement separate chaining vs open addressing comparison.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t15",
+        title: "Past reflection — sprint 3 retro notes",
+        courseId: "sam-c2",
+        type: "reading",
+        due: dm7,
+        priority: "Low",
+        estMinutes: 30,
+        notes: "Archived for portfolio; link to board screenshot in Drive.",
+        completed: true,
+        source: "manual",
+      },
+      {
+        id: "sam-t16",
+        title: "Final project ER diagram checkpoint",
+        courseId: "sam-c4",
+        type: "assignment",
+        due: d14,
+        priority: "High",
+        estMinutes: 150,
+        notes: "Entities: Student, Course, Enrollment; include cardinality on every edge.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t17",
+        title: "Weekly proof salon prep",
+        courseId: "sam-c3",
+        type: "study",
+        due: d10,
+        priority: "Low",
+        estMinutes: 45,
+        notes: "Bring combinatorics teaser problem from PS 8.",
+        completed: false,
+        source: "manual",
+      },
+      {
+        id: "sam-t18",
+        title: "Accessibility audit of team UI",
+        courseId: "sam-c2",
+        type: "assignment",
+        due: d12,
+        priority: "Medium",
+        estMinutes: 80,
+        notes: "Run axe-core; file issues with severity tags in backlog.",
+        completed: false,
         source: "manual",
       },
     ];
@@ -300,6 +484,26 @@
         priority: "low",
         color: "#64748b",
       },
+      {
+        id: "sam-e5",
+        title: "Office hours — CS 340",
+        type: "school",
+        courseId: "sam-c4",
+        date: d4,
+        time: "2:00 PM",
+        priority: "medium",
+        color: "",
+      },
+      {
+        id: "sam-e6",
+        title: "Draft ER diagram review",
+        type: "assignment",
+        courseId: "sam-c4",
+        date: d12,
+        time: "11:00 AM",
+        priority: "medium",
+        color: "",
+      },
     ];
 
     s.gradeEntries = [
@@ -307,6 +511,8 @@
       { id: "sam-g2", courseId: "sam-c1", category: "quiz", assignment: "Quiz 2", score: 92, pointsPossible: 100, weightPercent: 15 },
       { id: "sam-g3", courseId: "sam-c2", category: "project", assignment: "Milestone 1", score: 90, pointsPossible: 100, weightPercent: 20 },
       { id: "sam-g4", courseId: "sam-c3", category: "homework", assignment: "PS 6", score: 78, pointsPossible: 100, weightPercent: 20 },
+      { id: "sam-g5", courseId: "sam-c4", category: "homework", assignment: "SQL Lab 4", score: 91, pointsPossible: 100, weightPercent: 25 },
+      { id: "sam-g6", courseId: "sam-c5", category: "project", assignment: "Memo draft v1", score: 86, pointsPossible: 100, weightPercent: 30 },
     ];
 
     s.studyPlans = [

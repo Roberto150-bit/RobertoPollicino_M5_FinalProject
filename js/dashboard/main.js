@@ -56,6 +56,185 @@
     return (text || "").toLowerCase().indexOf(q) !== -1;
   }
 
+  function syllabusBlob(c) {
+    if (!c) return "";
+    var parts = [];
+    if (c.syllabusPlainText) parts.push(String(c.syllabusPlainText));
+    if (c.syllabusExtracted != null) {
+      try {
+        parts.push(typeof c.syllabusExtracted === "string" ? c.syllabusExtracted : JSON.stringify(c.syllabusExtracted));
+      } catch (e1) {}
+    }
+    return parts.join(" ");
+  }
+
+  function taskSearchBlob(t) {
+    var c = courseById(t.courseId);
+    return [t.title, t.notes || "", t.type || "", c && c.code, c && c.name, syllabusBlob(c)].filter(Boolean).join(" ");
+  }
+
+  function courseSearchBlob(c) {
+    return [
+      c.code,
+      c.name,
+      c.professor || "",
+      c.notes || "",
+      (c.links || [])
+        .map(function (l) {
+          return (l.label || "") + " " + (l.url || "");
+        })
+        .join(" "),
+      syllabusBlob(c),
+    ].join(" ");
+  }
+
+  function eventSearchBlob(ev) {
+    var code = courseById(ev.courseId);
+    return [ev.title, ev.notes || "", code ? code.code : "", code ? code.name : ""].filter(Boolean).join(" ");
+  }
+
+  function selectTaskAndShow(id) {
+    ui.selectedTaskId = id;
+    switchView("tasks");
+    renderTasks();
+    var detail = document.getElementById("task-detail-body");
+    if (detail) detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function renderGlobalSearchPanel() {
+    var panel = document.getElementById("global-search-panel");
+    if (!panel) return;
+    var q = (ui.searchQuery || "").trim().toLowerCase();
+    if (!q) {
+      panel.hidden = true;
+      panel.innerHTML = "";
+      return;
+    }
+    var hits = [];
+    var profileBlob =
+      (state.profile &&
+        [state.profile.displayName, state.profile.major, state.profile.university, state.profile.academicGoal || ""].join(" ")) ||
+      "";
+    if (matchesSearch(profileBlob)) {
+      hits.push({
+        type: "Profile",
+        label: "Your profile & goals",
+        sub: state.profile && state.profile.major ? state.profile.major + " · " + (state.profile.university || "") : "",
+        go: function () {
+          switchView("settings");
+          panel.hidden = true;
+        },
+      });
+    }
+    if (state.smartNotesText && matchesSearch(state.smartNotesText)) {
+      hits.push({
+        type: "Notes",
+        label: "Smart notes",
+        sub: state.smartNotesText.slice(0, 120) + (state.smartNotesText.length > 120 ? "…" : ""),
+        go: function () {
+          switchView("study");
+          panel.hidden = true;
+        },
+      });
+    }
+    state.courses.forEach(function (c) {
+      if (!matchesSearch(courseSearchBlob(c))) return;
+      hits.push({
+        type: "Course",
+        label: c.code + " — " + c.name,
+        sub: (c.syllabusPlainText || "").replace(/\s+/g, " ").trim().slice(0, 140) || c.professor || "",
+        go: function () {
+          ui.selectedCourseId = c.id;
+          switchView("courses");
+          renderCourses();
+          panel.hidden = true;
+        },
+      });
+    });
+    state.tasks.forEach(function (t) {
+      if (!matchesSearch(taskSearchBlob(t))) return;
+      var co = courseById(t.courseId);
+      hits.push({
+        type: "Task",
+        label: t.title,
+        sub: (co ? co.code + " · " : "") + (t.notes || "").slice(0, 140),
+        go: function () {
+          selectTaskAndShow(t.id);
+          panel.hidden = true;
+        },
+      });
+    });
+    state.calendarEvents.forEach(function (e) {
+      if (!matchesSearch(eventSearchBlob(e))) return;
+      hits.push({
+        type: "Calendar",
+        label: e.title,
+        sub: e.date + (e.time ? " · " + e.time : ""),
+        go: function () {
+          ui.calCursor = D.parseISO(e.date);
+          ui.selectedDayISO = e.date;
+          switchView("calendar");
+          renderCalendar();
+          panel.hidden = true;
+        },
+      });
+    });
+    state.gradeEntries.forEach(function (g) {
+      var blob = g.assignment + " " + (courseById(g.courseId) || {}).code + " " + (g.category || "");
+      if (!matchesSearch(blob)) return;
+      hits.push({
+        type: "Grade",
+        label: g.assignment,
+        sub: (courseById(g.courseId) || {}).code || "",
+        go: function () {
+          switchView("grades");
+          panel.hidden = true;
+        },
+      });
+    });
+    state.updates.forEach(function (p, idx) {
+      if (!matchesSearch(p.title + " " + p.detail + " " + p.kind)) return;
+      hits.push({
+        type: "Update",
+        label: p.title,
+        sub: p.detail,
+        go: function () {
+          switchView("updates");
+          panel.hidden = true;
+        },
+      });
+    });
+
+    if (!hits.length) {
+      panel.innerHTML = '<div class="dp-search-hit" style="cursor:default;color:var(--dp-gray-500);">No matches.</div>';
+      panel.hidden = false;
+      return;
+    }
+    panel.innerHTML = hits
+      .slice(0, 24)
+      .map(function (h, i) {
+        return (
+          '<button type="button" class="dp-search-hit" data-search-hit="' +
+          i +
+          '"><span class="dp-search-hit-type">' +
+          escapeHtml(h.type) +
+          '</span>' +
+          escapeHtml(h.label) +
+          (h.sub ? "<small>" + escapeHtml(h.sub) + "</small>" : "") +
+          "</button>"
+        );
+      })
+      .join("");
+    panel.hidden = false;
+    hits.slice(0, 24).forEach(function (h, i) {
+      var b = panel.querySelector('[data-search-hit="' + i + '"]');
+      if (b)
+        b.addEventListener("click", function () {
+          h.go();
+        });
+    });
+  }
+
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme || "ocean");
   }
@@ -78,7 +257,7 @@
       return el && el.checked;
     }
     return state.calendarEvents.filter(function (ev) {
-      if (!matchesSearch(ev.title + " " + (courseById(ev.courseId) ? courseById(ev.courseId).code : ""))) return false;
+      if (!matchesSearch(eventSearchBlob(ev))) return false;
       var hit = false;
       if (on("course") && ev.courseId) hit = true;
       if (on("exam") && ev.type === "exam") hit = true;
@@ -158,6 +337,7 @@
       escapeHtml: escapeHtml,
       save: save,
       switchView: switchView,
+      selectTask: selectTaskAndShow,
     };
   }
 
@@ -362,7 +542,7 @@
     var list = document.getElementById("course-list-host");
     list.innerHTML = "";
     var items = state.courses.filter(function (c) {
-      return matchesSearch(c.code + " " + c.name + " " + c.professor);
+      return matchesSearch(courseSearchBlob(c));
     });
     if (!items.length) {
       list.innerHTML =
@@ -423,6 +603,13 @@
           .join("") +
         "</ul>";
     }
+    var syllArchive = "";
+    if (c.syllabusPlainText && String(c.syllabusPlainText).trim()) {
+      syllArchive =
+        '<div class="panel inset mt"><h4>Syllabus on file</h4><p class="muted" style="white-space:pre-wrap;font-size:0.82rem;max-height:280px;overflow:auto;border:1px solid var(--dp-gray-200);border-radius:8px;padding:0.75rem;">' +
+        escapeHtml(c.syllabusPlainText) +
+        '</p><p class="muted" style="font-size:0.8rem;">Search the top bar to find text inside this document.</p><button type="button" class="btn btn-secondary btn-sm mt-sm" id="btn-dl-syllabus-arch">Download syllabus (.txt)</button></div>';
+    }
     body.innerHTML =
       '<div class="course-head"><div><p class="course-code">' +
       escapeHtml(c.code) +
@@ -455,6 +642,7 @@
       '</ul></div></div><div class="field mt"><label>Course notes</label><textarea id="cd-notes" rows="3">' +
       escapeHtml(c.notes || "") +
       '</textarea><button type="button" class="btn btn-primary btn-sm mt-sm" id="btn-save-course-notes">Save notes</button></div>' +
+      syllArchive +
       '<div class="panel inset mt"><h4>Syllabus simulation</h4><p class="muted">Paste below and analyze — adds suggestions to Updates queue.</p>' +
       '<textarea id="cd-syllabus" rows="3"></textarea>' +
       '<button type="button" class="btn btn-secondary btn-sm mt-sm" id="btn-detail-syllabus">Analyze syllabus</button>' +
@@ -464,6 +652,18 @@
     body.querySelector("[data-edit-course]").addEventListener("click", function () {
       openCourseModal(c.id);
     });
+    var dlArch = document.getElementById("btn-dl-syllabus-arch");
+    if (dlArch) {
+      dlArch.addEventListener("click", function () {
+        var text = c.syllabusPlainText || "";
+        var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = (c.code || "course").replace(/\s+/g, "_") + "-syllabus.txt";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    }
     document.getElementById("btn-save-course-notes").addEventListener("click", function () {
       c.notes = document.getElementById("cd-notes").value.trim();
       save();
@@ -611,7 +811,7 @@
         if (taskBucket(t) !== b) return false;
         if (ft !== "all" && t.type !== ft) return false;
         if (fc && t.courseId !== fc) return false;
-        return matchesSearch(t.title + " " + (courseById(t.courseId) || {}).code);
+        return matchesSearch(taskSearchBlob(t));
       });
       tasks.sort(function (a, x) {
         return a.due.localeCompare(x.due);
@@ -695,7 +895,16 @@
       host.innerHTML = '<div class="dp-empty">No pending detected changes. Run an analyzer above.</div>';
       return;
     }
-    state.updates.forEach(function (p, idx) {
+    var pend = state.updates.filter(function (p) {
+      return matchesSearch(p.title + " " + p.detail + " " + p.kind);
+    });
+    if (!pend.length) {
+      host.innerHTML =
+        '<div class="dp-empty">No pending items match your search. Clear the search box or try different keywords.</div>';
+      return;
+    }
+    pend.forEach(function (p) {
+      var idx = state.updates.indexOf(p);
       var row = document.createElement("div");
       row.className = "stack-item";
       row.innerHTML =
@@ -774,7 +983,9 @@
   function renderGrades() {
     var tb = document.getElementById("grades-table-host");
     var rows = state.gradeEntries.filter(function (g) {
-      return matchesSearch(g.assignment + " " + (courseById(g.courseId) || {}).code);
+      return matchesSearch(
+        g.assignment + " " + (courseById(g.courseId) || {}).code + " " + (g.category || "") + " " + String(g.score || "")
+      );
     });
     tb.innerHTML =
       "<table style=\"width:100%;font-size:0.88rem;border-collapse:collapse;\"><thead><tr><th align=\"left\">Course</th><th align=\"left\">Item</th><th>Score</th><th>Weight%</th><th></th></tr></thead><tbody>" +
@@ -1246,7 +1457,15 @@
 
     document.getElementById("global-search").addEventListener("input", function (e) {
       ui.searchQuery = e.target.value || "";
+      renderGlobalSearchPanel();
       renderAll();
+    });
+
+    document.addEventListener("click", function (e) {
+      var wrap = document.querySelector(".dp-search-wrap");
+      var panel = document.getElementById("global-search-panel");
+      if (!wrap || !panel || panel.hidden) return;
+      if (!wrap.contains(e.target)) panel.hidden = true;
     });
 
     document.body.addEventListener("click", function (e) {
