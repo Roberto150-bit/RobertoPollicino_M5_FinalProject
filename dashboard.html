@@ -60,6 +60,10 @@
             <span aria-hidden="true">🔔</span>
             <span class="dp-badge" id="notification-badge" hidden>0</span>
           </button>
+          <label class="dp-sample-pill" title="Demo only — loads fictional data">
+            <input type="checkbox" id="toggle-sample-global" />
+            <span>Sample data</span>
+          </label>
           <div class="dp-top-profile" id="top-profile-chip">
             <div class="dp-avatar" id="profile-avatar">A</div>
             <div class="dp-profile-text">
@@ -77,7 +81,7 @@
         <section class="view view-active" id="view-overview" data-view-panel="overview">
           <div class="grid-3">
             <article class="stat-card"><p class="stat-label">Today's focus</p><p class="stat-value" id="ov-focus-count">0</p><p class="stat-hint muted">Top priority items</p></article>
-            <article class="stat-card"><p class="stat-label">Grade snapshot</p><p class="stat-value" id="ov-grade-snap">—</p><p class="stat-hint muted">Avg across courses with grades</p></article>
+            <article class="stat-card"><p class="stat-label">Grade snapshot</p><p class="stat-value" id="ov-grade-snap">—</p><p class="stat-hint muted" id="ov-grade-hint">No grade data available</p></article>
             <article class="stat-card"><p class="stat-label">Open tasks</p><p class="stat-value" id="ov-open-tasks">0</p><p class="stat-hint muted">Incomplete</p></article>
           </div>
           <div class="grid-2 mt">
@@ -100,11 +104,17 @@
               <div id="ov-cal-preview" class="stack-list"></div>
             </article>
           </div>
-          <article class="panel mt">
-            <span class="dp-ai-tag">Simulated assistant</span>
-            <h2 class="panel-title">AI priority suggestion</h2>
-            <p id="ov-ai-line" class="muted" style="margin:0;">Add tasks to receive a suggestion.</p>
-          </article>
+          <div class="grid-2 mt">
+            <article class="panel">
+              <span class="dp-ai-tag">Simulated assistant</span>
+              <h2 class="panel-title">AI priority suggestion</h2>
+              <p id="ov-ai-line" class="muted" style="margin:0;">Add tasks to receive a suggestion.</p>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Study recommendations</h2>
+              <p id="ov-study-rec" class="muted" style="margin:0;">Build your schedule to see recommendations.</p>
+            </article>
+          </div>
         </section>
 
         <!-- Calendar -->
@@ -172,7 +182,7 @@
 
         <!-- Tasks -->
         <section class="view" id="view-tasks" data-view-panel="tasks">
-          <div class="grid-2">
+          <div class="dp-task-layout">
             <article class="panel">
               <h2 class="panel-title">New task</h2>
               <form id="form-task">
@@ -203,7 +213,12 @@
                 <select id="task-filter-type"><option value="all">All</option><option value="assignment">Assignments</option><option value="reading">Readings</option><option value="quiz">Quizzes</option><option value="project">Projects</option><option value="reminder">Reminders</option></select>
                 <select id="task-filter-course"><option value="">All courses</option></select>
               </div>
+              <p class="muted" style="font-size:0.85rem;">Click a task row for details (sorted by due date within each group).</p>
               <div id="task-board"></div>
+            </article>
+            <article class="panel" id="task-detail-aside">
+              <h2 class="panel-title">Task detail</h2>
+              <div id="task-detail-body"><p class="dp-empty">Select a task from the board.</p></div>
             </article>
           </div>
         </section>
@@ -217,6 +232,10 @@
               <div class="field"><label for="upd-course">Course context</label><select id="upd-course"><option value="">General</option></select></div>
               <div class="field"><textarea id="upd-announce-body" rows="8" placeholder="Paste instructor announcement text…"></textarea></div>
               <button type="button" class="btn btn-primary" id="btn-analyze-announce">Analyze announcement</button>
+              <div id="upd-announce-summary" class="panel inset mt" hidden>
+                <h3 class="panel-title small">Extracted summary</h3>
+                <ul id="upd-summary-list" class="muted" style="margin:0;padding-left:1.1rem;"></ul>
+              </div>
             </article>
             <article class="panel">
               <span class="dp-ai-tag">Screenshot simulation</span>
@@ -268,6 +287,11 @@
             <article class="panel">
               <h2 class="panel-title">Standing &amp; what-if</h2>
               <div id="grades-by-course"></div>
+              <h3 class="panel-title small mt">Category breakdown</h3>
+              <p class="muted" style="font-size:0.82rem;">Weighted contribution by category (from your entries).</p>
+              <div id="grades-category-host"></div>
+              <h3 class="panel-title small mt">Grade trend</h3>
+              <div id="grades-trend-host" class="dp-trend-bars"></div>
               <hr style="border:none;border-top:1px solid var(--dp-gray-200);margin:1rem 0;" />
               <h3 class="panel-title small">What-if calculator</h3>
               <form id="form-whatif">
@@ -301,6 +325,9 @@
               </form>
               <div id="study-plan-out" class="study-output mt"></div>
             </article>
+            <article class="panel" id="study-empty-hint">
+              <p id="study-context-hint" class="dp-empty">Add courses, tasks, or grades to personalize study tools.</p>
+            </article>
             <article class="panel">
               <span class="dp-ai-tag">Exam prep toolkit</span>
               <h2 class="panel-title">Toolkit</h2>
@@ -322,8 +349,20 @@
             <article class="panel">
               <span class="dp-ai-tag">Smart notes</span>
               <h2 class="panel-title">Notes workspace</h2>
-              <textarea id="smart-notes-area" rows="10" placeholder="Paste lecture notes or outlines…"></textarea>
+              <p class="muted">Simulated import — files stay in-browser only.</p>
+              <input type="file" id="smart-notes-file" accept=".txt,.md,.pdf" class="mt-sm" />
+              <textarea id="smart-notes-area" rows="8" placeholder="Paste lecture notes or outlines…"></textarea>
+              <button type="button" class="btn btn-secondary btn-sm mt-sm" id="btn-smart-audio-sim">Simulated voice memo</button>
               <button type="button" class="btn btn-primary btn-sm mt-sm" id="btn-save-notes">Save notes locally</button>
+            </article>
+            <article class="panel">
+              <h2 class="panel-title">Visual study aids</h2>
+              <p class="muted">Placeholder diagrams for demo decks.</p>
+              <div class="dp-visual-placeholder grid-3">
+                <div class="dp-viz-card">Concept map</div>
+                <div class="dp-viz-card">Formula sheet</div>
+                <div class="dp-viz-card">Timeline</div>
+              </div>
             </article>
           </div>
         </section>
@@ -374,6 +413,11 @@
 
         <!-- Financial -->
         <section class="view" id="view-financial" data-view-panel="financial">
+          <article class="panel mb">
+            <h2 class="panel-title">Suggested scholarships</h2>
+            <p class="muted">Demo matches based on your profile major — fictional opportunities only.</p>
+            <div id="sch-suggestions" class="stack-list"></div>
+          </article>
           <div class="grid-2">
             <article class="panel">
               <h2 class="panel-title">Scholarship tracker</h2>
@@ -447,6 +491,11 @@
             <h3 class="panel-title mt">Demo data</h3>
             <label class="switch-row"><strong>Sample data mode</strong><input type="checkbox" id="toggle-sample-data" /></label>
             <p class="muted">OFF = blank dashboard with your entries · ON = fictional “Caleb White” snapshot.</p>
+
+            <div class="panel inset mt">
+              <h3 class="panel-title small">Privacy</h3>
+              <p class="muted" style="margin:0;">DegreePilot AI stores profile and academic demo data only in this browser (localStorage). Nothing is sent to a server in this prototype. Clear data anytime with Reset demo data.</p>
+            </div>
 
             <div class="dp-danger-zone">
               <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-demo">Reset demo data</button>

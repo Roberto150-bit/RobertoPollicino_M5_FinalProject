@@ -18,7 +18,9 @@
     calCursor: new Date(),
     selectedDayISO: D.isoFromDate(new Date()),
     selectedCourseId: null,
+    selectedTaskId: null,
     lastCommScenario: "intro",
+    commVariant: 0,
   };
 
   var VIEW_TITLES = {
@@ -165,6 +167,8 @@
 
     var ovGrade = D.overallGpaSnapshot(state.courses, state.gradeEntries);
     document.getElementById("ov-grade-snap").textContent = ovGrade == null ? "—" : ovGrade + "%";
+    var gh = document.getElementById("ov-grade-hint");
+    if (gh) gh.textContent = ovGrade == null ? "No grade data available" : "Avg across courses with entries";
 
     var fl = document.getElementById("ov-focus-list");
     fl.innerHTML = "";
@@ -293,6 +297,10 @@
         (courseById(sug.courseId) || {}).code +
         ") — highest urgency in your list."
       : "Add tasks or enable sample data to surface an urgency suggestion.";
+    var sr = document.getElementById("ov-study-rec");
+    if (sr) {
+      sr.textContent = D.studyRecommendationHint(D.isoFromDate(new Date()), state.courses, state.tasks, state.gradeEntries);
+    }
   }
 
   /* ---------- Calendar ---------- */
@@ -609,7 +617,7 @@
       var extracted = D.syllabusSimulation(c.id);
       c.syllabusExtracted = extracted;
       extracted.tasks.forEach(function (t) {
-        state.pendingChanges.push({
+        state.updates.push({
           id: D.uid(),
           kind: "task",
           title: "Syllabus: " + t.title,
@@ -627,13 +635,33 @@
         });
       });
       (extracted.exams || []).forEach(function (ex) {
-        state.pendingChanges.push({
+        state.updates.push({
           id: D.uid(),
           kind: "event",
           title: "Syllabus exam: " + ex.title,
           detail: "Simulated",
           checked: true,
           payload: { title: ex.title, courseId: c.id, date: ex.date, type: "exam", priority: "high", time: "" },
+        });
+      });
+      (extracted.policies || []).forEach(function (pol) {
+        state.updates.push({
+          id: D.uid(),
+          kind: "syllabus_policy",
+          title: "Policy line",
+          detail: String(pol).slice(0, 90),
+          checked: true,
+          payload: { courseId: c.id, text: pol },
+        });
+      });
+      (extracted.gradingRules || []).forEach(function (gr) {
+        state.updates.push({
+          id: D.uid(),
+          kind: "syllabus_policy",
+          title: "Grading: " + gr.label + " (" + gr.weight + "%)",
+          detail: "From syllabus weights",
+          checked: true,
+          payload: { courseId: c.id, text: "Category " + gr.label + " weighted " + gr.weight + "% in course grade." },
         });
       });
       save();
@@ -644,6 +672,49 @@
   }
 
   /* ---------- Tasks ---------- */
+  function renderTaskDetail() {
+    var body = document.getElementById("task-detail-body");
+    if (!body) return;
+    var t = state.tasks.find(function (x) {
+      return x.id === ui.selectedTaskId;
+    });
+    if (!t) {
+      body.innerHTML = '<p class="dp-empty">Select a task from the board.</p>';
+      return;
+    }
+    var c = courseById(t.courseId);
+    body.innerHTML =
+      "<p class=\"task-title\" style=\"margin:0 0 0.5rem;font-weight:800;\">" +
+      escapeHtml(t.title) +
+      "</p>" +
+      '<p class="muted" style="margin:0 0 0.75rem;font-size:0.85rem;">' +
+      escapeHtml(c ? c.code + " — " + c.name : "") +
+      "</p>" +
+      "<ul class=\"muted\" style=\"margin:0;padding-left:1.1rem;font-size:0.88rem;\">" +
+      "<li>Type: " +
+      escapeHtml(t.type || "") +
+      "</li>" +
+      "<li>Due: " +
+      escapeHtml(t.due) +
+      "</li>" +
+      "<li>Priority: <span class=\"priority-" +
+      String(t.priority || "Medium").toLowerCase() +
+      "\">" +
+      escapeHtml(t.priority || "") +
+      "</span></li>" +
+      "<li>Est. minutes: " +
+      escapeHtml(String(t.estMinutes || "")) +
+      "</li>" +
+      "<li>Status: " +
+      (t.completed ? "Completed" : "Open") +
+      "</li>" +
+      "</ul>" +
+      (t.notes
+        ? "<p class=\"mt-sm\"><strong>Notes</strong><br/>" + escapeHtml(t.notes) + "</p>"
+        : "") +
+      (t.source ? "<p class=\"muted\" style=\"font-size:0.8rem;\">Source: " + escapeHtml(t.source) + "</p>" : "");
+  }
+
   function taskBucket(t) {
     var today = D.isoFromDate(new Date());
     if (t.completed) return "Completed";
@@ -655,6 +726,14 @@
   }
 
   function renderTasks() {
+    if (
+      ui.selectedTaskId &&
+      !state.tasks.some(function (t) {
+        return t.id === ui.selectedTaskId;
+      })
+    ) {
+      ui.selectedTaskId = null;
+    }
     var ft = document.getElementById("task-filter-type").value;
     var fc = document.getElementById("task-filter-course").value;
     var board = document.getElementById("task-board");
@@ -676,7 +755,11 @@
       tasks.forEach(function (t) {
         var c = courseById(t.courseId);
         var row = document.createElement("div");
-        row.className = "task-row" + (t.completed ? " done" : "");
+        row.className =
+          "task-row" +
+          (t.completed ? " done" : "") +
+          (ui.selectedTaskId === t.id ? " is-selected" : "");
+        row.setAttribute("data-task-select", t.id);
         row.innerHTML =
           '<input type="checkbox" data-task-toggle="' +
           escapeHtml(t.id) +
@@ -699,11 +782,19 @@
           '<button type="button" class="btn btn-ghost btn-sm" data-task-del="' +
           escapeHtml(t.id) +
           '">Delete</button>';
+        row.addEventListener("click", function (ev) {
+          if (ev.target.closest("[data-task-toggle]") || ev.target.closest("[data-task-del]")) return;
+          ui.selectedTaskId = t.id;
+          renderTasks();
+        });
         sec.appendChild(row);
       });
       board.appendChild(sec);
     });
     board.querySelectorAll("[data-task-toggle]").forEach(function (chk) {
+      chk.addEventListener("click", function (e) {
+        e.stopPropagation();
+      });
       chk.addEventListener("change", function () {
         var t = state.tasks.find(function (x) {
           return x.id === chk.getAttribute("data-task-toggle");
@@ -714,8 +805,10 @@
       });
     });
     board.querySelectorAll("[data-task-del]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
         var id = btn.getAttribute("data-task-del");
+        if (ui.selectedTaskId === id) ui.selectedTaskId = null;
         state.tasks = state.tasks.filter(function (x) {
           return x.id !== id;
         });
@@ -726,17 +819,18 @@
     if (!board.children.length) {
       board.innerHTML = '<div class="dp-empty">No tasks match filters.</div>';
     }
+    renderTaskDetail();
   }
 
   /* ---------- Updates ---------- */
   function renderUpdates() {
     var host = document.getElementById("pending-changes-host");
     host.innerHTML = "";
-    if (!state.pendingChanges.length) {
+    if (!state.updates.length) {
       host.innerHTML = '<div class="dp-empty">No pending detected changes. Run an analyzer above.</div>';
       return;
     }
-    state.pendingChanges.forEach(function (p, idx) {
+    state.updates.forEach(function (p, idx) {
       var row = document.createElement("div");
       row.className = "stack-item";
       row.innerHTML =
@@ -756,7 +850,7 @@
     host.querySelectorAll("[data-pend-idx]").forEach(function (cb) {
       cb.addEventListener("change", function () {
         var i = parseInt(cb.getAttribute("data-pend-idx"), 10);
-        if (state.pendingChanges[i]) state.pendingChanges[i].checked = cb.checked;
+        if (state.updates[i]) state.updates[i].checked = cb.checked;
         save();
       });
     });
@@ -796,6 +890,18 @@
         notes: p.payload.notes || "",
         createdAt: D.isoFromDate(new Date()),
       });
+    } else if (p.kind === "course_alert") {
+      var cA = courseById(p.payload.courseId) || state.courses[0];
+      if (cA) {
+        cA.alerts = cA.alerts || [];
+        cA.alerts.push({ text: p.payload.text || "Update", level: p.payload.level || "warn" });
+      }
+    } else if (p.kind === "syllabus_policy") {
+      var cP = courseById(p.payload.courseId) || state.courses[0];
+      if (cP) {
+        var line = p.payload.text || "";
+        cP.notes = (cP.notes ? cP.notes + "\n\n" : "") + "[Syllabus] " + line;
+      }
     }
   }
 
@@ -861,27 +967,94 @@
       byCourse.appendChild(row);
     });
 
+    var catHost = document.getElementById("grades-category-host");
+    if (catHost) {
+      catHost.innerHTML = "";
+      var anyCat = false;
+      state.courses.forEach(function (c) {
+        var br = D.gradeCategoryBreakdown(c.id, state.gradeEntries);
+        var labels = { exam: "Exams", homework: "Homework", project: "Projects", quiz: "Quizzes", participation: "Participation" };
+        var has = br.some(function (x) {
+          return x.avg != null;
+        });
+        if (!has) return;
+        anyCat = true;
+        var sec = document.createElement("div");
+        sec.className = "mb";
+        sec.innerHTML = "<h4 class=\"panel-title small\" style=\"margin:0 0 0.5rem;\">" + escapeHtml(c.code) + "</h4>";
+        br.forEach(function (x) {
+          if (x.avg == null) return;
+          var row = document.createElement("div");
+          row.className = "dp-cat-bar-row";
+          row.innerHTML =
+            "<span>" +
+            escapeHtml(labels[x.category] || x.category) +
+            '</span><div class="dp-cat-track"><div style="width:' +
+            Math.min(100, x.avg) +
+            '%"></div></div><span>' +
+            x.avg +
+            "%</span>";
+          sec.appendChild(row);
+        });
+        catHost.appendChild(sec);
+      });
+      if (!anyCat) catHost.innerHTML = '<p class="muted">Enter grades with categories and weights to see breakdown.</p>';
+    }
+
+    var trendHost = document.getElementById("grades-trend-host");
+    if (trendHost) {
+      trendHost.innerHTML = "";
+      var anyTrend = false;
+      state.courses.forEach(function (c) {
+        var p = D.courseGradePercent(c.id, state.gradeEntries);
+        if (p == null) return;
+        anyTrend = true;
+        var row = document.createElement("div");
+        row.className = "dp-trend-row";
+        row.innerHTML =
+          "<span>" +
+          escapeHtml(c.code) +
+          '</span><div class="dp-trend-track"><div style="width:' +
+          Math.min(100, p) +
+          '%"></div></div><span>' +
+          p +
+          "%</span>";
+        trendHost.appendChild(row);
+      });
+      if (!anyTrend) trendHost.innerHTML = '<p class="muted">Add scored entries to see a simple standing chart.</p>';
+    }
+
     var risk = document.getElementById("grade-risk-host");
     risk.innerHTML = "<h4 class=\"panel-title small\">Risk alerts</h4>";
     var risks = [];
     state.courses.forEach(function (c) {
       var p = D.courseGradePercent(c.id, state.gradeEntries);
-      if (p != null && p < 70) risks.push(c.code + " below 70% — consider instructor/advisor outreach.");
+      if (p == null) return;
+      if (p < 60) risks.push({ border: "#ef4444", text: c.code + " is close to failing — contact your professor or advisor urgently." });
+      else if (p < 70) risks.push({ border: "#f59e0b", text: c.code + " below 70% — consider instructor or advisor outreach." });
     });
     if (!risks.length) risk.innerHTML += '<p class="muted">No automated flags.</p>';
-    else risks.forEach(function (r) {
-      var d = document.createElement("div");
-      d.className = "stack-item";
-      d.style.borderLeft = "4px solid #ef4444";
-      d.textContent = r;
-      risk.appendChild(d);
-    });
+    else
+      risks.forEach(function (r) {
+        var d = document.createElement("div");
+        d.className = "stack-item";
+        d.style.borderLeft = "4px solid " + r.border;
+        d.textContent = r.text;
+        risk.appendChild(d);
+      });
 
     document.getElementById("withdraw-note").textContent = state.withdrawalDeadlineNote || "";
   }
 
   /* ---------- Study ---------- */
   function renderStudy() {
+    var hint = document.getElementById("study-context-hint");
+    if (hint) {
+      var hasData = !!(state.courses.length || state.tasks.length || state.gradeEntries.length);
+      hint.textContent = hasData
+        ? "Sessions below align with your current tasks, deadlines, and grade snapshot."
+        : "Add courses, tasks, or grades to personalize study tools.";
+    }
     var fl = document.getElementById("flash-list");
     fl.innerHTML = "";
     if (!state.flashcards.length) {
@@ -924,6 +1097,24 @@
   }
 
   function renderFinancial() {
+    var sugHost = document.getElementById("sch-suggestions");
+    if (sugHost) {
+      sugHost.innerHTML = "";
+      D.scholarshipSuggestions(state.profile && state.profile.major).forEach(function (s) {
+        var row = document.createElement("div");
+        row.className = "stack-item";
+        row.innerHTML =
+          "<h4>" +
+          escapeHtml(s.name) +
+          "</h4><p class=\"stack-meta\">" +
+          escapeHtml(s.amount) +
+          " · " +
+          escapeHtml(s.note) +
+          "</p>";
+        sugHost.appendChild(row);
+      });
+    }
+
     var eb = document.getElementById("essay-brain");
     var eo = document.getElementById("essay-outline");
     var ed = document.getElementById("essay-draft");
@@ -1007,6 +1198,26 @@
     if (!al.children.length) al.innerHTML = '<p class="muted">No deadlines in the next two weeks.</p>';
   }
 
+  function syncSampleCheckboxes() {
+    var on = !!state.sampleDataMode;
+    var a = document.getElementById("toggle-sample-data");
+    var b = document.getElementById("toggle-sample-global");
+    if (a) a.checked = on;
+    if (b) b.checked = on;
+  }
+
+  function applySampleState(wantOn) {
+    state = wantOn
+      ? window.DegreePilotStorage.clone(window.DegreePilotSeed.buildSampleState())
+      : window.DegreePilotStorage.clone(window.DegreePilotSeed.buildBlankState());
+    save();
+    ui.selectedCourseId = state.courses[0] && state.courses[0].id;
+    ui.selectedTaskId = null;
+    applyTheme(state.profile.theme);
+    syncSampleCheckboxes();
+    renderAll();
+  }
+
   function populateProfileForm() {
     var p = state.profile;
     function v(id, val) {
@@ -1024,7 +1235,7 @@
     v("pf-adv-email", p.advisorEmail);
     var th = document.getElementById("pf-theme");
     if (th) th.value = p.theme || "ocean";
-    document.getElementById("toggle-sample-data").checked = !!state.sampleDataMode;
+    syncSampleCheckboxes();
     var st = state.settings || {};
     document.getElementById("set-compact-cal").checked = !!st.prefCompactCalendar;
     document.getElementById("set-n-assign").checked = st.notifyAssignments !== false;
@@ -1266,10 +1477,21 @@
     document.getElementById("btn-analyze-announce").addEventListener("click", function () {
       var text = document.getElementById("upd-announce-body").value;
       var cid = document.getElementById("upd-course").value;
-      var items = D.announcementToPendingChanges(text, cid);
-      items.forEach(function (x) {
-        state.pendingChanges.push(x);
+      var full = D.analyzeAnnouncementFull(text, cid);
+      full.updates.forEach(function (x) {
+        state.updates.push(x);
       });
+      var sumBox = document.getElementById("upd-announce-summary");
+      var sumList = document.getElementById("upd-summary-list");
+      if (sumBox && sumList) {
+        sumList.innerHTML = "";
+        (full.summaryLines || []).forEach(function (line) {
+          var li = document.createElement("li");
+          li.textContent = line;
+          sumList.appendChild(li);
+        });
+        sumBox.hidden = !(full.summaryLines && full.summaryLines.length);
+      }
       save();
       renderUpdates();
       renderOverview();
@@ -1277,7 +1499,7 @@
 
     document.getElementById("btn-analyze-shot").addEventListener("click", function () {
       D.screenshotSimulation().forEach(function (x) {
-        state.pendingChanges.push(x);
+        state.updates.push(x);
       });
       save();
       renderUpdates();
@@ -1298,7 +1520,7 @@
         }).join("") +
         "</ul>";
       res.studyItems.forEach(function (si) {
-        state.pendingChanges.push({
+        state.updates.push({
           id: D.uid(),
           kind: "study",
           title: si.title,
@@ -1313,17 +1535,18 @@
 
     document.getElementById("btn-save-updates").addEventListener("click", function () {
       var next = [];
-      state.pendingChanges.forEach(function (p) {
+      state.updates.forEach(function (p) {
         if (!p.checked) {
           next.push(p);
           return;
         }
         applyPendingPayload(p);
       });
-      state.pendingChanges = next;
+      state.updates = next;
       save();
       document.getElementById("upd-save-msg").hidden = false;
-      document.getElementById("upd-save-msg").textContent = "Approved updates merged into tasks, calendar, and study items.";
+      document.getElementById("upd-save-msg").textContent =
+        "Approved updates merged into tasks, calendar, study items, and course notes where applicable.";
       setTimeout(function () {
         document.getElementById("upd-save-msg").hidden = true;
       }, 4000);
@@ -1373,6 +1596,8 @@
         hoursPerDay: document.getElementById("sp-hours").value,
         confidence: document.getElementById("sp-conf").value,
         tasks: state.tasks,
+        gradeEntries: state.gradeEntries,
+        courses: state.courses,
       });
       document.getElementById("study-plan-out").innerHTML =
         "<h3>Plan</h3><ul>" +
@@ -1408,6 +1633,7 @@
       save();
       renderCalendar();
       renderOverview();
+      renderStudy();
     });
 
     document.getElementById("btn-prep-gen").addEventListener("click", function () {
@@ -1449,9 +1675,39 @@
       save();
     });
 
+    var snf = document.getElementById("smart-notes-file");
+    if (snf) {
+      snf.addEventListener("change", function (e) {
+        var f = e.target.files && e.target.files[0];
+        if (!f) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          var ta = document.getElementById("smart-notes-area");
+          var chunk = String(reader.result || "").slice(0, 12000);
+          ta.value = (ta.value ? ta.value + "\n\n" : "") + "[Imported " + f.name + "]\n" + chunk;
+          state.smartNotesText = ta.value;
+          save();
+        };
+        reader.readAsText(f);
+      });
+    }
+
+    var bsa = document.getElementById("btn-smart-audio-sim");
+    if (bsa) {
+      bsa.addEventListener("click", function () {
+        var ta = document.getElementById("smart-notes-area");
+        ta.value =
+          (ta.value ? ta.value + "\n\n" : "") +
+          "[Simulated voice memo]\nOffline demo transcription — replace with your real lecture notes.";
+        state.smartNotesText = ta.value;
+        save();
+      });
+    }
+
     document.getElementById("form-comm").addEventListener("submit", function (e) {
       e.preventDefault();
       ui.lastCommScenario = document.getElementById("comm-scenario").value;
+      ui.commVariant = 0;
       var body = D.emailScenarioBody(ui.lastCommScenario, {
         professor: document.getElementById("comm-recipient").value.trim(),
         course: document.getElementById("comm-course").selectedOptions[0]
@@ -1483,7 +1739,23 @@
     });
 
     document.getElementById("btn-comm-regen").addEventListener("click", function () {
-      document.getElementById("form-comm").dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+      ui.commVariant += 1;
+      var scenario = document.getElementById("comm-scenario").value;
+      var body = D.emailScenarioBodyVariant(
+        scenario,
+        {
+          professor: document.getElementById("comm-recipient").value.trim(),
+          course: document.getElementById("comm-course").selectedOptions[0]
+            ? document.getElementById("comm-course").selectedOptions[0].textContent
+            : "",
+          tone: document.getElementById("comm-tone").value,
+          context: document.getElementById("comm-ctx").value.trim(),
+          studentName: state.profile.displayName,
+          major: state.profile.major,
+        },
+        ui.commVariant
+      );
+      document.getElementById("comm-draft").value = body;
     });
 
     document.getElementById("form-sch").addEventListener("submit", function (e) {
@@ -1547,24 +1819,31 @@
       }, 2000);
     });
 
-    document.getElementById("toggle-sample-data").addEventListener("change", function (e) {
-      if (!confirm(e.target.checked ? "Load fictional sample data?" : "Return to blank dashboard? Unsaved local edits in this mode will be replaced."))
-      {
-        e.target.checked = !e.target.checked;
-        return;
-      }
-      if (e.target.checked) state = window.DegreePilotStorage.clone(window.DegreePilotSeed.buildSampleState());
-      else state = window.DegreePilotStorage.clone(window.DegreePilotSeed.buildBlankState());
-      save();
-      ui.selectedCourseId = state.courses[0] && state.courses[0].id;
-      applyTheme(state.profile.theme);
-      renderAll();
-    });
+    function wireSampleToggle(el) {
+      if (!el) return;
+      el.addEventListener("change", function (e) {
+        var want = e.target.checked;
+        if (
+          !confirm(
+            want
+              ? "Load fictional sample data?"
+              : "Return to blank dashboard? Unsaved local edits in this mode will be replaced."
+          )
+        ) {
+          e.target.checked = !want;
+          return;
+        }
+        applySampleState(want);
+      });
+    }
+    wireSampleToggle(document.getElementById("toggle-sample-data"));
+    wireSampleToggle(document.getElementById("toggle-sample-global"));
 
     document.getElementById("btn-reset-demo").addEventListener("click", function () {
       if (!confirm("Clear all local dashboard data and return to blank mode?")) return;
       state = window.DegreePilotStorage.resetToBlank();
       ui.selectedCourseId = null;
+      ui.selectedTaskId = null;
       applyTheme(state.profile.theme);
       renderAll();
     });

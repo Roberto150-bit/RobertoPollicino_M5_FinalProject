@@ -58,6 +58,8 @@
       };
     });
 
+    blank.updates = [];
+
     blank.calendarEvents = (old.events || old.calendarEvents || []).map(function (e) {
       return {
         id: e.id,
@@ -114,7 +116,9 @@
     }
     merge(state, blank);
     if (!Array.isArray(state.calendarEvents)) state.calendarEvents = [];
-    if (!Array.isArray(state.pendingChanges)) state.pendingChanges = [];
+    if (state.pendingChanges && !state.updates) state.updates = state.pendingChanges;
+    if (!Array.isArray(state.updates)) state.updates = [];
+    delete state.pendingChanges;
     if (!Array.isArray(state.studyPlans)) state.studyPlans = [];
     if (!Array.isArray(state.studyItems)) state.studyItems = [];
     if (!Array.isArray(state.flashcards)) state.flashcards = [];

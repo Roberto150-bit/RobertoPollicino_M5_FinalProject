@@ -161,6 +161,28 @@
     return out;
   }
 
+  function summarizeAnnouncementLines(text) {
+    var lines = [];
+    var raw = (text || "").trim();
+    if (!raw) return ["Paste announcement text, then click Analyze to extract tasks and dates."];
+    lines.push("Simulated summary (offline keyword scan — not a hosted AI model).");
+    var t = raw.toLowerCase();
+    if (/\bquiz\b/.test(t)) lines.push("• Quiz mentioned — extract date/time and scope.");
+    if (/\b(exam|midterm|final)\b/.test(t)) lines.push("• Exam language detected — add prep blocks to calendar.");
+    if (/\b(due|deadline|submit|assignment|homework)\b/.test(t)) lines.push("• Deadlines or submissions referenced — verify timezone.");
+    if (/\boffice hours\b/.test(t)) lines.push("• Office hours referenced — capture location or link.");
+    if (/\b(cancel|no class|postponed)\b/.test(t)) lines.push("• Possible schedule change — update planner.");
+    if (lines.length === 1) lines.push("• No strong keyword hits — skim manually for bold dates and links.");
+    return lines;
+  }
+
+  function analyzeAnnouncementFull(text, courseId) {
+    return {
+      summaryLines: summarizeAnnouncementLines(text),
+      updates: announcementToPendingChanges(text, courseId),
+    };
+  }
+
   function syllabusSimulation(courseId) {
     var base = isoFromDate(addDays(new Date(), 7));
     return {
@@ -175,35 +197,63 @@
   }
 
   function screenshotSimulation() {
+    var due = isoFromDate(addDays(new Date(), 5));
     return [
       {
         id: uid(),
         kind: "task",
-        title: "Screenshot: assignment due next week",
-        detail: "Simulated OCR-style extraction.",
+        title: "Detected: assignment deadline",
+        detail: "Simulated OCR — assignment row.",
         checked: true,
         payload: {
-          title: "Submit lab reflection",
+          title: "Lab reflection (from screenshot)",
           courseId: "",
-          due: isoFromDate(addDays(new Date(), 7)),
+          due: due,
           type: "assignment",
-          priority: "Medium",
+          priority: "High",
           estMinutes: 90,
-          notes: "From screenshot simulation.",
+          notes: "Screenshot simulation.",
         },
       },
       {
         id: uid(),
         kind: "event",
-        title: "Screenshot: exam reminder",
-        detail: "Simulated calendar cue.",
+        title: "Detected: exam date",
+        detail: "Simulated calendar strip.",
+        checked: true,
+        payload: {
+          title: "Midterm review session",
+          courseId: "",
+          date: isoFromDate(addDays(new Date(), 12)),
+          time: "5:00 PM",
+          type: "exam",
+          priority: "high",
+        },
+      },
+      {
+        id: uid(),
+        kind: "course_alert",
+        title: "Detected: announcement snippet",
+        detail: "Instructor note about attendance.",
         checked: false,
         payload: {
-          title: "Review session",
           courseId: "",
-          date: isoFromDate(addDays(new Date(), 6)),
-          time: "4:00 PM",
-          type: "study",
+          text: "Attendance policy emphasized on syllabus screenshot.",
+          level: "warn",
+        },
+      },
+      {
+        id: uid(),
+        kind: "event",
+        title: "Detected: school deadline",
+        detail: "Financial aid / registrar style date.",
+        checked: true,
+        payload: {
+          title: "Registrar deadline",
+          courseId: "",
+          date: isoFromDate(addDays(new Date(), 20)),
+          time: "",
+          type: "school",
           priority: "medium",
         },
       },
@@ -219,7 +269,7 @@
         { title: "Redo traversal tracing worksheet", notes: "40 minutes, pen and paper." },
         { title: "Implement iterative DFS starter", notes: "Compare with recursive version." },
       ],
-      pendingChanges: [],
+      queuedFromAudio: [],
     };
   }
 
@@ -280,6 +330,8 @@
     var hours = parseFloat(opts.hoursPerDay) || 2;
     var conf = parseInt(opts.confidence, 10) || 3;
     var tasks = opts.tasks || [];
+    var gradeEntries = opts.gradeEntries || [];
+    var courses = opts.courses || [];
     var open = tasks.filter(function (t) {
       return !t.completed;
     });
@@ -288,7 +340,21 @@
     });
     var blocks = [];
     if (mode === "grades") {
-      blocks.push("Prioritize courses where measured average trails your goal; pair reading with practice problems.");
+      var lows = courses.filter(function (c) {
+        var p = courseGradePercent(c.id, gradeEntries);
+        return p != null && p < 82;
+      });
+      blocks.push(
+        lows.length
+          ? "Grade-aware focus: spend deeper blocks on " +
+              lows
+                .map(function (c) {
+                  return c.code;
+                })
+                .join(", ") +
+              " before the next exams."
+          : "Grades look steady — maintain spaced review and sleep-regular cadence."
+      );
     } else if (mode === "confidence") {
       blocks.push(conf <= 2 ? "Rebuild fundamentals with guided examples before timed drills." : "Shift to exam-style prompts and self-quizzing.");
     } else {
@@ -300,6 +366,76 @@
     });
     blocks.push("Simulated plan only — adjust to your real syllabus and energy patterns.");
     return blocks;
+  }
+
+  function gradeCategoryBreakdown(courseId, gradeEntries) {
+    var cats = ["exam", "homework", "project", "quiz", "participation"];
+    var map = {};
+    cats.forEach(function (c) {
+      map[c] = { weightedPctSum: 0, weightSum: 0 };
+    });
+    (gradeEntries || [])
+      .filter(function (g) {
+        return g.courseId === courseId;
+      })
+      .forEach(function (g) {
+        var cat = g.category || "homework";
+        if (!map[cat]) map[cat] = { weightedPctSum: 0, weightSum: 0 };
+        var pct = g.pointsPossible ? (parseFloat(g.score) / parseFloat(g.pointsPossible)) * 100 : parseFloat(g.score) || 0;
+        var w = parseFloat(g.weightPercent) || 0;
+        map[cat].weightedPctSum += pct * w;
+        map[cat].weightSum += w;
+      });
+    return cats.map(function (c) {
+      var m = map[c];
+      var avg = m.weightSum > 0 ? Math.round((m.weightedPctSum / m.weightSum) * 10) / 10 : null;
+      return { category: c, avg: avg, weight: m.weightSum };
+    });
+  }
+
+  function studyRecommendationHint(isoToday, courses, tasks, gradeEntries) {
+    var overdue = tasks.filter(function (t) {
+      return !t.completed && t.due < isoToday;
+    });
+    if (overdue.length) return "Study recommendation: finish overdue work starting with «" + overdue[0].title + "».";
+    var weak = (courses || []).filter(function (c) {
+      var p = courseGradePercent(c.id, gradeEntries);
+      return p != null && p < 78;
+    });
+    if (weak.length) return "Study recommendation: add practice blocks for " + weak.map(function (c) { return c.code; }).join(", ") + " based on grade entries.";
+    var soon = tasks
+      .filter(function (t) {
+        return !t.completed;
+      })
+      .sort(function (a, b) {
+        return a.due.localeCompare(b.due);
+      })[0];
+    if (soon) return "Study recommendation: protect time before «" + soon.title + "» (" + soon.due + ").";
+    return "Study recommendation: add courses and tasks to personalize suggestions.";
+  }
+
+  function scholarshipSuggestions(major) {
+    var m = (major || "").toLowerCase();
+    var base = [
+      { name: "National STEM Achievement Grant", amount: "$1,500", note: "Merit + STEM majors — fictional demo." },
+      { name: "First-Generation Success Award", amount: "$2,000", note: "Mixed need/merit — fictional demo." },
+    ];
+    if (/computer|cs|software|data/i.test(m)) {
+      base.unshift({ name: "Computing Scholars Fellowship", amount: "$3,000", note: "CS / IT pathways — fictional demo." });
+    }
+    if (/math|stat/i.test(m)) {
+      base.unshift({ name: "Quantitative Reasoning Award", amount: "$1,200", note: "Math-focused — fictional demo." });
+    }
+    return base.slice(0, 4);
+  }
+
+  function emailScenarioBodyVariant(scenario, fields, variant) {
+    var base = emailScenarioBody(scenario, fields);
+    var tag =
+      variant % 2 === 1
+        ? "\n\n(Please let me know if there is a preferred format for these requests.)"
+        : "\n\nThank you again for your guidance this semester.";
+    return base + tag;
   }
 
   function emailScenarioBody(scenario, fields) {
@@ -397,6 +533,8 @@
     daysInMonth: daysInMonth,
     startOfWeekMonday: startOfWeekMonday,
     announcementToPendingChanges: announcementToPendingChanges,
+    summarizeAnnouncementLines: summarizeAnnouncementLines,
+    analyzeAnnouncementFull: analyzeAnnouncementFull,
     syllabusSimulation: syllabusSimulation,
     screenshotSimulation: screenshotSimulation,
     audioSimulation: audioSimulation,
@@ -406,7 +544,11 @@
     whatIfNeededAverage: whatIfNeededAverage,
     standingLabel: standingLabel,
     buildStudyPlanBlocks: buildStudyPlanBlocks,
+    gradeCategoryBreakdown: gradeCategoryBreakdown,
+    studyRecommendationHint: studyRecommendationHint,
+    scholarshipSuggestions: scholarshipSuggestions,
     emailScenarioBody: emailScenarioBody,
+    emailScenarioBodyVariant: emailScenarioBodyVariant,
     examPrepToolkit: examPrepToolkit,
     examFeedbackSim: examFeedbackSim,
   };

@@ -61,7 +61,7 @@
       courses: [],
       tasks: [],
       calendarEvents: [],
-      pendingChanges: [],
+      updates: [],
       gradeEntries: [],
       studyPlans: [],
       studyItems: [],
@@ -321,7 +321,7 @@
       { id: "sam-r1", professor: "Prof. Lee Johnson", status: "Requested", due: isoFromDate(addDays(today, 14)), notes: "Send resume packet." },
     ];
 
-    s.pendingChanges = [
+    s.updates = [
       {
         id: "sam-pc1",
         kind: "task",
