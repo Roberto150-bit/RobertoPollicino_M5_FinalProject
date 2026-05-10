@@ -57,6 +57,7 @@
         label: "Spring 2025",
         totalWeeks: 16,
         currentWeek: 1,
+        lastSemesterGpaApprox: null,
       },
       courses: [],
       tasks: [],
@@ -76,6 +77,7 @@
       smartNotesText: "",
       savedAnnouncementPaste: "",
       notificationsUnread: 0,
+      pendingAiQuestions: [],
       withdrawalDeadlineNote: "Many institutions publish withdrawal deadlines around mid-semester — confirm with your registrar.",
     };
   }
@@ -96,8 +98,13 @@
       advisorEmail: "jellis@demo-university.edu",
       theme: "ocean",
     };
-    s.semesterMeta = { label: "Spring 2025", totalWeeks: 16, currentWeek: 8 };
+    s.semesterMeta = { label: "Spring 2025", totalWeeks: 16, currentWeek: 8, lastSemesterGpaApprox: 3.6 };
     s.notificationsUnread = 3;
+    s.pendingAiQuestions = [
+      { id: "pa1", text: "Which course should we prioritize if two assignments land on the same day?", dismissed: false },
+      { id: "pa2", text: "Confirm your preferred deadline reminders: morning digest or night-before alerts?", dismissed: false },
+      { id: "pa3", text: "Do you want exam dates auto-added as study blocks on lighter class days?", dismissed: false },
+    ];
 
     var c1 = {
       id: "sam-c1",
@@ -129,7 +136,10 @@
       links: [{ label: "GitLab course group", url: "#" }],
       materials: [],
       syllabusExtracted: null,
-      alerts: [{ text: "Sprint review Friday — sync slides early.", level: "warn" }],
+      alerts: [
+        { text: "Sprint review Friday — sync slides early.", level: "warn" },
+        { text: "Class attendance slipped — in-class labs are weighted heavily.", level: "risk" },
+      ],
     };
     var c3 = {
       id: "sam-c3",
@@ -161,7 +171,7 @@
       links: [],
       materials: [],
       syllabusExtracted: null,
-      alerts: [],
+      alerts: [{ text: "Professor updated the syllabus for the final project requirements.", level: "warn" }],
     };
     var c5 = {
       id: "sam-c5",

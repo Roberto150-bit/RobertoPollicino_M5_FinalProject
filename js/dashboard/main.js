@@ -56,17 +56,12 @@
     return (text || "").toLowerCase().indexOf(q) !== -1;
   }
 
-  function priorityRank(p) {
-    if (p === "High") return 3;
-    if (p === "Low") return 1;
-    return 2;
-  }
-
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme || "ocean");
   }
 
   function switchView(name) {
+    document.body.setAttribute("data-current-view", name || "overview");
     document.querySelectorAll("[data-view-panel]").forEach(function (panel) {
       panel.classList.toggle("view-active", panel.getAttribute("data-view-panel") === name);
     });
@@ -145,200 +140,31 @@
 
   function updateSidebarProgress() {
     var sm = state.semesterMeta || { label: "Spring 2025", totalWeeks: 16, currentWeek: 1 };
-    document.getElementById("sidebar-sem-label").textContent = sm.label || "—";
     document.getElementById("sidebar-week-label").textContent =
       "Week " + (sm.currentWeek || 1) + " of " + (sm.totalWeeks || 16);
     var pct = sm.totalWeeks ? Math.round(((sm.currentWeek || 1) / sm.totalWeeks) * 100) : 0;
     document.getElementById("sidebar-progress-fill").style.width = pct + "%";
     var sp = document.getElementById("sidebar-sem-pct");
-    if (sp) sp.textContent = pct + "% complete";
+    if (sp) sp.textContent = pct + "%";
   }
 
-  /* ---------- Overview ---------- */
+  function overviewCtx() {
+    return {
+      state: state,
+      D: D,
+      courseById: courseById,
+      matchesSearch: matchesSearch,
+      filteredCalendarEvents: filteredCalendarEvents,
+      escapeHtml: escapeHtml,
+      save: save,
+      switchView: switchView,
+    };
+  }
+
+  /* ---------- Overview (module: js/dashboard/overview.js) ---------- */
   function renderOverview() {
-    var tasksOpen = state.tasks.filter(function (t) {
-      return !t.completed && matchesSearch(t.title + " " + (courseById(t.courseId) ? courseById(t.courseId).code : ""));
-    });
-    document.getElementById("ov-open-tasks").textContent = String(tasksOpen.length);
-
-    var sortedFocus = tasksOpen.slice().sort(function (a, b) {
-      var pr = priorityRank(b.priority) - priorityRank(a.priority);
-      if (pr !== 0) return pr;
-      return a.due.localeCompare(b.due);
-    });
-    var top3 = sortedFocus.slice(0, 3);
-    document.getElementById("ov-focus-count").textContent = String(top3.length);
-
-    var ovGrade = D.overallGpaSnapshot(state.courses, state.gradeEntries);
-    document.getElementById("ov-grade-snap").textContent = ovGrade == null ? "—" : ovGrade + "%";
-    var gh = document.getElementById("ov-grade-hint");
-    if (gh) gh.textContent = ovGrade == null ? "No grade data available" : "Avg across courses with entries";
-    var donut = document.getElementById("ov-grade-donut");
-    if (donut) {
-      if (ovGrade == null) donut.style.background = "conic-gradient(#cbd5e1 0 100%)";
-      else {
-        var gg = Math.min(100, Math.max(0, ovGrade));
-        donut.style.background = "conic-gradient(#0066ff 0 " + gg + "%, #e2e8f0 " + gg + "% 100%)";
-      }
-    }
-    var sub = document.getElementById("ov-page-sub");
-    if (sub) {
-      var sm = state.semesterMeta || { label: "", totalWeeks: 16, currentWeek: 1 };
-      var ws = D.startOfWeekMonday(new Date());
-      var we = D.addDays(ws, 6);
-      sub.textContent =
-        (sm.label || "Semester") +
-        " · Week " +
-        (sm.currentWeek || 1) +
-        " of " +
-        (sm.totalWeeks || 16) +
-        " · " +
-        ws.toLocaleDateString(undefined, { month: "short", day: "numeric" }) +
-        " – " +
-        we.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-    }
-    var mom = document.getElementById("ov-momentum-line");
-    if (mom) {
-      var doneWeek = state.tasks.filter(function (t) {
-        return t.completed;
-      }).length;
-      mom.innerHTML =
-        "<strong>You're building momentum.</strong> " +
-        (doneWeek
-          ? "Keep completing tasks — your dashboard updates everywhere."
-          : "Add tasks to track progress week over week.");
-    }
-
-    var fl = document.getElementById("ov-focus-list");
-    fl.innerHTML = "";
-    if (!top3.length) {
-      fl.innerHTML =
-        '<div class="dp-empty">No focus items yet. Add a course, task, or run the Updates analyzer to generate priorities.</div>';
-    } else {
-      top3.forEach(function (t) {
-        var c = courseById(t.courseId);
-        var row = document.createElement("div");
-        row.className = "stack-item";
-        row.innerHTML =
-          "<h4>" +
-          escapeHtml(t.title) +
-          "</h4><p class=\"stack-meta\">" +
-          escapeHtml(c ? c.code : "") +
-          " · Due " +
-          escapeHtml(t.due) +
-          " · <span class=\"priority-" +
-          String(t.priority || "Medium").toLowerCase() +
-          "\">" +
-          escapeHtml(t.priority || "") +
-          "</span></p>";
-        fl.appendChild(row);
-      });
-    }
-
-    var dl = document.getElementById("ov-deadlines");
-    dl.innerHTML = "";
-    var deadlines = [];
-    tasksOpen.forEach(function (t) {
-      deadlines.push({ kind: "task", title: t.title, date: t.due, sub: courseById(t.courseId) ? courseById(t.courseId).code : "" });
-    });
-    filteredCalendarEvents().forEach(function (e) {
-      deadlines.push({
-        kind: "event",
-        title: e.title,
-        date: e.date,
-        sub: (courseById(e.courseId) || {}).code || e.type,
-      });
-    });
-    deadlines.sort(function (a, b) {
-      return a.date.localeCompare(b.date);
-    });
-    deadlines = deadlines.slice(0, 8);
-    if (!deadlines.length) {
-      dl.innerHTML = '<div class="dp-empty">No deadlines yet.</div>';
-    } else {
-      deadlines.forEach(function (d) {
-        var row = document.createElement("div");
-        row.className = "stack-item";
-        row.innerHTML =
-          "<h4>" +
-          escapeHtml(d.title) +
-          "</h4><p class=\"stack-meta\">" +
-          escapeHtml(d.date) +
-          " · " +
-          escapeHtml(d.sub) +
-          "</p>";
-        dl.appendChild(row);
-      });
-    }
-
-    var alerts = document.getElementById("ov-alerts");
-    alerts.innerHTML = "";
-    var alertLines = [];
-    state.courses.forEach(function (c) {
-      var g = D.courseGradePercent(c.id, state.gradeEntries);
-      if (g != null && g < 75) alertLines.push({ level: "risk", text: c.code + " average looks low (" + g + "%)." });
-    });
-    tasksOpen.forEach(function (t) {
-      if (t.due < D.isoFromDate(new Date())) alertLines.push({ level: "warn", text: "Overdue: " + t.title });
-    });
-    state.courses.forEach(function (c) {
-      if ((c.alerts || []).length) {
-        c.alerts.forEach(function (a) {
-          alertLines.push({ level: a.level === "warn" ? "warn" : "risk", text: c.code + ": " + a.text });
-        });
-      }
-    });
-    if (!alertLines.length) {
-      alerts.innerHTML = '<div class="dp-empty">No alerts — keep momentum.</div>';
-    } else {
-      alertLines.slice(0, 6).forEach(function (a) {
-        var d = document.createElement("div");
-        d.className = "stack-item";
-        d.style.borderLeft = "4px solid " + (a.level === "risk" ? "#ef4444" : "#f59e0b");
-        d.textContent = a.text;
-        alerts.appendChild(d);
-      });
-    }
-
-    var cp = document.getElementById("ov-cal-preview");
-    cp.innerHTML = "";
-    var evs = filteredCalendarEvents()
-      .slice()
-      .sort(function (a, b) {
-        return a.date.localeCompare(b.date);
-      })
-      .slice(0, 5);
-    if (!evs.length) {
-      cp.innerHTML = '<div class="dp-empty">No upcoming events match filters.</div>';
-    } else {
-      evs.forEach(function (e) {
-        var c = courseById(e.courseId);
-        var row = document.createElement("div");
-        row.className = "stack-item";
-        row.innerHTML =
-          "<h4>" +
-          escapeHtml(e.title) +
-          "</h4><p class=\"stack-meta\">" +
-          escapeHtml(e.date) +
-          " · " +
-          escapeHtml(c ? c.code : e.type) +
-          "</p>";
-        cp.appendChild(row);
-      });
-    }
-
-    var ai = document.getElementById("ov-ai-line");
-    var sug = sortedFocus[0];
-    ai.textContent = sug
-      ? "Focus next on «" +
-        sug.title +
-        "» (" +
-        (courseById(sug.courseId) || {}).code +
-        ") — highest urgency in your list."
-      : "Add tasks or enable sample data to surface an urgency suggestion.";
-    var sr = document.getElementById("ov-study-rec");
-    if (sr) {
-      sr.textContent = D.studyRecommendationHint(D.isoFromDate(new Date()), state.courses, state.tasks, state.gradeEntries);
+    if (window.DegreePilotOverview && typeof window.DegreePilotOverview.render === "function") {
+      window.DegreePilotOverview.render(overviewCtx());
     }
   }
 
@@ -1431,11 +1257,6 @@
       }
     });
 
-    var ovStart = document.getElementById("btn-ov-start-focus");
-    if (ovStart)
-      ovStart.addEventListener("click", function () {
-        switchView("tasks");
-      });
     var syllBtn = document.getElementById("btn-add-course-syllabus");
     if (syllBtn)
       syllBtn.addEventListener("click", function () {
@@ -1464,13 +1285,6 @@
         var scenarios = ["intro", "clarify", "extension", "grade", "advisor"];
         if (sel && scenarios[idx] !== undefined) sel.value = scenarios[idx];
       });
-    });
-
-    document.getElementById("btn-notifications").addEventListener("click", function () {
-      state.notificationsUnread = 0;
-      save();
-      updateTopProfile();
-      alert("Notifications cleared (demo).");
     });
 
     document.querySelectorAll("#cal-filters input").forEach(function (cb) {
@@ -2024,6 +1838,10 @@
       state.settings.notifyFinancial = e.target.checked;
       save();
     });
+
+    if (window.DegreePilotOverview && typeof window.DegreePilotOverview.bind === "function") {
+      window.DegreePilotOverview.bind(overviewCtx());
+    }
   }
 
   function init() {
