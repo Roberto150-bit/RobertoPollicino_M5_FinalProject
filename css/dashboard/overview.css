@@ -801,6 +801,24 @@ button.ov-today-item {
   background: #f8fafc;
 }
 
+button.ov-alert-card--link {
+  width: 100%;
+  display: block;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+button.ov-alert-card--link:hover {
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+button.ov-alert-card--link:focus-visible {
+  outline: 2px solid var(--ov-blue);
+  outline-offset: 2px;
+}
+
 /* Weekly preview */
 .ov-weekly-card {
   background: #fff;
@@ -920,6 +938,7 @@ button.ov-today-item {
   padding: 0.35rem;
   background: var(--dp-gray-50);
   font-size: 0.68rem;
+  cursor: pointer;
 }
 
 .ov-month-cell.is-muted {
@@ -958,6 +977,7 @@ button.ov-today-item {
   padding: 0.45rem 0.35rem 0.55rem;
   min-height: 120px;
   background: var(--dp-gray-50);
+  cursor: pointer;
 }
 
 .ov-week-col.is-today {
@@ -986,6 +1006,15 @@ button.ov-today-item {
   font-size: 0.65rem;
   border-left: 3px solid var(--dp-gray-400);
   background: rgba(148, 163, 184, 0.12);
+}
+
+button.ov-week-chip {
+  width: 100%;
+  display: block;
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .ov-week-chip-time {

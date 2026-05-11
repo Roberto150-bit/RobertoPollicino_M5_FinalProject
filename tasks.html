@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Tasks workspace." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Tasks — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/tasks.css" />
+</head>
+<body class="dash-body" data-current-view="tasks">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></span>
+        <a href="updates.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></a>
+        <a href="grades.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></a>
+        <a href="study-center.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></a>
+        <a href="communication.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></a>
+        <a href="financial-aid.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></a>
+        <a href="settings.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="tasks-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="tasks-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="tasks-sidebar-week-label">Week — of —</p>
+        <a href="dashboard.html#overview" class="btn btn-secondary btn-sm btn-block">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, syllabi, notes…" autocomplete="off" />
+          <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <div class="dp-notify-wrap">
+            <button type="button" class="dp-notify-btn" id="btn-notifications" aria-label="Notifications"><span aria-hidden="true">🔔</span><span class="dp-badge" id="notification-badge" hidden>0</span></button>
+            <div id="notify-dropdown" class="ov-notify-dropdown" hidden role="region"><div class="ov-notify-head">Notifications</div><div id="notify-dropdown-body"></div></div>
+          </div>
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span><span id="profile-major-line"></span></div>
+          <a href="dashboard.html#overview" class="dp-avatar-wrap"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">A</div></a>
+        </div>
+        <h1 class="sr-only" id="view-title">Tasks</h1>
+      </header>
+
+      <main class="dash-content courses-page-main">
+        <p class="banner-note">No cloud sync · data stays in this browser · prototype UI aligned to design reference mocks.</p>
+
+        <div class="courses-page-head">
+          <div>
+            <h1 class="dp-page-title">Tasks</h1>
+            <p class="dp-page-sub muted">What work do you need to finish?</p>
+          </div>
+        </div>
+
+        <div class="tasks-layout" id="tasks-layout-root">
+          <div class="tasks-col-left dp-card panel">
+            <div class="tasks-toolbar-main tasks-toolbar-main--with-add">
+              <button type="button" class="btn btn-primary btn-sm tasks-btn-add" id="tsk-btn-add">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+                Add task
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="tsk-btn-filter" title="Filter">Filter</button>
+              <select id="tsk-filter-course" class="tasks-toolbar-sort" style="padding:0.35rem 0.45rem;border-radius:8px;border:1px solid var(--dp-gray-200);"></select>
+              <select id="tsk-filter-archive" style="padding:0.35rem 0.45rem;border-radius:8px;border:1px solid var(--dp-gray-200);" title="Completed visibility">
+                <option value="active">Hide archived</option>
+                <option value="archived">Archived only</option>
+                <option value="all">All completed</option>
+              </select>
+              <select id="tsk-sort" class="tasks-toolbar-sort">
+                <option value="due">Sort: Due date</option>
+                <option value="priority">Sort: Priority</option>
+              </select>
+            </div>
+            <div class="tasks-type-tabs" role="tablist" id="tsk-type-tabs"></div>
+            <div id="tsk-list-host"></div>
+          </div>
+
+          <div class="tasks-col-center" id="tsk-center-wrap">
+            <div class="tasks-center-placeholder" id="tsk-center-placeholder"></div>
+            <div class="tasks-notion-shell" id="tsk-notion-shell" hidden></div>
+          </div>
+
+          <div class="tasks-col-right tasks-col-widgets">
+            <section class="tasks-widget-card dp-card panel" aria-labelledby="tsk-widget-progress-title">
+              <div id="tsk-pane-progress"></div>
+            </section>
+            <section class="tasks-widget-card dp-card panel" aria-labelledby="tsk-widget-suggest-title">
+              <div id="tsk-pane-suggest"></div>
+            </section>
+            <section class="tasks-widget-card dp-card panel">
+              <div id="tsk-pane-alert"></div>
+            </section>
+            <section class="tasks-widget-card dp-card panel">
+              <div id="tsk-pane-upcoming"></div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Rationale before adding suggested task -->
+  <div class="modal" id="tsk-modal-rationale" hidden>
+    <div class="modal-backdrop" data-close-tsk-modals></div>
+    <div class="modal-card card-elevated" role="dialog" aria-labelledby="tsk-rationale-title">
+      <div class="modal-head">
+        <h2 id="tsk-rationale-title">Why is this task needed?</h2>
+        <button type="button" class="icon-btn" id="tsk-rationale-close" aria-label="Close">×</button>
+      </div>
+      <p class="muted" id="tsk-rationale-subtitle" style="font-size:0.82rem;margin-top:0;"></p>
+      <div class="field"><label for="tsk-rationale-text">Your rationale (editable)</label><textarea id="tsk-rationale-text" rows="4"></textarea></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="tsk-rationale-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="tsk-rationale-confirm">Confirm &amp; edit task</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/seed.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/tasks-page.js"></script>
+</body>
+</html>

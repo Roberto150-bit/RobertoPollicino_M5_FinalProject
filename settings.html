@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Profile and Settings." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Profile / Settings — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/settings-page.css" />
+</head>
+<body class="dash-body" data-current-view="settings">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <a href="tasks.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></a>
+        <a href="updates.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></a>
+        <a href="grades.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></a>
+        <a href="study-center.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></a>
+        <a href="communication.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></a>
+        <a href="financial-aid.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></span>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="pst-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="pst-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="pst-sidebar-week-label">Week — of —</p>
+        <a href="study-center.html" class="btn btn-secondary btn-sm btn-block">View Plan →</a>
+        <a href="dashboard.html#overview" class="btn btn-ghost btn-sm btn-block" style="margin-top:0.35rem;">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" class="search-input" placeholder="Search courses, tasks, resources…" autocomplete="off" />
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span></div>
+          <a href="settings.html" class="dp-avatar-wrap" title="Profile"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">S</div></a>
+        </div>
+        <h1 class="sr-only">Profile and Settings</h1>
+      </header>
+
+      <main class="dash-content pst-main">
+        <header class="pst-page-head">
+          <div>
+            <h2 class="pst-page-title">Profile / Settings</h2>
+            <p class="pst-page-sub muted">Manage your profile, preferences, and how DegreePilot AI personalizes your experience.</p>
+          </div>
+          <aside class="pst-quote dp-card" aria-label="Tagline">
+            <span class="pst-quote-ico" aria-hidden="true">“</span>
+            <p class="pst-quote-text">Personalized support. Smarter planning. Your degree, your way.</p>
+            <span class="pst-quote-spark" aria-hidden="true">✨</span>
+          </aside>
+        </header>
+
+        <section class="pst-grid pst-grid--3" aria-label="Profile overview">
+          <article class="dp-card pst-card" id="pst-card-profile">
+            <div class="pst-card-head">
+              <h3 class="pst-card-title">Student Profile</h3>
+              <button type="button" class="pst-edit-btn" id="pst-open-edit-profile" aria-haspopup="dialog"><span aria-hidden="true">✎</span> Edit</button>
+            </div>
+            <div class="pst-profile-body">
+              <div class="pst-avatar-lg" id="pst-profile-avatar" aria-hidden="true">CW</div>
+              <ul class="pst-profile-fields" id="pst-profile-fields"></ul>
+            </div>
+          </article>
+
+          <article class="dp-card pst-card">
+            <div class="pst-card-head">
+              <h3 class="pst-card-title">Academic Goal</h3>
+              <button type="button" class="pst-edit-btn" id="pst-open-edit-goal" aria-haspopup="dialog"><span aria-hidden="true">✎</span> Edit</button>
+            </div>
+            <div class="pst-goal-block">
+              <span class="pst-goal-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+              <div>
+                <p class="muted small pst-goal-label">What I’m trying to improve</p>
+                <p class="pst-goal-headline" id="pst-goal-headline">—</p>
+                <p class="pst-goal-desc" id="pst-goal-desc">—</p>
+              </div>
+            </div>
+            <h4 class="pst-focus-title">Focus Areas</h4>
+            <ul class="pst-focus-list" id="pst-focus-list"></ul>
+          </article>
+
+          <article class="dp-card pst-card">
+            <div class="pst-card-head">
+              <h3 class="pst-card-title">Academic Advisor</h3>
+              <button type="button" class="pst-edit-btn" id="pst-open-edit-advisor" aria-haspopup="dialog"><span aria-hidden="true">✎</span> Edit</button>
+            </div>
+            <div class="pst-adv-top">
+              <div class="pst-avatar-lg pst-avatar-adv" id="pst-advisor-avatar">MT</div>
+              <div>
+                <p class="pst-adv-name" id="pst-advisor-name">—</p>
+                <p class="muted small" id="pst-advisor-title">—</p>
+                <span class="pst-badge-avail" id="pst-advisor-status">Available</span>
+              </div>
+            </div>
+            <ul class="pst-adv-contact" id="pst-adv-contact"></ul>
+            <div class="pst-adv-hours">
+              <strong>Advising Hours</strong>
+              <p class="muted" id="pst-advisor-hours">—</p>
+            </div>
+            <button type="button" class="btn btn-secondary pst-schedule-btn" id="pst-schedule-meeting"><span aria-hidden="true">📅</span> Schedule Meeting</button>
+          </article>
+        </section>
+
+        <section class="pst-grid pst-grid--prefs" aria-label="Preferences">
+          <article class="dp-card pst-card">
+            <h3 class="pst-card-title">Course Preferences</h3>
+            <p class="muted small pst-card-desc">Customize how your courses appear and behave in DegreePilot AI.</p>
+
+            <div class="pst-prefs-cols">
+              <div class="pst-prefs-col">
+                <p class="pst-prefs-label"><strong>Course Color Scheme</strong><span class="muted small">Choose how courses are color-coded</span></p>
+                <div class="pst-swatches" id="pst-swatches" role="radiogroup" aria-label="Course color accent"></div>
+
+                <p class="pst-prefs-label pst-prefs-label--sp"><strong>Course Links</strong><span class="muted small">Choose which links appear on course cards</span></p>
+                <div class="pst-toggle-list">
+                  <label class="pst-switch-row"><span>Syllabus</span><input type="checkbox" id="pst-link-syllabus" data-link="syllabus" class="pst-toggle" /></label>
+                  <label class="pst-switch-row"><span>Canvas / LMS</span><input type="checkbox" id="pst-link-canvas" data-link="canvas" class="pst-toggle" /></label>
+                  <label class="pst-switch-row"><span>Course Materials</span><input type="checkbox" id="pst-link-materials" data-link="materials" class="pst-toggle" /></label>
+                  <label class="pst-switch-row"><span>Textbooks / Readings</span><input type="checkbox" id="pst-link-textbooks" data-link="textbooks" class="pst-toggle" /></label>
+                </div>
+              </div>
+              <div class="pst-prefs-col">
+                <p class="pst-prefs-label"><strong>Display Options</strong><span class="muted small">Control how information is shown</span></p>
+                <div class="pst-toggle-list">
+                  <label class="pst-switch-row"><span>Show course progress bars</span><input type="checkbox" id="pst-disp-progress" data-disp="progressBars" class="pst-toggle-disp" /></label>
+                  <label class="pst-switch-row"><span>Show upcoming deadlines on cards</span><input type="checkbox" id="pst-disp-deadlines" data-disp="deadlinesOnCards" class="pst-toggle-disp" /></label>
+                  <label class="pst-switch-row"><span>Compact course view</span><input type="checkbox" id="pst-disp-compact" data-disp="compactView" class="pst-toggle-disp" /></label>
+                  <label class="pst-switch-row"><span>Show completed courses</span><input type="checkbox" id="pst-disp-completed" data-disp="showCompleted" class="pst-toggle-disp" /></label>
+                  <label class="pst-switch-row"><span>Group by term</span><input type="checkbox" id="pst-disp-term" data-disp="groupByTerm" class="pst-toggle-disp" /></label>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="pst-preview-bar" id="pst-preview-courses"><span aria-hidden="true">👁</span> Preview Course View <span aria-hidden="true">→</span></button>
+          </article>
+
+          <article class="dp-card pst-card">
+            <h3 class="pst-card-title">Notification Settings</h3>
+            <p class="muted small pst-card-desc">Choose how and when you want to be notified.</p>
+            <ul class="pst-notify-list">
+              <li class="pst-notify-item">
+                <span class="pst-nico pst-nico--g" aria-hidden="true">🔔</span>
+                <div><strong>Task &amp; Deadline Reminders</strong><span class="muted small">Upcoming tasks and due dates</span></div>
+                <label class="pst-ios"><input type="checkbox" id="pst-n-task" /><span class="pst-ios-ui"></span></label>
+              </li>
+              <li class="pst-notify-item">
+                <span class="pst-nico pst-nico--b" aria-hidden="true">📅</span>
+                <div><strong>Class &amp; Schedule Updates</strong><span class="muted small">Changes to classes or meetings</span></div>
+                <label class="pst-ios"><input type="checkbox" id="pst-n-schedule" /><span class="pst-ios-ui"></span></label>
+              </li>
+              <li class="pst-notify-item">
+                <span class="pst-nico pst-nico--g2" aria-hidden="true">🎓</span>
+                <div><strong>Grade &amp; Feedback Alerts</strong><span class="muted small">New grades and instructor feedback</span></div>
+                <label class="pst-ios"><input type="checkbox" id="pst-n-grade" /><span class="pst-ios-ui"></span></label>
+              </li>
+              <li class="pst-notify-item">
+                <span class="pst-nico pst-nico--o" aria-hidden="true">📖</span>
+                <div><strong>Study Reminders</strong><span class="muted small">Encouragement and study nudges</span></div>
+                <label class="pst-ios"><input type="checkbox" id="pst-n-study" /><span class="pst-ios-ui"></span></label>
+              </li>
+              <li class="pst-notify-item">
+                <span class="pst-nico pst-nico--b2" aria-hidden="true">📈</span>
+                <div><strong>Weekly Progress Summary</strong><span class="muted small">Your weekly academic snapshot</span></div>
+                <label class="pst-ios"><input type="checkbox" id="pst-n-weekly" /><span class="pst-ios-ui"></span></label>
+              </li>
+            </ul>
+            <button type="button" class="pst-foot-link" id="pst-manage-channels">Manage Notification Channels <span aria-hidden="true">→</span></button>
+          </article>
+
+          <article class="dp-card pst-card">
+            <h3 class="pst-card-title">Privacy &amp; Data</h3>
+            <p class="muted small pst-card-desc">We take your privacy seriously.</p>
+            <ul class="pst-privacy-list">
+              <li>
+                <span class="pst-pico pst-pico--b" aria-hidden="true">🔔</span>
+                <div><strong>Data We Use</strong><p class="muted small">We use your academic data to personalize recommendations, track progress, and improve your experience.</p></div>
+              </li>
+              <li>
+                <span class="pst-pico pst-pico--r" aria-hidden="true">🛡</span>
+                <div><strong>We Never Share</strong><p class="muted small">Your data is never sold or shared with third parties for advertising.</p></div>
+              </li>
+              <li>
+                <span class="pst-pico pst-pico--b" aria-hidden="true">⏱</span>
+                <div><strong>Your Control</strong><p class="muted small">You can update your preferences or delete your data at any time.</p></div>
+              </li>
+            </ul>
+            <a class="pst-foot-link pst-foot-link--a" href="features.html">Learn more in our Privacy Policy <span aria-hidden="true">↗</span></a>
+          </article>
+        </section>
+
+        <section class="pst-grid pst-grid--security" aria-label="Account security">
+          <article class="dp-card pst-card pst-card--security">
+            <h3 class="pst-card-title">Account &amp; Security</h3>
+            <div class="pst-security-grid">
+              <button type="button" class="btn btn-secondary btn-sm" id="pst-change-password">Change Password</button>
+              <label class="pst-switch-row pst-switch-row--lg"><span>Two-Factor Authentication</span><label class="pst-ios"><input type="checkbox" id="pst-2fa" /><span class="pst-ios-ui"></span></label></label>
+              <label class="pst-switch-row pst-switch-row--lg"><span>Email Notifications</span><label class="pst-ios"><input type="checkbox" id="pst-email-notify" /><span class="pst-ios-ui"></span></label></label>
+              <label class="pst-switch-row pst-switch-row--lg"><span>Push Notifications</span><label class="pst-ios"><input type="checkbox" id="pst-push-notify" /><span class="pst-ios-ui"></span></label></label>
+              <button type="button" class="pst-text-btn" id="pst-export-data">Export My Data</button>
+              <button type="button" class="pst-text-btn pst-text-btn--danger" id="pst-delete-account">Delete Account</button>
+            </div>
+            <button type="button" class="btn btn-primary pst-save-security" id="pst-save-security">Save Security Settings</button>
+          </article>
+        </section>
+
+        <section class="pst-grid pst-grid--danger" aria-label="Data and session">
+          <article class="dp-card pst-danger-card">
+            <span class="pst-danger-ico pst-danger-ico--orange" aria-hidden="true">↻</span>
+            <div class="pst-danger-text">
+              <strong>Reset Demo Data</strong>
+              <p class="muted small">Clear all demo content and start fresh. This will remove all tasks, courses, grades, and sample data.</p>
+            </div>
+            <button type="button" class="btn pst-btn-orange-outline" id="pst-reset-demo">Reset Demo Data</button>
+          </article>
+          <article class="dp-card pst-danger-card">
+            <span class="pst-danger-ico pst-danger-ico--red" aria-hidden="true">⎋</span>
+            <div class="pst-danger-text">
+              <strong>Logout</strong>
+              <p class="muted small">Sign out of DegreePilot AI and return to the landing page.</p>
+            </div>
+            <button type="button" class="btn pst-btn-red-outline" id="pst-logout">Logout &amp; Return to Landing Page</button>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="pst-dlg-profile" class="pst-dialog">
+    <button type="button" class="pst-dialog-close" data-close-dlg="pst-dlg-profile" aria-label="Close">×</button>
+    <h3 class="pst-dialog-title">Edit Student Profile</h3>
+    <form id="pst-form-profile" class="pst-dialog-form">
+      <div class="pst-form-grid">
+        <label class="pst-field"><span>Full Name</span><input id="dlg-pf-name" required /></label>
+        <label class="pst-field"><span>Email</span><input id="dlg-pf-email" type="email" /></label>
+        <label class="pst-field"><span>Phone</span><input id="dlg-pf-phone" /></label>
+        <label class="pst-field"><span>School</span><input id="dlg-pf-uni" /></label>
+        <label class="pst-field"><span>Major</span><input id="dlg-pf-major" /></label>
+        <label class="pst-field"><span>Minor</span><input id="dlg-pf-minor" /></label>
+        <label class="pst-field"><span>Semester</span><input id="dlg-pf-sem" /></label>
+        <label class="pst-field"><span>Class Year</span><input id="dlg-pf-year" /></label>
+        <label class="pst-field pst-field--full"><span>Expected Graduation</span><input id="dlg-pf-grad" placeholder="May 2026" /></label>
+        <label class="pst-field pst-field--full"><span>Weather location (Calendar demo)</span><input id="dlg-pf-weather" /></label>
+        <label class="pst-field pst-field--full"><span>Accent theme</span>
+          <select id="dlg-pf-theme"><option value="ocean">Ocean</option><option value="sage">Sage</option><option value="slate">Slate</option></select>
+        </label>
+      </div>
+      <div class="pst-dialog-actions">
+        <button type="button" class="btn btn-secondary" data-close-dlg="pst-dlg-profile">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="pst-dlg-goal" class="pst-dialog pst-dialog--wide">
+    <button type="button" class="pst-dialog-close" data-close-dlg="pst-dlg-goal" aria-label="Close">×</button>
+    <h3 class="pst-dialog-title">Edit Academic Goal &amp; AI preferences</h3>
+    <form id="pst-form-goal" class="pst-dialog-form">
+      <label class="pst-field"><span>Goal headline</span><input id="dlg-goal-headline" /></label>
+      <label class="pst-field pst-field--full"><span>Description</span><textarea id="dlg-goal-desc" rows="3"></textarea></label>
+      <label class="pst-field pst-field--full"><span>Focus areas (one per line)</span><textarea id="dlg-goal-focus" rows="4"></textarea></label>
+      <fieldset class="pst-fieldset">
+        <legend>Learning style (select any)</legend>
+        <div class="pst-chips" id="dlg-learning-chips"></div>
+      </fieldset>
+      <fieldset class="pst-fieldset">
+        <legend>AI interaction level</legend>
+        <div class="pst-seg" role="radiogroup" id="dlg-ai-level"></div>
+      </fieldset>
+      <div class="pst-dialog-actions">
+        <button type="button" class="btn btn-secondary" data-close-dlg="pst-dlg-goal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="pst-dlg-advisor" class="pst-dialog">
+    <button type="button" class="pst-dialog-close" data-close-dlg="pst-dlg-advisor" aria-label="Close">×</button>
+    <h3 class="pst-dialog-title">Edit Academic Advisor</h3>
+    <form id="pst-form-advisor" class="pst-dialog-form">
+      <label class="pst-field"><span>Name</span><input id="dlg-adv-name" /></label>
+      <label class="pst-field"><span>Title</span><input id="dlg-adv-title" /></label>
+      <label class="pst-field"><span>Email</span><input id="dlg-adv-email" type="email" /></label>
+      <label class="pst-field"><span>Phone</span><input id="dlg-adv-phone" /></label>
+      <label class="pst-field pst-field--full"><span>Office</span><input id="dlg-adv-office" /></label>
+      <label class="pst-field pst-field--full"><span>Advising hours</span><input id="dlg-adv-hours" /></label>
+      <div class="pst-dialog-actions">
+        <button type="button" class="btn btn-secondary" data-close-dlg="pst-dlg-advisor">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/seed.js"></script>
+  <script src="js/settings-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Updates intake &amp; change detection." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Updates — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/updates.css" />
+</head>
+<body class="dash-body" data-current-view="updates">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <a href="tasks.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></span>
+        <a href="grades.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></a>
+        <a href="study-center.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></a>
+        <a href="communication.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></a>
+        <a href="financial-aid.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></a>
+        <a href="settings.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="updates-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="updates-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="updates-sidebar-week-label">Week — of —</p>
+        <a href="study-center.html" class="btn btn-secondary btn-sm btn-block">View Plan →</a>
+        <a href="dashboard.html#overview" class="btn btn-ghost btn-sm btn-block" style="margin-top:0.35rem;">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, resources…" autocomplete="off" />
+          <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <div class="dp-notify-wrap">
+            <button type="button" class="dp-notify-btn" id="btn-notifications" aria-label="Notifications" aria-expanded="false" aria-haspopup="true">
+              <span aria-hidden="true">🔔</span>
+              <span class="dp-badge" id="notification-badge" hidden>0</span>
+            </button>
+            <div id="notify-dropdown" class="ov-notify-dropdown" hidden role="region" aria-label="Notifications">
+              <div class="ov-notify-head">Notifications</div>
+              <div id="notify-dropdown-body"></div>
+            </div>
+          </div>
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span><span id="profile-major-line"></span></div>
+          <a href="settings.html" class="dp-avatar-wrap" title="Open dashboard — profile"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">A</div></a>
+        </div>
+        <h1 class="sr-only" id="view-title">Updates</h1>
+      </header>
+
+      <main class="dash-content updates-page-main">
+        <p class="banner-note">No cloud sync · data stays in this browser · simulated AI extraction for demo.</p>
+
+        <header class="upd-page-hero">
+          <div class="upd-page-hero-text">
+            <div class="upd-title-row">
+              <h1 class="dp-page-title">Updates</h1>
+              <button type="button" class="upd-icon-btn" id="upd-btn-refresh" aria-label="Refresh summary" title="Refresh summary">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 012.12 9.36L1 14"/></svg>
+              </button>
+            </div>
+            <p class="dp-page-sub muted">What changed, and what do I need to do about it?</p>
+          </div>
+          <aside class="upd-callout" aria-label="About Updates">
+            <span class="upd-callout-ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.8 5.5h5.7l-4.6 3.4 1.8 5.5-4.7-3.4-4.7 3.4 1.8-5.5-4.6-3.4h5.7L12 3z" fill="#2563eb"/></svg>
+            </span>
+            <div>
+              <p class="upd-callout-strong">Smart intake. Intelligent updates.</p>
+              <p class="upd-callout-muted">We turn new info into action so you stay ahead.</p>
+            </div>
+          </aside>
+        </header>
+
+        <section class="upd-intake-grid" aria-label="Input methods">
+          <article class="upd-intake-card upd-intake-card--announce dp-card">
+            <div class="upd-intake-head">
+              <span class="upd-intake-badge upd-intake-badge--purple" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+              </span>
+              <div>
+                <h2 class="upd-intake-title">Announcement Analyzer</h2>
+                <p class="upd-intake-sub muted">Paste a professor announcement or email.</p>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:0.65rem;">
+              <label for="upd-course">Course context</label>
+              <select id="upd-course"><option value="">General</option></select>
+            </div>
+            <div class="upd-textarea-wrap">
+              <textarea id="upd-announce-body" maxlength="5000" rows="8" placeholder="Paste announcement or email content here…"></textarea>
+              <span class="upd-char-count" id="upd-char-count">0/5000</span>
+            </div>
+            <button type="button" class="upd-ai-btn" id="btn-analyze-announce">
+              <svg class="upd-sparkle" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 3.7h3.9l-3.2 2.3 1.2 3.7L12 11.2 8.9 11.7l1.2-3.7L6.9 5.7h3.9L12 2z" fill="currentColor"/></svg>
+              Analyze Announcement
+            </button>
+            <p class="upd-intake-foot muted">Extracts key info, creates tasks, and updates calendar.</p>
+            <div id="upd-announce-summary" class="upd-summary-box" hidden>
+              <h3 class="upd-summary-box-title">Extracted summary</h3>
+              <ul id="upd-summary-list" class="upd-summary-list"></ul>
+            </div>
+          </article>
+
+          <article class="upd-intake-card upd-intake-card--shot dp-card">
+            <div class="upd-intake-head">
+              <span class="upd-intake-badge upd-intake-badge--blue" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </span>
+              <div>
+                <h2 class="upd-intake-title">Screenshot Upload</h2>
+                <p class="upd-intake-sub muted">Upload Canvas, Blackboard, or other screenshots.</p>
+              </div>
+            </div>
+            <label class="upd-drop-zone" id="upd-drop-shot">
+              <input type="file" id="upd-shot-file" accept="image/png,image/jpeg,image/jpg,application/pdf" class="upd-file-input" />
+              <span class="upd-drop-icon" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </span>
+              <span class="upd-drop-title">Drop image here or click to upload</span>
+              <span class="upd-drop-hint muted">PNG, JPG, or PDF (Max 10MB)</span>
+              <span class="upd-file-name" id="upd-shot-name"></span>
+            </label>
+            <button type="button" class="upd-ai-btn" id="btn-analyze-shot" disabled>
+              <svg class="upd-sparkle" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 3.7h3.9l-3.2 2.3 1.2 3.7L12 11.2 8.9 11.7l1.2-3.7L6.9 5.7h3.9L12 2z" fill="currentColor"/></svg>
+              Analyze Screenshot
+            </button>
+            <p class="upd-intake-foot muted">Detects assignments, exams, and announcements.</p>
+          </article>
+
+          <article class="upd-intake-card upd-intake-card--audio dp-card">
+            <div class="upd-intake-head">
+              <span class="upd-intake-badge upd-intake-badge--green" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2"><path d="M12 3v18"/><path d="M8 7v10c0 2 2 4 4 4s4-2 4-4V7"/><path d="M4 11v2c0 4 4 7 8 7s8-3 8-7v-2"/></svg>
+              </span>
+              <div>
+                <h2 class="upd-intake-title">Class Audio Upload</h2>
+                <p class="upd-intake-sub muted">Upload lecture audio to generate insights.</p>
+              </div>
+            </div>
+            <label class="upd-drop-zone upd-drop-zone--audio" id="upd-drop-audio">
+              <input type="file" id="upd-audio-file" accept="audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,.mp3,.m4a,.wav" class="upd-file-input" />
+              <span class="upd-drop-icon" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </span>
+              <span class="upd-drop-title">Drop audio file here or click to upload</span>
+              <span class="upd-drop-hint muted">MP3, M4A, or WAV (Max 100MB)</span>
+              <span class="upd-file-name" id="upd-audio-name"></span>
+            </label>
+            <button type="button" class="upd-ai-btn" id="btn-analyze-audio" disabled>
+              <svg class="upd-sparkle" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 3.7h3.9l-3.2 2.3 1.2 3.7L12 11.2 8.9 11.7l1.2-3.7L6.9 5.7h3.9L12 2z" fill="currentColor"/></svg>
+              Generate Notes
+            </button>
+            <p class="upd-intake-foot muted">Generates overview, notes, and guiding questions.</p>
+            <div id="upd-audio-out" class="upd-audio-out" hidden></div>
+          </article>
+        </section>
+
+        <div class="upd-mid-split">
+          <section class="upd-change-panel dp-card" id="upd-change-detection">
+            <div class="upd-change-panel-head">
+              <div>
+                <h2 class="upd-section-title">Change Detection</h2>
+                <span class="upd-badge-new" id="upd-new-count">0 New Changes</span>
+              </div>
+              <p class="muted upd-change-hint">Review and confirm updates before saving.</p>
+            </div>
+            <div id="pending-changes-host" class="upd-change-list"></div>
+            <button type="button" class="upd-dismiss-toggle" id="upd-toggle-dismissed" aria-expanded="false">
+              <span id="upd-dismissed-label">View Dismissed (0)</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div id="upd-dismissed-host" class="upd-change-list upd-dismissed-list" hidden></div>
+          </section>
+
+          <aside class="upd-summary-panel">
+            <div class="upd-summary-card dp-card">
+              <div class="upd-summary-card-head">
+                <h3 class="upd-section-title small">Summary of Changes</h3>
+                <label class="upd-select-all"><input type="checkbox" id="upd-select-all" /> Select All</label>
+              </div>
+              <div class="upd-donut-row">
+                <div class="upd-donut-wrap" aria-hidden="true">
+                  <div class="upd-donut" id="upd-donut"></div>
+                  <div class="upd-donut-center">
+                    <span id="upd-donut-total">0</span>
+                    <span class="muted small">Total</span>
+                  </div>
+                </div>
+                <ul class="upd-donut-legend" id="upd-donut-legend"></ul>
+              </div>
+              <div class="upd-impact-block">
+                <h4 class="upd-impact-title">Impact Overview</h4>
+                <ul class="upd-impact-list" id="upd-impact-list">
+                  <li><span class="upd-impact-ico" aria-hidden="true">📅</span><span><strong id="upd-impact-cal">0</strong> Calendar events added/updated</span></li>
+                  <li><span class="upd-impact-ico" aria-hidden="true">☑</span><span><strong id="upd-impact-task">0</strong> New task added</span></li>
+                  <li><span class="upd-impact-ico" aria-hidden="true">📚</span><span><strong id="upd-impact-study">0</strong> Study resource added</span></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <section class="upd-save-panel dp-card" id="upd-save-section">
+          <div class="upd-save-head">
+            <div>
+              <h2 class="upd-section-title">Save to Dashboard</h2>
+              <p class="muted">Choose where to send the approved updates.</p>
+            </div>
+            <div class="upd-save-actions">
+              <button type="button" class="btn btn-primary upd-save-primary" id="btn-save-updates">
+                <svg class="upd-sparkle" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 3.7h3.9l-3.2 2.3 1.2 3.7L12 11.2 8.9 11.7l1.2-3.7L6.9 5.7h3.9L12 2z" fill="#fff"/></svg>
+                Save to Dashboard
+              </button>
+              <button type="button" class="btn btn-secondary" id="btn-review-before">Review Before Saving</button>
+              <p class="upd-lock-note muted"><span aria-hidden="true">🔒</span> You can review everything before it's added.</p>
+            </div>
+          </div>
+          <div class="upd-dest-grid">
+            <label class="upd-dest-card">
+              <input type="checkbox" class="upd-dest-check" data-dest="tasks" checked />
+              <span class="upd-dest-card-inner">
+                <span class="upd-dest-check-visual" aria-hidden="true"></span>
+                <span class="upd-dest-ico" aria-hidden="true">☑</span>
+                <span class="upd-dest-title">Tasks</span>
+                <span class="muted small">Add new assignments and tasks</span>
+              </span>
+            </label>
+            <label class="upd-dest-card">
+              <input type="checkbox" class="upd-dest-check" data-dest="calendar" checked />
+              <span class="upd-dest-card-inner">
+                <span class="upd-dest-check-visual" aria-hidden="true"></span>
+                <span class="upd-dest-ico" aria-hidden="true">📅</span>
+                <span class="upd-dest-title">Calendar</span>
+                <span class="muted small">Add or update events and deadlines</span>
+              </span>
+            </label>
+            <label class="upd-dest-card">
+              <input type="checkbox" class="upd-dest-check" data-dest="courses" />
+              <span class="upd-dest-card-inner">
+                <span class="upd-dest-check-visual" aria-hidden="true"></span>
+                <span class="upd-dest-ico muted-ico" aria-hidden="true">📖</span>
+                <span class="upd-dest-title">Courses</span>
+                <span class="muted small">Update course content and materials</span>
+              </span>
+            </label>
+            <label class="upd-dest-card">
+              <input type="checkbox" class="upd-dest-check" data-dest="study" checked />
+              <span class="upd-dest-card-inner">
+                <span class="upd-dest-check-visual" aria-hidden="true"></span>
+                <span class="upd-dest-ico" aria-hidden="true">✨</span>
+                <span class="upd-dest-title">Study Center</span>
+                <span class="muted small">Add notes and resources for review</span>
+              </span>
+            </label>
+          </div>
+          <p id="upd-save-msg" class="upd-save-msg" hidden role="status"></p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/seed.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/updates-page.js"></script>
+</body>
+</html>

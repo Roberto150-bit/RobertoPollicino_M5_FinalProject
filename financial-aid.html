@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Financial Aid." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Financial Aid — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/financial-aid.css" />
+</head>
+<body class="dash-body" data-current-view="financial">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <a href="tasks.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></a>
+        <a href="updates.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></a>
+        <a href="grades.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></a>
+        <a href="study-center.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></a>
+        <a href="communication.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></span>
+        <a href="settings.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="fa-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="fa-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="fa-sidebar-week-label">Week — of —</p>
+        <a href="study-center.html" class="btn btn-secondary btn-sm btn-block">View Plan →</a>
+        <a href="dashboard.html#overview" class="btn btn-ghost btn-sm btn-block" style="margin-top:0.35rem;">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, resources…" autocomplete="off" />
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span></div>
+          <a href="settings.html" class="dp-avatar-wrap" title="Profile"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">S</div></a>
+        </div>
+        <h1 class="sr-only">Financial Aid</h1>
+      </header>
+
+      <main class="dash-content fa-main">
+        <header class="fa-page-head">
+          <div>
+            <h2 class="fa-page-title">Financial Aid</h2>
+            <p class="fa-page-sub muted">Find opportunities. Track deadlines. Fund your future.</p>
+          </div>
+          <aside class="fa-callout dp-card">
+            <p class="fa-callout-text"><em>Every application is a step closer to less debt and more freedom.</em></p>
+          </aside>
+        </header>
+
+        <section class="fa-kpi-row" aria-label="Summary">
+          <article class="fa-kpi dp-card">
+            <span class="fa-kpi-ico fa-kpi-ico--blue" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+            <div class="fa-kpi-body">
+              <p class="fa-kpi-label">Estimated Aid</p>
+              <p class="fa-kpi-value" id="fa-kpi-aid">—</p>
+              <p class="fa-kpi-hint muted">Total potential aid</p>
+              <p class="fa-kpi-foot fa-kpi-foot--up" id="fa-kpi-aid-trend"></p>
+            </div>
+          </article>
+          <article class="fa-kpi dp-card">
+            <span class="fa-kpi-ico fa-kpi-ico--green" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8"/></svg></span>
+            <div class="fa-kpi-body">
+              <p class="fa-kpi-label">Opportunities</p>
+              <p class="fa-kpi-value" id="fa-kpi-opp">—</p>
+              <p class="fa-kpi-hint muted">Matches found</p>
+              <button type="button" class="fa-link-btn" id="fa-jump-suggestions">View suggestions <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+          <article class="fa-kpi dp-card">
+            <span class="fa-kpi-ico fa-kpi-ico--orange" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></span>
+            <div class="fa-kpi-body">
+              <p class="fa-kpi-label">Applications In Progress</p>
+              <p class="fa-kpi-value" id="fa-kpi-apps">0</p>
+              <p class="fa-kpi-hint muted">Keep it up!</p>
+              <button type="button" class="fa-link-btn" id="fa-jump-tracker">View tracker <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+          <article class="fa-kpi dp-card">
+            <span class="fa-kpi-ico fa-kpi-ico--rose" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+            <div class="fa-kpi-body">
+              <p class="fa-kpi-label">Deadlines Coming Up</p>
+              <p class="fa-kpi-value" id="fa-kpi-dead">0</p>
+              <p class="fa-kpi-hint muted">Within the next 30 days</p>
+              <button type="button" class="fa-link-btn" id="fa-jump-alerts">View all deadlines <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+        </section>
+
+        <section class="fa-grid fa-grid--3" aria-label="Scholarships and alerts">
+          <article class="dp-card fa-panel" id="fin-top-matches">
+            <div class="fa-panel-head">
+              <div>
+                <h3 class="fa-panel-title">Top Scholarship Matches</h3>
+                <p class="muted small fa-panel-sub">Based on your school, major, class year, and goals.</p>
+              </div>
+              <button type="button" class="fa-link-btn fa-link-btn--sm" id="fa-scroll-matches">View all matches <span aria-hidden="true">→</span></button>
+            </div>
+            <div id="fa-match-list" class="fa-match-list"></div>
+            <button type="button" class="fa-link-btn fa-panel-foot" id="fa-foot-matches">View all scholarship matches <span aria-hidden="true">→</span></button>
+          </article>
+
+          <article class="dp-card fa-panel" id="fin-tracker">
+            <div class="fa-panel-head">
+              <div>
+                <h3 class="fa-panel-title">Scholarship Tracker</h3>
+                <p class="muted small fa-panel-sub" id="fa-tracker-summary">—</p>
+              </div>
+              <button type="button" class="fa-link-btn fa-link-btn--sm" id="fa-scroll-track-inner">View all <span aria-hidden="true">→</span></button>
+            </div>
+            <div id="fa-tracker-list" class="fa-tracker-list"></div>
+            <form id="form-sch-fa" class="fa-add-form">
+              <p class="fa-add-title">Add a scholarship</p>
+              <div class="fa-add-grid">
+                <label class="fa-field"><span class="fa-field-lbl">Name</span><input id="fa-sch-name" required /></label>
+                <label class="fa-field"><span class="fa-field-lbl">Amount</span><input id="fa-sch-amt" placeholder="$1,000" /></label>
+                <label class="fa-field"><span class="fa-field-lbl">Deadline</span><input id="fa-sch-deadline" type="date" /></label>
+                <label class="fa-field"><span class="fa-field-lbl">Status</span>
+                  <select id="fa-sch-status">
+                    <option value="Saved">Saved</option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Submitted">Submitted</option>
+                  </select>
+                </label>
+              </div>
+              <label class="fa-field"><span class="fa-field-lbl">Notes</span><input id="fa-sch-notes" /></label>
+              <button type="submit" class="btn btn-primary btn-sm">Add scholarship</button>
+            </form>
+            <button type="button" class="fa-link-btn fa-panel-foot" id="fa-scroll-add">Add a scholarship <span aria-hidden="true">+</span></button>
+          </article>
+
+          <article class="dp-card fa-panel" id="fin-alerts">
+            <div class="fa-panel-head">
+              <div class="fa-panel-head-row">
+                <span class="fa-spark" aria-hidden="true">✨</span>
+                <h3 class="fa-panel-title">Aid Deadline Alerts</h3>
+              </div>
+              <button type="button" class="fa-link-btn fa-link-btn--sm" id="fa-scroll-alerts-inner">View all <span aria-hidden="true">→</span></button>
+            </div>
+            <div id="fa-alert-list" class="fa-alert-list"></div>
+            <button type="button" class="fa-link-btn fa-panel-foot" id="fa-foot-deadlines">See all upcoming deadlines <span aria-hidden="true">→</span></button>
+          </article>
+        </section>
+
+        <section class="fa-grid fa-grid--3 fa-grid--bottom" aria-label="Planning tools">
+          <article class="dp-card fa-panel fa-panel--fafsa">
+            <h3 class="fa-panel-title">FAFSA Checklist</h3>
+            <p class="muted small" id="fa-fafsa-year">2025–2026 Academic Year</p>
+            <div class="fa-fafsa-inner">
+              <div class="fa-fafsa-col">
+                <div class="fa-fafsa-ring-wrap">
+                  <div class="fa-fafsa-ring" id="fa-fafsa-ring" role="img" aria-label="FAFSA progress"></div>
+                  <div class="fa-fafsa-ring-hole" aria-hidden="true"></div>
+                  <div class="fa-fafsa-ring-label"><span id="fa-fafsa-pct">0</span>%</div>
+                </div>
+                <p class="muted small fa-fafsa-msg" id="fa-fafsa-msg">—</p>
+              </div>
+              <div id="fa-fafsa-checklist" class="fa-fafsa-checklist"></div>
+            </div>
+            <button type="button" class="fa-link-btn fa-panel-foot" id="fa-btn-fafsa">Continue FAFSA <span aria-hidden="true">→</span></button>
+          </article>
+
+          <article class="dp-card fa-panel" id="fin-rec">
+            <div class="fa-panel-head">
+              <div>
+                <h3 class="fa-panel-title">Recommendation Letters</h3>
+                <p class="muted small fa-panel-sub" id="fa-rec-summary">—</p>
+              </div>
+              <button type="button" class="fa-link-btn fa-link-btn--sm" id="fa-scroll-rec">View all <span aria-hidden="true">→</span></button>
+            </div>
+            <div id="fa-rec-list" class="fa-rec-list"></div>
+            <form id="form-rec-fa" class="fa-mini-form">
+              <p class="fa-add-title small">New request</p>
+              <label class="fa-field"><span class="fa-field-lbl">Professor</span><input id="fa-rec-prof" /></label>
+              <label class="fa-field"><span class="fa-field-lbl">Department</span><input id="fa-rec-dept" placeholder="Optional" /></label>
+              <div class="fa-add-grid">
+                <label class="fa-field"><span class="fa-field-lbl">Due</span><input id="fa-rec-due" type="date" /></label>
+                <label class="fa-field"><span class="fa-field-lbl">Status</span><input id="fa-rec-status" placeholder="Requested" /></label>
+              </div>
+              <button type="submit" class="btn btn-secondary btn-sm">Add request</button>
+            </form>
+            <button type="button" class="fa-link-btn fa-panel-foot" id="fa-foot-rec">Manage requests <span aria-hidden="true">→</span></button>
+          </article>
+
+          <article class="dp-card fa-panel fa-panel--essay">
+            <div class="fa-panel-head-row">
+              <span class="fa-spark" aria-hidden="true">✨</span>
+              <div>
+                <h3 class="fa-panel-title">Scholarship Essay Helper</h3>
+                <p class="muted small">AI-powered support for stronger essays</p>
+              </div>
+            </div>
+            <ul class="fa-essay-features">
+              <li><span class="fa-essay-ico fa-essay-ico--purple" aria-hidden="true">💡</span><div><strong>Brainstorm Ideas</strong><span class="muted small">Generate topics that highlight your strengths.</span></div></li>
+              <li><span class="fa-essay-ico fa-essay-ico--blue" aria-hidden="true">📄</span><div><strong>Outline Your Essay</strong><span class="muted small">Organize your story with a clear structure.</span></div></li>
+              <li><span class="fa-essay-ico fa-essay-ico--blue" aria-hidden="true">✏️</span><div><strong>Improve &amp; Refine</strong><span class="muted small">Get feedback to make your essay stand out.</span></div></li>
+            </ul>
+            <label class="sr-only" for="fa-essay-brain">Brainstorm</label>
+            <textarea id="fa-essay-brain" class="fa-essay-ta" rows="2" placeholder="Brainstorm ideas"></textarea>
+            <label class="sr-only" for="fa-essay-outline">Outline</label>
+            <textarea id="fa-essay-outline" class="fa-essay-ta" rows="2" placeholder="Outline"></textarea>
+            <label class="sr-only" for="fa-essay-draft">Draft</label>
+            <textarea id="fa-essay-draft" class="fa-essay-ta" rows="3" placeholder="Draft"></textarea>
+            <div class="fa-essay-actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="fa-btn-essay-refine">Simulated refine</button>
+              <button type="button" class="btn btn-primary fa-essay-cta" id="fa-btn-essay-start">Start a New Essay <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+        </section>
+
+        <footer class="fa-banner">
+          <span class="fa-banner-ico" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <p class="fa-banner-text"><strong>You’re building a debt-free future.</strong> Keep going—your effort today opens doors for tomorrow.</p>
+          <button type="button" class="btn btn-secondary" id="fa-banner-explore">Explore More Opportunities <span aria-hidden="true">→</span></button>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/seed.js"></script>
+  <script src="js/financial-aid-page.js"></script>
+</body>
+</html>

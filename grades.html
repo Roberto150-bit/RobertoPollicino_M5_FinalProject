@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Grades workspace." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Grades — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/grades.css" />
+</head>
+<body class="dash-body" data-current-view="grades">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <a href="tasks.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></a>
+        <a href="updates.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></span>
+        <a href="study-center.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></a>
+        <a href="communication.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></a>
+        <a href="financial-aid.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></a>
+        <a href="settings.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="grades-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="grades-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="grades-sidebar-week-label">Week — of —</p>
+        <a href="study-center.html" class="btn btn-secondary btn-sm btn-block">View Plan →</a>
+        <a href="dashboard.html#overview" class="btn btn-ghost btn-sm btn-block" style="margin-top:0.35rem;">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, assignments, grades…" autocomplete="off" />
+          <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <div class="dp-notify-wrap">
+            <button type="button" class="dp-notify-btn" id="btn-notifications" aria-label="Notifications" aria-expanded="false" aria-haspopup="true">
+              <span aria-hidden="true">🔔</span>
+              <span class="dp-badge" id="notification-badge" hidden>0</span>
+            </button>
+            <div id="notify-dropdown" class="ov-notify-dropdown" hidden role="region" aria-label="Notifications">
+              <div class="ov-notify-head">Notifications</div>
+              <div id="notify-dropdown-body"></div>
+            </div>
+          </div>
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span><span id="profile-major-line"></span></div>
+          <a href="settings.html" class="dp-avatar-wrap" title="Open dashboard — profile"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">A</div></a>
+        </div>
+        <h1 class="sr-only" id="view-title">Grades</h1>
+      </header>
+
+      <main class="dash-content grades-page-main">
+        <p class="banner-note">No cloud sync · grades below use your locally saved entries · simulated insights for demo.</p>
+
+        <header class="grades-page-head">
+          <div>
+            <h1 class="dp-page-title">My grades</h1>
+            <p class="dp-page-sub muted">Where do you stand academically?</p>
+          </div>
+          <div class="dp-withdraw-pill" id="grades-withdraw-chip">
+            <span aria-hidden="true">📅</span>
+            <span id="grades-withdraw-inline">Withdrawal deadline — set in profile seed.</span>
+          </div>
+        </header>
+
+        <div class="gr-grid gr-grid--3">
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title">Grades by Course</h2>
+            <div class="gr-table-wrap">
+              <table class="gr-table" id="gr-table-by-course">
+                <thead>
+                  <tr>
+                    <th>Course</th>
+                    <th>Grade</th>
+                    <th>Trend</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody id="gr-tbody-by-course"></tbody>
+              </table>
+            </div>
+            <p class="gr-widget-empty muted" id="gr-empty-by-course" hidden>No graded items yet. Log entries below or enable sample data.</p>
+            <footer class="gr-widget-foot">
+              <a href="courses.html" class="gr-widget-link">View all course grades <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title">Category Breakdown <span class="gr-widget-sub muted" id="gr-breakdown-scope">(All Courses)</span></h2>
+            <div class="gr-breakdown-toolbar">
+              <label class="gr-breakdown-label" for="gr-breakdown-course">Filter by course</label>
+              <select id="gr-breakdown-course" class="gr-select gr-select--breakdown" aria-describedby="gr-breakdown-hint">
+                <option value="">All courses</option>
+              </select>
+            </div>
+            <p class="gr-breakdown-hint muted" id="gr-breakdown-hint">Weights and scores reflect logged grade entries. To edit course details, syllabus links, or materials, open <a href="courses.html">Courses</a>.</p>
+            <div class="gr-donut-row">
+              <div class="gr-donut-wrap" aria-hidden="true">
+                <div class="gr-donut" id="gr-donut"></div>
+                <div class="gr-donut-center">
+                  <span id="gr-donut-pct">—</span>
+                  <span class="muted small">Average</span>
+                </div>
+              </div>
+              <ul class="gr-donut-legend" id="gr-donut-legend"></ul>
+            </div>
+            <footer class="gr-widget-foot">
+              <a href="courses.html" class="gr-widget-link">Edit courses &amp; syllabus <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+
+          <article class="gr-widget dp-card gr-widget--insight">
+            <h2 class="gr-widget-title gr-widget-title--ai">
+              <svg class="gr-sparkle-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l1.2 3.7h3.9l-3.2 2.3 1.2 3.7L12 11.2 8.9 11.7l1.2-3.7L6.9 5.7h3.9L12 2z" fill="#2563eb"/></svg>
+              AI Grade Insight
+            </h2>
+            <div id="gr-ai-body">
+              <p class="gr-ai-headline" id="gr-ai-headline">Add grades to see insights.</p>
+              <p class="muted gr-ai-text" id="gr-ai-summary"></p>
+              <ul class="gr-ai-list" id="gr-ai-bullets"></ul>
+            </div>
+            <button type="button" class="gr-insight-btn" id="gr-ai-expand">See all insights <span aria-hidden="true">→</span></button>
+          </article>
+        </div>
+
+        <div class="gr-grid gr-grid--3">
+          <article class="gr-widget dp-card gr-widget--wide-inner">
+            <h2 class="gr-widget-title">Weighted Grade Calculator <span class="gr-widget-sub muted" id="gr-weighted-scope">(All Courses)</span></h2>
+            <div class="gr-breakdown-toolbar">
+              <label class="gr-breakdown-label" for="gr-weighted-course">Filter by course</label>
+              <select id="gr-weighted-course" class="gr-select gr-select--breakdown" aria-describedby="gr-weighted-hint">
+                <option value="">All courses</option>
+              </select>
+            </div>
+            <p class="gr-breakdown-hint muted" id="gr-weighted-hint">Grade scale and letter bands follow each course when you analyze the syllabus on <a href="courses.html">Courses</a>. Otherwise the default scale below applies.</p>
+            <div class="gr-weighted-split">
+              <div class="gr-weighted-table-wrap">
+                <table class="gr-table gr-table--compact" id="gr-weighted-table">
+                  <thead>
+                    <tr><th>Category</th><th>Weight</th><th>Earned</th><th>Weighted</th></tr>
+                  </thead>
+                  <tbody id="gr-weighted-tbody"></tbody>
+                </table>
+              </div>
+              <div class="gr-weighted-aside">
+                <div class="gr-inset-card">
+                  <p class="muted small">Current Grade</p>
+                  <div class="gr-current-row">
+                    <span class="gr-big-pct" id="gr-current-pct">—</span>
+                    <span class="gr-letter-badge" id="gr-current-letter">—</span>
+                  </div>
+                </div>
+                <div class="gr-inset-card">
+                  <p class="muted small">Grade Scale</p>
+                  <ul class="gr-scale-list" id="gr-scale-list"></ul>
+                  <p class="gr-scale-note muted" id="gr-weighted-scale-note"></p>
+                </div>
+              </div>
+            </div>
+            <footer class="gr-widget-foot">
+              <a href="courses.html" class="gr-widget-link">View syllabus &amp; grading rules <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title">What-If Calculator</h2>
+            <div class="field">
+              <label for="gr-whatif-course">Course</label>
+              <select id="gr-whatif-course" class="gr-select" aria-describedby="gr-whatif-course-hint"></select>
+            </div>
+            <p class="gr-breakdown-hint muted" id="gr-whatif-course-hint">Goal letters follow each course’s syllabus scale when analyzed on <a href="courses.html">Courses</a>.</p>
+            <div class="field">
+              <label for="gr-whatif-goal">Goal Grade</label>
+              <select id="gr-whatif-goal" class="gr-select"></select>
+            </div>
+            <div id="gr-whatif-feasibility" class="gr-whatif-feasibility" hidden role="status"></div>
+            <div class="gr-whatif-result-block">
+              <p class="muted small">Needed on Remaining Work</p>
+              <p class="gr-whatif-big" id="gr-whatif-needed">—</p>
+              <p class="muted" id="gr-whatif-remaining">On — remaining weight</p>
+            </div>
+            <div class="gr-whatif-by-cat" id="gr-whatif-by-cat-wrap">
+              <p class="muted small">Range by category (on remaining work in that category)</p>
+              <p class="muted gr-whatif-by-cat-note" id="gr-whatif-by-cat-note">Ranges show what you need on <strong>unfinished</strong> work if other remaining categories score at the best case (low end) vs worst case (high end).</p>
+              <ul class="gr-whatif-cat-list" id="gr-whatif-by-cat"></ul>
+            </div>
+            <div class="gr-assumptions">
+              <p class="muted small">Remaining weight by category</p>
+              <ul class="gr-check-list" id="gr-whatif-assumptions"></ul>
+            </div>
+            <footer class="gr-widget-foot">
+              <a href="courses.html" class="gr-widget-link">Syllabus &amp; grading rules <span aria-hidden="true">→</span></a>
+              <button type="button" class="gr-widget-link gr-link-btn" id="gr-whatif-adjust">Log grades <span aria-hidden="true">→</span></button>
+            </footer>
+          </article>
+
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title">Grade Trend <span class="gr-widget-sub muted">(All Courses)</span></h2>
+            <div class="gr-chart-svg-wrap">
+              <svg class="gr-line-chart" id="gr-trend-svg" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet" aria-label="Grade trend chart"></svg>
+            </div>
+            <div class="gr-chart-legend">
+              <span><span class="gr-leg-line solid"></span> Your Average</span>
+              <span><span class="gr-leg-line dashed"></span> Projected</span>
+            </div>
+            <footer class="gr-widget-foot">
+              <a href="courses.html" class="gr-widget-link">View by course <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+        </div>
+
+        <div class="gr-grid gr-grid--3">
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title gr-widget-title--icon"><span class="gr-ico-risk" aria-hidden="true">⚠</span> Risk Alerts</h2>
+            <div id="gr-risk-host" class="gr-alert-list"></div>
+            <footer class="gr-widget-foot">
+              <a href="tasks.html" class="gr-widget-link">View all alerts <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title gr-widget-title--icon"><span class="gr-ico-action" aria-hidden="true">◎</span> Action Center</h2>
+            <div id="gr-action-host" class="gr-action-list"></div>
+            <footer class="gr-widget-foot">
+              <a href="tasks.html" class="gr-widget-link">View full action plan <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+
+          <article class="gr-widget dp-card">
+            <h2 class="gr-widget-title gr-widget-title--icon"><span class="gr-ico-advise" aria-hidden="true">👤</span> Advising Nudges</h2>
+            <div id="gr-advise-host" class="gr-action-list"></div>
+            <footer class="gr-widget-foot">
+              <a href="communication.html" class="gr-widget-link">View all recommendations <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+        </div>
+
+        <section class="gr-log-section dp-card">
+          <h2 class="gr-widget-title">Log grade entry</h2>
+          <p class="muted" style="font-size:0.85rem;margin-top:0;">Saved entries power every widget above.</p>
+          <form id="form-grade-page" class="gr-log-form">
+            <div class="gr-log-grid">
+              <div class="field">
+                <label for="gr-g-course">Course</label>
+                <select id="gr-g-course" required></select>
+              </div>
+              <div class="field">
+                <label for="gr-g-cat">Category</label>
+                <select id="gr-g-cat">
+                  <option value="exam">Exam</option>
+                  <option value="homework">Homework</option>
+                  <option value="project">Project</option>
+                  <option value="quiz">Quiz</option>
+                  <option value="participation">Participation</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="gr-g-assign">Assignment</label>
+                <input id="gr-g-assign" required />
+              </div>
+              <div class="field">
+                <label for="gr-g-score">Score</label>
+                <input id="gr-g-score" type="number" step="0.1" required />
+              </div>
+              <div class="field">
+                <label for="gr-g-max">Points possible</label>
+                <input id="gr-g-max" type="number" step="0.1" value="100" />
+              </div>
+              <div class="field">
+                <label for="gr-g-weight">Weight in course (%)</label>
+                <input id="gr-g-weight" type="number" step="0.1" placeholder="e.g. 15" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save entry</button>
+          </form>
+          <div id="gr-entries-table-host" class="gr-entries-table-wrap"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/seed.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/grades-page.js"></script>
+</body>
+</html>

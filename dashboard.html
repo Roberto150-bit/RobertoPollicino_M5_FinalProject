@@ -32,38 +32,38 @@
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
           <span>Calendar</span>
         </button>
-        <button type="button" class="nav-item" data-view="courses">
+        <a href="courses.html" class="nav-item" data-view="courses">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
           <span>Courses</span>
-        </button>
-        <button type="button" class="nav-item" data-view="tasks">
+        </a>
+        <a href="tasks.html" class="nav-item" data-view="tasks">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg>
           <span>Tasks</span>
-        </button>
-        <button type="button" class="nav-item" data-view="updates">
+        </a>
+        <a href="updates.html" class="nav-item" data-view="updates">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
           <span>Updates</span>
-        </button>
-        <button type="button" class="nav-item" data-view="grades">
+        </a>
+        <a href="grades.html" class="nav-item" data-view="grades">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           <span>Grades</span>
-        </button>
-        <button type="button" class="nav-item" data-view="study">
+        </a>
+        <a href="study-center.html" class="nav-item">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
           <span>Study Center</span>
-        </button>
-        <button type="button" class="nav-item" data-view="communication">
+        </a>
+        <a href="communication.html" class="nav-item">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           <span>Communication</span>
-        </button>
-        <button type="button" class="nav-item" data-view="financial">
+        </a>
+        <a href="financial-aid.html" class="nav-item">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
           <span>Financial Aid</span>
-        </button>
-        <button type="button" class="nav-item" data-view="settings">
+        </a>
+        <a href="settings.html" class="nav-item">
           <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <span>Profile / Settings</span>
-        </button>
+        </a>
       </nav>
 
       <div class="semester-card ov-semester-card">
@@ -73,7 +73,7 @@
         </div>
         <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="sidebar-progress-fill" style="width:0%"></div></div>
         <p class="muted ov-sem-week" id="sidebar-week-label">Week — of —</p>
-        <button type="button" class="btn btn-secondary btn-sm btn-block" id="btn-sidebar-view-plan">View Plan →</button>
+        <a href="study-center.html" class="btn btn-secondary btn-sm btn-block" style="text-align:center;text-decoration:none;display:block;">View Plan →</a>
       </div>
 
       <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
@@ -84,17 +84,13 @@
     </aside>
 
     <div class="dash-main">
-      <header class="dash-topbar">
-        <div class="topbar-left">
-          <p class="topbar-kicker">DegreePilot AI</p>
-          <h1 class="topbar-title" id="view-title">Overview</h1>
-        </div>
-        <div class="topbar-right">
-          <label class="search-wrap dp-search-wrap">
-            <span class="sr-only">Search</span>
-            <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, syllabi, notes…" autocomplete="off" />
-            <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
-          </label>
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, syllabi, notes…" autocomplete="off" />
+          <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
           <div class="dp-notify-wrap">
             <button type="button" class="dp-notify-btn" id="btn-notifications" aria-label="Notifications" aria-expanded="false" aria-haspopup="true">
               <span aria-hidden="true">🔔</span>
@@ -109,16 +105,15 @@
             <input type="checkbox" id="toggle-sample-global" />
             <span>Sample data</span>
           </label>
-          <span class="dp-topbar-sep" aria-hidden="true"></span>
-          <div class="dp-top-profile" id="top-profile-chip">
-            <div class="dp-profile-text">
-              <strong id="profile-display-name">Student</strong>
-              <span id="profile-major-line">Major</span>
-            </div>
-            <div class="dp-avatar" id="profile-avatar">A</div>
-            <span class="profile-chev" aria-hidden="true">▾</span>
+          <div class="sr-only">
+            <span id="profile-display-name">Student</span>
+            <span id="profile-major-line"></span>
+          </div>
+          <div class="dp-avatar-wrap" id="top-profile-chip" title="Profile">
+            <div class="dp-avatar" id="profile-avatar" aria-hidden="true">A</div>
           </div>
         </div>
+        <h1 class="sr-only" id="view-title">Overview</h1>
       </header>
 
       <main class="dash-content">
@@ -209,7 +204,7 @@
 
           <article class="ov-weekly-card">
             <div class="ov-week-toolbar">
-              <h2>Weekly Preview</h2>
+              <h2 id="ov-preview-title">Weekly Preview</h2>
               <div class="ov-week-controls">
                 <div class="ov-seg" role="group" aria-label="Calendar scope">
                   <label><input type="radio" name="ov-week-mode" value="week" checked /><span>Week</span></label>
@@ -232,199 +227,170 @@
           </div>
         </section>
 
-        <!-- Calendar -->
+        <!-- Calendar tab: day overview, filters, main grid, suggestions & upcoming -->
         <section class="view dp-view" id="view-calendar" data-view-panel="calendar">
           <header class="dp-cal-page-head">
             <div>
               <h1 class="dp-page-title">What's coming up?</h1>
               <p class="dp-page-sub muted">Stay ahead with your schedule and important dates.</p>
             </div>
-            <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('evt-title').focus();">+ Add event</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-cal-open-add-event" aria-haspopup="dialog">+ Add Event</button>
           </header>
 
           <div class="dp-cal-layout">
-            <aside class="dp-cal-aside">
-              <article class="dp-card">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">April 2025</h3>
-                <p class="muted" style="font-size:0.78rem;margin:0;">Mini calendar (placeholder)</p>
-                <div class="dp-mini-cal-grid">
-                  <span class="dp-mini-cal-dow">M</span><span class="dp-mini-cal-dow">T</span><span class="dp-mini-cal-dow">W</span><span class="dp-mini-cal-dow">T</span><span class="dp-mini-cal-dow">F</span><span class="dp-mini-cal-dow">S</span><span class="dp-mini-cal-dow">S</span>
-                  <span class="dp-mini-cal-cell is-muted">31</span><span class="dp-mini-cal-cell">1</span><span class="dp-mini-cal-cell">2</span><span class="dp-mini-cal-cell">3</span><span class="dp-mini-cal-cell">4</span><span class="dp-mini-cal-cell">5</span><span class="dp-mini-cal-cell">6</span>
-                  <span class="dp-mini-cal-cell">7</span><span class="dp-mini-cal-cell">8</span><span class="dp-mini-cal-cell">9</span><span class="dp-mini-cal-cell">10</span><span class="dp-mini-cal-cell">11</span><span class="dp-mini-cal-cell">12</span><span class="dp-mini-cal-cell">13</span><span class="dp-mini-cal-cell">14</span>
-                  <span class="dp-mini-cal-cell">15</span><span class="dp-mini-cal-cell">16</span><span class="dp-mini-cal-cell">17</span><span class="dp-mini-cal-cell">18</span><span class="dp-mini-cal-cell">19</span><span class="dp-mini-cal-cell">20</span><span class="dp-mini-cal-cell">21</span><span class="dp-mini-cal-cell">22</span>
-                  <span class="dp-mini-cal-cell">23</span><span class="dp-mini-cal-cell">24</span><span class="dp-mini-cal-cell">25</span><span class="dp-mini-cal-cell">26</span><span class="dp-mini-cal-cell">27</span><span class="dp-mini-cal-cell">28</span><span class="dp-mini-cal-cell is-today">29</span><span class="dp-mini-cal-cell">30</span>
+            <aside class="dp-cal-aside" aria-label="Selected day and filters">
+              <article class="dp-card cal-agenda-card">
+                <div class="cal-agenda-head">
+                  <div>
+                    <p class="cal-agenda-weekday" id="cal-agenda-weekday">—</p>
+                    <p class="cal-agenda-date-line" id="cal-agenda-date-line">—</p>
+                  </div>
+                  <span class="cal-today-badge" id="cal-agenda-today-badge" hidden>Today</span>
                 </div>
+                <p class="cal-weather-line" id="cal-weather-line">
+                  <span aria-hidden="true">☀</span>
+                  <span id="cal-weather-text">Set your location under Profile / Settings to show weather here (prototype).</span>
+                </p>
+                <div id="cal-day-timeline" class="cal-day-timeline"></div>
+                <button type="button" class="btn btn-secondary btn-block btn-cal-full-day" id="btn-cal-view-full-day">View full day</button>
               </article>
-              <article class="dp-card dp-filter-block" id="cal-filters">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">Filters</h3>
-                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="course" checked /><span class="dp-dot-course" style="background:#0066ff;"></span> My courses</label>
-                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="exam" checked /><span class="dp-dot-course" style="background:#ef4444;"></span> Exams</label>
-                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="assignment" checked /><span class="dp-dot-course" style="background:#f59e0b;"></span> Assignments</label>
-                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="study" checked /><span class="dp-dot-course" style="background:#14b8a6;"></span> Study blocks</label>
-                <label class="dp-filter-block"><input type="checkbox" data-cal-filter="school" checked /><span class="dp-dot-course" style="background:#6366f1;"></span> School events</label>
+
+              <article class="dp-card cal-filters-card" id="cal-filters-card">
+                <div class="cal-filters-head">
+                  <h3 class="dp-card-title cal-filters-title">Calendar Filters</h3>
+                  <button type="button" class="cal-filters-clear" id="cal-filters-clear">CLEAR</button>
+                </div>
+                <label class="cal-filter-row cal-filter-master">
+                  <input type="checkbox" id="cal-filter-master-courses" checked />
+                  <span>My Courses</span>
+                </label>
+                <div id="cal-course-filter-list" class="cal-course-filter-list"></div>
+                <label class="cal-filter-row">
+                  <input type="checkbox" data-cal-filter="exam" checked />
+                  <span class="cal-filter-dot" style="background:#ef4444;"></span>
+                  <span>Exams</span>
+                </label>
+                <label class="cal-filter-row">
+                  <input type="checkbox" data-cal-filter="assignment" checked />
+                  <span class="cal-filter-dot" style="background:#eab308;"></span>
+                  <span>Assignments</span>
+                </label>
+                <label class="cal-filter-row">
+                  <input type="checkbox" data-cal-filter="study" checked />
+                  <span class="cal-filter-dot" style="background:#14b8a6;"></span>
+                  <span>Study Blocks</span>
+                </label>
+                <label class="cal-filter-row">
+                  <input type="checkbox" data-cal-filter="school" checked />
+                  <span class="cal-filter-dot" style="background:#6366f1;"></span>
+                  <span>School / Campus</span>
+                </label>
               </article>
-              <article class="dp-card">
-                <h3 class="panel-title small">Quick add</h3>
-                <form id="form-event">
-                  <div class="field"><label for="evt-title">Title</label><input id="evt-title" type="text" required /></div>
-                  <div class="form-row-2">
-                    <div class="field"><label for="evt-type">Type</label>
-                      <select id="evt-type"><option value="assignment">Assignment</option><option value="exam">Exam</option><option value="study">Study block</option><option value="school">School event</option></select>
-                    </div>
-                    <div class="field"><label for="evt-course">Course</label><select id="evt-course"><option value="">—</option></select></div>
-                  </div>
-                  <div class="form-row-2">
-                    <div class="field"><label for="evt-date">Date</label><input id="evt-date" type="date" required /></div>
-                    <div class="field"><label for="evt-time">Time</label><input id="evt-time" type="text" placeholder="3:00 PM" /></div>
-                  </div>
-                  <div class="field"><label for="evt-priority">Priority</label>
-                    <select id="evt-priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-block">Add event</button>
-                </form>
-              </article>
-              <button type="button" class="btn btn-secondary btn-sm btn-block">Subscribe</button>
+
+              <button type="button" class="btn btn-secondary btn-block cal-manage-btn" id="btn-cal-manage">
+                <span aria-hidden="true">🔔</span> Manage
+              </button>
             </aside>
 
             <div class="dp-cal-main">
-              <div class="dp-toolbar">
-                <button type="button" class="btn btn-secondary btn-sm" id="cal-view-month">Month</button>
-                <button type="button" class="btn btn-secondary btn-sm is-active" id="cal-view-week">Week</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="cal-view-day">Day</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="cal-prev">←</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="cal-next">→</button>
-                <h2 class="cal-month" id="cal-range-label" style="margin:0;flex:1;text-align:center;">Calendar</h2>
+              <div class="cal-main-toolbar">
+                <div class="cal-view-seg" role="tablist" aria-label="Calendar view">
+                  <button type="button" class="cal-view-btn" id="cal-view-month" data-cal-view-btn="month">Month</button>
+                  <button type="button" class="cal-view-btn is-active" id="cal-view-week" data-cal-view-btn="week">Week</button>
+                  <button type="button" class="cal-view-btn" id="cal-view-day" data-cal-view-btn="day">Day</button>
+                </div>
+                <div class="cal-nav-row">
+                  <button type="button" class="btn btn-secondary btn-sm cal-nav-arrow" id="cal-prev" aria-label="Previous">←</button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="cal-today">Today</button>
+                  <button type="button" class="btn btn-secondary btn-sm cal-nav-arrow" id="cal-next" aria-label="Next">→</button>
+                  <div class="cal-toolbar-right">
+                    <button
+                      type="button"
+                      class="cal-expand-btn"
+                      id="btn-cal-expand"
+                      aria-expanded="false"
+                      aria-label="Expand calendar"
+                      title="Expand calendar"
+                    >
+                      <svg class="cal-expand-icon cal-expand-icon-max" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="15 3 21 3 21 9" />
+                        <polyline points="9 21 3 21 3 15" />
+                        <line x1="21" y1="3" x2="14" y2="10" />
+                        <line x1="3" y1="21" x2="10" y2="14" />
+                      </svg>
+                      <svg class="cal-expand-icon cal-expand-icon-min" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="4 14 10 14 10 20" />
+                        <polyline points="20 10 14 10 14 4" />
+                        <line x1="14" y1="10" x2="21" y2="3" />
+                        <line x1="3" y1="21" x2="10" y2="14" />
+                      </svg>
+                    </button>
+                    <h2 class="cal-range-label" id="cal-range-label">Calendar</h2>
+                  </div>
+                </div>
               </div>
-              <div id="cal-host"></div>
+              <div id="cal-host" class="cal-host-wrap"></div>
             </div>
 
-            <aside class="dp-cal-right">
-              <article class="dp-card">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">Today's schedule</h3>
-                <p class="muted" style="font-size:0.82rem;margin:0;" id="cal-selected-label">Select a day</p>
-                <p class="muted" style="font-size:0.78rem;margin:0.35rem 0 0;">Weather · 62°F partly cloudy (demo)</p>
-                <div id="cal-day-events" class="stack-list mt"></div>
-                <button type="button" class="dp-link-btn" style="margin-top:0.5rem;">View full day</button>
+            <aside class="dp-cal-right" aria-label="Suggestions and upcoming tasks">
+              <article class="dp-card cal-smart-card">
+                <div class="cal-card-head-row">
+                  <h3 class="dp-card-title"><span aria-hidden="true">✦</span> Smart Suggestions</h3>
+                  <button type="button" class="cal-card-link" id="btn-cal-smart-see-all">SEE ALL</button>
+                </div>
+                <div id="cal-smart-body" class="cal-smart-body"></div>
+                <button type="button" class="btn btn-secondary btn-block btn-sm cal-smart-action-btn" id="btn-cal-smart-action" disabled title="Preview only — not wired in this prototype">
+                  Apply top suggestion
+                </button>
               </article>
-              <article class="dp-card">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">Upcoming this week</h3>
-                <div id="cal-upcoming" class="stack-list"></div>
-                <button type="button" class="dp-link-btn" style="margin-top:0.5rem;">View all</button>
-              </article>
-              <article class="dp-card dp-smart-suggest">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">✦ Smart suggestions</h3>
-                <p>You have exams coming up — add study blocks on lighter days.</p>
-                <button type="button" class="btn btn-primary btn-sm btn-block">Add study block</button>
+
+              <article class="dp-card cal-upcoming-card">
+                <div class="cal-card-head-row">
+                  <h3 class="dp-card-title">Upcoming This Week</h3>
+                  <button type="button" class="cal-card-link" id="btn-cal-upcoming-view-all">VIEW ALL</button>
+                </div>
+                <div id="cal-upcoming-week" class="cal-upcoming-list"></div>
               </article>
             </aside>
           </div>
         </section>
 
-        <!-- Courses -->
+        <!-- Courses tab redirects to dedicated workspace -->
         <section class="view dp-view" id="view-courses" data-view-panel="courses">
           <header class="dp-page-head">
             <div>
               <h1 class="dp-page-title">Courses</h1>
-              <p class="dp-page-sub muted">What is happening in each class?</p>
+              <p class="dp-page-sub muted">The full Courses workspace lives on its own page — syllabus import, LMS links, materials, and professor tools.</p>
             </div>
-            <button type="button" class="btn btn-secondary btn-sm">Filter</button>
+            <a href="courses.html" class="btn btn-primary btn-sm">Open Courses workspace</a>
           </header>
-          <div class="dp-course-toolbar">
-            <button type="button" class="dp-course-tab is-active">All courses</button>
-            <button type="button" class="dp-course-tab">This semester</button>
-            <button type="button" class="dp-course-tab">Next semester</button>
-            <button type="button" class="dp-course-tab">Completed</button>
-          </div>
-          <div class="dp-split">
-            <article class="panel dp-card">
-              <div class="panel-head"><h2 class="panel-title">Your courses</h2><button type="button" class="btn btn-primary btn-sm" id="btn-add-course">+ Add course</button></div>
-              <div id="course-list-host"></div>
-              <div class="dp-syllabus-banner">
-                <p class="muted" style="margin:0 0 0.5rem;"><strong>Upload a syllabus</strong> to supercharge this course.</p>
-                <button type="button" class="btn btn-secondary btn-sm" id="btn-add-course-syllabus">Upload syllabus →</button>
-              </div>
-            </article>
-            <article class="panel dp-card" id="course-detail-panel">
-              <h2 class="panel-title">Course overview</h2>
-              <div id="course-detail-body"><p class="dp-empty">Select a course or add one.</p></div>
-            </article>
-          </div>
+          <article class="panel dp-card" style="max-width:560px;">
+            <p style="margin:0 0 1rem;">Manage enrollments, semester filters, syllabus PDF import (simulated extraction), manual course entry, Rate My Professors links, structured notes, and more.</p>
+            <a href="courses.html" class="btn btn-primary">Go to Courses →</a>
+            <p class="muted" style="margin:1rem 0 0;font-size:0.85rem;">Uses the same saved data as this dashboard (browser local storage).</p>
+          </article>
         </section>
 
-        <!-- Tasks -->
+        <!-- Tasks → dedicated workspace -->
         <section class="view dp-view" id="view-tasks" data-view-panel="tasks">
-          <header class="dp-task-page-head">
+          <header class="dp-page-head">
             <div>
               <h1 class="dp-page-title">Tasks</h1>
-              <p class="dp-page-sub muted">What work do you need to finish?</p>
+              <p class="dp-page-sub muted">Plan work, deadlines, and auto-suggested items on the Tasks workspace.</p>
             </div>
-            <div>
-              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('task-title').focus();">+ Add task</button>
-            </div>
+            <a href="tasks.html" class="btn btn-primary btn-sm">Open Tasks workspace</a>
           </header>
-          <div class="dp-task-tabs" aria-label="Task categories (demo)">
-            <span class="dp-task-tab is-active">All (0)</span>
-            <span class="dp-task-tab">Assignments</span>
-            <span class="dp-task-tab">Readings</span>
-            <span class="dp-task-tab">Quizzes</span>
-            <span class="dp-task-tab">Projects</span>
-            <span class="dp-task-tab">Reminders</span>
-          </div>
-          <div class="dp-task-layout-page">
-            <div class="dp-task-col-main">
-              <article class="panel dp-card">
-                <h2 class="panel-title">New task</h2>
-                <form id="form-task">
-                  <div class="field"><label for="task-title">Title</label><input id="task-title" required /></div>
-                  <div class="form-row-2">
-                    <div class="field"><label for="task-course">Course</label><select id="task-course"></select></div>
-                    <div class="field"><label for="task-type">Type</label>
-                      <select id="task-type"><option value="assignment">Assignment</option><option value="reading">Reading</option><option value="quiz">Quiz</option><option value="project">Project</option><option value="reminder">Reminder</option></select>
-                    </div>
-                  </div>
-                  <div class="form-row-2">
-                    <div class="field"><label for="task-due">Due date</label><input id="task-due" type="date" required /></div>
-                    <div class="field"><label for="task-priority">Priority</label>
-                      <select id="task-priority"><option>High</option><option selected>Medium</option><option>Low</option></select>
-                    </div>
-                  </div>
-                  <div class="form-row-2">
-                    <div class="field"><label for="task-est">Est. minutes</label><input id="task-est" type="number" min="5" step="5" value="60" /></div>
-                    <div class="field"><label for="task-notes">Notes</label><input id="task-notes" /></div>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Add task</button>
-                </form>
-              </article>
-              <article class="panel dp-card">
-                <div class="panel-head"><h2 class="panel-title">Task board</h2></div>
-                <div class="dp-filter-row">
-                  <label>Filter</label>
-                  <select id="task-filter-type"><option value="all">All</option><option value="assignment">Assignments</option><option value="reading">Readings</option><option value="quiz">Quizzes</option><option value="project">Projects</option><option value="reminder">Reminders</option></select>
-                  <select id="task-filter-course"><option value="">All courses</option></select>
-                </div>
-                <p class="muted" style="font-size:0.85rem;">Click a task row for details (sorted by due date within each group).</p>
-                <div id="task-board"></div>
-              </article>
-            </div>
-            <article class="panel dp-card" id="task-detail-aside">
-              <h2 class="panel-title">Task detail</h2>
-              <div id="task-detail-body"><p class="dp-empty">Select a task from the board.</p></div>
-            </article>
-            <aside class="dp-task-widgets">
-              <article class="dp-card">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">Task progress</h3>
-                <div class="dp-donut-sm" aria-hidden="true"></div>
-                <p class="muted" style="font-size:0.82rem;text-align:center;margin:0;">Completed vs open (visual)</p>
-              </article>
-              <article class="dp-card">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">Auto-created tasks</h3>
-                <p class="muted" style="font-size:0.82rem;margin:0;">From syllabus &amp; announcements — approve in Updates.</p>
-              </article>
-              <article class="dp-card">
-                <h3 class="dp-card-title" style="font-size:0.95rem;">Deadline alerts</h3>
-                <p class="muted" style="font-size:0.82rem;margin:0;">Due soon highlights appear here.</p>
-              </article>
-            </aside>
+          <article class="panel dp-card" style="max-width:560px;">
+            <p style="margin:0 0 1rem;">Notion-style task detail, archived completed items, progress donut, syllabus suggestions flow, deadline alerts, and upcoming deadlines sync with your saved dashboard data.</p>
+            <a href="tasks.html" class="btn btn-primary">Go to Tasks →</a>
+          </article>
+          <!-- Minimal DOM so dashboard forms/selects still bind (embedded hub only) -->
+          <div hidden>
+            <form id="form-task"><input id="task-title" /><select id="task-course"><option></option></select><select id="task-type"><option value="assignment">Assignment</option></select><input id="task-due" type="date" /><select id="task-priority"><option>Medium</option></select><input id="task-est" /><input id="task-notes" /></form>
+            <select id="task-filter-type"><option value="all">All</option></select>
+            <select id="task-filter-course"><option value="">All courses</option></select>
+            <div id="task-board"></div>
+            <div id="task-detail-body"></div>
           </div>
         </section>
 
@@ -837,6 +803,7 @@
                 <div class="field"><label for="pf-adv-name">Advisor name</label><input id="pf-adv-name" /></div>
                 <div class="field"><label for="pf-adv-email">Advisor email</label><input id="pf-adv-email" /></div>
               </div>
+              <div class="field"><label for="pf-weather-city">Weather location</label><input id="pf-weather-city" placeholder="City, ST — shown on Calendar (demo weather)" /></div>
               <button type="submit" class="btn btn-primary">Save profile</button>
               <p id="profile-saved" class="msg-hint" hidden>Saved locally.</p>
               <div class="field mt"><label for="pf-theme">Accent theme</label>
@@ -844,10 +811,10 @@
               </div>
             </form>
           </article>
-          <article class="panel dp-card">
-            <h3 class="panel-title">Course preferences</h3>
+          <article class="panel dp-card" id="settings-calendar-prefs">
+            <h3 class="panel-title">Calendar display</h3>
             <label class="switch-row"><input type="checkbox" id="set-compact-cal" /> Compact calendar density</label>
-            <p class="muted" style="font-size:0.82rem;margin:0.75rem 0 0;">More display options can layer on top of your courses tab.</p>
+            <p class="muted" style="font-size:0.82rem;margin:0.75rem 0 0;">Weather line on the Calendar tab uses your <strong>Weather location</strong> in Profile above. This prototype shows sample conditions only.</p>
           </article>
           <article class="panel dp-card">
             <h3 class="panel-title">Notifications</h3>
@@ -871,6 +838,42 @@
           </div>
         </section>
       </main>
+    </div>
+  </div>
+
+  <!-- Add calendar event -->
+  <div class="modal" id="event-modal" hidden>
+    <div class="modal-backdrop" data-close-event-modal tabindex="-1"></div>
+    <div class="modal-card card-elevated" role="dialog" aria-modal="true" aria-labelledby="event-modal-title">
+      <div class="modal-head">
+        <h2 id="event-modal-title">Add Event</h2>
+        <button type="button" class="icon-btn" id="event-modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="form-event">
+        <input type="hidden" id="evt-edit-id" value="" />
+        <div class="field"><label for="evt-title">Title</label><input id="evt-title" type="text" required /></div>
+        <div class="form-row-2">
+          <div class="field"><label for="evt-type">Type</label>
+            <select id="evt-type"><option value="assignment">Assignment</option><option value="exam">Exam</option><option value="study">Study block</option><option value="school">School event</option></select>
+          </div>
+          <div class="field"><label for="evt-course">Course</label><select id="evt-course"><option value="">— Optional —</option></select></div>
+        </div>
+        <div class="form-row-2">
+          <div class="field"><label for="evt-date">Date</label><input id="evt-date" type="date" required /></div>
+          <div class="field"><label for="evt-time">Time</label><input id="evt-time" type="text" placeholder="e.g. 3:30 PM (leave blank for all-day)" /></div>
+        </div>
+        <div class="field"><label for="evt-priority">Priority</label>
+          <select id="evt-priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
+        </div>
+        <div class="field"><label for="evt-notes">Notes / location</label><textarea id="evt-notes" rows="2" placeholder="Room, link, or extra details"></textarea></div>
+        <div class="modal-actions modal-actions-event">
+          <button type="button" class="btn btn-ghost cal-btn-danger" id="btn-delete-event" hidden>Delete</button>
+          <div class="modal-actions-event-right">
+            <button type="button" class="btn btn-secondary" id="btn-evt-open-task" hidden>Open linked task</button>
+            <button type="submit" class="btn btn-primary" id="btn-evt-save">Save event</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 

@@ -101,6 +101,375 @@
     if (detail) detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
+  function selectCourseAndShow(id) {
+    ui.selectedCourseId = id;
+    switchView("courses");
+    renderCourses();
+    var body = document.getElementById("course-detail-body");
+    if (body) body.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function resolveTaskIdForCalendarEvent(ev) {
+    if (!ev) return null;
+    if (ev.taskId) {
+      var byId = state.tasks.find(function (t) {
+        return t.id === ev.taskId;
+      });
+      if (byId) return byId.id;
+    }
+    var openSameDay = state.tasks.filter(function (t) {
+      return (
+        !t.completed &&
+        t.due === ev.date &&
+        (!ev.courseId || t.courseId === ev.courseId)
+      );
+    });
+    if (openSameDay.length === 1) return openSameDay[0].id;
+    return null;
+  }
+
+  function setCalViewSegment(mode) {
+    document.querySelectorAll("[data-cal-view-btn]").forEach(function (b) {
+      b.classList.toggle("is-active", b.getAttribute("data-cal-view-btn") === mode);
+    });
+  }
+
+  function goToCalendarDay(iso) {
+    ui.selectedDayISO = iso;
+    ui.calCursor = D.parseISO(iso);
+    ui.calMode = "day";
+    setCalViewSegment("day");
+    switchView("calendar");
+    renderAll();
+  }
+
+  /** Jump main calendar to a date without changing Month / Week / Day mode (e.g. mini calendar, empty cell). */
+  function navigateCalendarToDate(iso) {
+    ui.selectedDayISO = iso;
+    ui.calCursor = D.parseISO(iso);
+    renderCalendar();
+  }
+
+  var CAL_SLOT_START_MIN = 6 * 60;
+  var CAL_SLOT_END_MIN = 24 * 60;
+  var CAL_PX_PER_HOUR = 52;
+
+  function parseTimeToMinutes(str) {
+    if (!str || !String(str).trim()) return null;
+    var s = String(str).trim().toUpperCase().replace(/\./g, "");
+    var match = s.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/);
+    if (!match) return null;
+    var h = parseInt(match[1], 10);
+    var mi = parseInt(match[2], 10);
+    var ap = match[3];
+    if (ap === "PM" && h !== 12) h += 12;
+    if (ap === "AM" && h === 12) h = 0;
+    if (!ap && h <= 24) {
+      /* bare hour like 14:30 already */
+    }
+    return h * 60 + mi;
+  }
+
+  function defaultDurationMinutes(ev) {
+    if (ev.type === "exam") return 90;
+    if (ev.type === "study") return 90;
+    return 75;
+  }
+
+  function formatTimeRange(startMin, durMin) {
+    function fmt(m) {
+      var h = Math.floor(m / 60);
+      var mi = m % 60;
+      var ap = h >= 12 ? "PM" : "AM";
+      var h12 = h % 12;
+      if (h12 === 0) h12 = 12;
+      return h12 + ":" + String(mi).padStart(2, "0") + " " + ap;
+    }
+    return fmt(startMin) + " – " + fmt(startMin + durMin);
+  }
+
+  function isAllDayCalendarEvent(ev) {
+    if (ev.allDay) return true;
+    return parseTimeToMinutes(ev.time) == null;
+  }
+
+  function renderCalendarCourseFilters() {
+    var host = document.getElementById("cal-course-filter-list");
+    if (!host) return;
+    host.innerHTML = "";
+    state.courses.forEach(function (c) {
+      var lab = document.createElement("label");
+      lab.className = "cal-filter-row cal-filter-course";
+      lab.innerHTML =
+        '<span class="cal-filter-dot" style="background:' +
+        escapeHtml(c.color || "#0056b3") +
+        '"></span><span class="cal-filter-course-label">' +
+        escapeHtml(c.code) +
+        '</span><input type="checkbox" data-cal-course-id="' +
+        escapeHtml(c.id) +
+        '" checked />';
+      host.appendChild(lab);
+    });
+  }
+
+  function buildCalWeekGridHtml(startMonday, evs) {
+    var days = [];
+    for (var d = 0; d < 7; d++) days.push(D.isoFromDate(D.addDays(startMonday, d)));
+    var spanMin = CAL_SLOT_END_MIN - CAL_SLOT_START_MIN;
+    var gridHeight = (spanMin / 60) * CAL_PX_PER_HOUR;
+    var todayISO = D.isoFromDate(new Date());
+
+    var html = '<div class="cal-week-shell card-elevated">';
+    html += '<div class="cal-week-head-row">';
+    html += '<div class="cal-week-corner" aria-hidden="true"></div>';
+    days.forEach(function (iso) {
+      var dt = D.parseISO(iso);
+      var isToday = iso === todayISO;
+      var isSel = iso === ui.selectedDayISO;
+      html +=
+        '<div class="cal-week-day-head' +
+        (isToday ? " is-today" : "") +
+        (isSel ? " is-selected" : "") +
+        '">';
+      html +=
+        '<span class="cal-week-dow">' +
+        dt.toLocaleDateString(undefined, { weekday: "short" }).toUpperCase() +
+        "</span>";
+      html += '<span class="cal-week-dom">' + dt.getDate() + "</span>";
+      html += "</div>";
+    });
+    html += "</div>";
+
+    html += '<div class="cal-all-day-row">';
+    html += '<div class="cal-al-label">ALL DAY</div>';
+    html += '<div class="cal-al-cols">';
+    days.forEach(function (iso) {
+      var ad = evs.filter(function (e) {
+        return e.date === iso && isAllDayCalendarEvent(e);
+      });
+      html += '<div class="cal-al-cell">';
+      ad.forEach(function (e) {
+        var col = (courseById(e.courseId) || {}).color || "#94a3b8";
+        var short = e.title.length > 18 ? e.title.slice(0, 16) + "…" : e.title;
+        html +=
+          '<button type="button" class="cal-al-pill" data-cal-ev-id="' +
+          escapeHtml(e.id) +
+          '" style="border-left:3px solid ' +
+          escapeHtml(col) +
+          '">' +
+          escapeHtml(short) +
+          "</button>";
+      });
+      html += "</div>";
+    });
+    html += "</div></div>";
+
+    html += '<div class="cal-week-body">';
+    html += '<div class="cal-time-rail" style="height:' + gridHeight + 'px">';
+    for (var hh = 6; hh <= 23; hh++) {
+      var lab = hh < 12 ? hh + " AM" : hh === 12 ? "12 PM" : hh - 12 + " PM";
+      html += '<span class="cal-time-tick">' + lab + "</span>";
+    }
+    html += "</div>";
+    html += '<div class="cal-week-cols">';
+    days.forEach(function (iso) {
+      var timed = evs.filter(function (e) {
+        return e.date === iso && !isAllDayCalendarEvent(e);
+      });
+      html +=
+        '<div class="cal-day-col-wrap' +
+        (iso === ui.selectedDayISO ? " is-selected" : "") +
+        '" data-day-col="' +
+        iso +
+        '">';
+      html += '<div class="cal-day-slots" style="height:' + gridHeight + 'px">';
+      timed.forEach(function (e) {
+        var sm = parseTimeToMinutes(e.time);
+        if (sm == null) return;
+        var dur = defaultDurationMinutes(e);
+        var top = ((sm - CAL_SLOT_START_MIN) / spanMin) * gridHeight;
+        var hgt = (dur / spanMin) * gridHeight;
+        if (top + hgt > gridHeight) hgt = Math.max(18, gridHeight - top);
+        if (top < 0) {
+          hgt += top;
+          top = 0;
+        }
+        var col = (courseById(e.courseId) || {}).color || "#0056b3";
+        var short = e.title.length > 22 ? e.title.slice(0, 20) + "…" : e.title;
+        var range = formatTimeRange(sm, dur);
+        html +=
+          '<button type="button" class="cal-grid-block" data-cal-ev-id="' +
+          escapeHtml(e.id) +
+          '" style="top:' +
+          top +
+          "px;height:" +
+          Math.max(hgt, 24) +
+          "px;border-left:4px solid " +
+          escapeHtml(col) +
+          '">';
+        html += '<span class="cal-grid-block-title">' + escapeHtml(short) + "</span>";
+        html += '<span class="cal-grid-block-time">' + escapeHtml(range) + "</span>";
+        html += "</button>";
+      });
+      html += "</div></div>";
+    });
+    html += "</div></div></div>";
+
+    return html;
+  }
+
+  function buildCalDayViewHtml(iso, evs) {
+    var spanMin = CAL_SLOT_END_MIN - CAL_SLOT_START_MIN;
+    var gridHeight = (spanMin / 60) * CAL_PX_PER_HOUR;
+    var todayISO = D.isoFromDate(new Date());
+    var dt = D.parseISO(iso);
+    var html = '<div class="cal-week-shell card-elevated cal-day-view-wrap">';
+    html += '<div class="cal-day-view-banner">';
+    html +=
+      '<span class="cal-day-view-line">' +
+      dt.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" }) +
+      "</span>";
+    if (iso === todayISO) html += '<span class="cal-day-view-today">Today</span>';
+    html += "</div>";
+
+    html += '<div class="cal-all-day-row cal-all-day-single">';
+    html += '<div class="cal-al-label">ALL DAY</div>';
+    html += '<div class="cal-al-cols"><div class="cal-al-cell">';
+    evs
+      .filter(function (e) {
+        return e.date === iso && isAllDayCalendarEvent(e);
+      })
+      .forEach(function (e) {
+        var col = (courseById(e.courseId) || {}).color || "#94a3b8";
+        var short = e.title.length > 40 ? e.title.slice(0, 38) + "…" : e.title;
+        html +=
+          '<button type="button" class="cal-al-pill" data-cal-ev-id="' +
+          escapeHtml(e.id) +
+          '" style="border-left:3px solid ' +
+          escapeHtml(col) +
+          '">' +
+          escapeHtml(short) +
+          "</button>";
+      });
+    html += "</div></div></div>";
+
+    html += '<div class="cal-week-body">';
+    html += '<div class="cal-time-rail" style="height:' + gridHeight + 'px">';
+    for (var hh = 6; hh <= 23; hh++) {
+      var lab = hh < 12 ? hh + " AM" : hh === 12 ? "12 PM" : hh - 12 + " PM";
+      html += '<span class="cal-time-tick">' + lab + "</span>";
+    }
+    html += "</div>";
+    html += '<div class="cal-week-cols cal-day-single-cols">';
+    html +=
+      '<div class="cal-day-col-wrap' +
+      (iso === ui.selectedDayISO ? " is-selected" : "") +
+      '" data-day-col="' +
+      iso +
+      '">';
+    html += '<div class="cal-day-slots" style="height:' + gridHeight + 'px">';
+    evs
+      .filter(function (e) {
+        return e.date === iso && !isAllDayCalendarEvent(e);
+      })
+      .forEach(function (e) {
+        var sm = parseTimeToMinutes(e.time);
+        if (sm == null) return;
+        var dur = defaultDurationMinutes(e);
+        var top = ((sm - CAL_SLOT_START_MIN) / spanMin) * gridHeight;
+        var hgt = (dur / spanMin) * gridHeight;
+        if (top + hgt > gridHeight) hgt = Math.max(18, gridHeight - top);
+        if (top < 0) {
+          hgt += top;
+          top = 0;
+        }
+        var col = (courseById(e.courseId) || {}).color || "#0056b3";
+        var short = e.title.length > 42 ? e.title.slice(0, 40) + "…" : e.title;
+        var range = formatTimeRange(sm, dur);
+        html +=
+          '<button type="button" class="cal-grid-block" data-cal-ev-id="' +
+          escapeHtml(e.id) +
+          '" style="top:' +
+          top +
+          "px;height:" +
+          Math.max(hgt, 28) +
+          "px;border-left:4px solid " +
+          escapeHtml(col) +
+          '">';
+        html += '<span class="cal-grid-block-title">' + escapeHtml(short) + "</span>";
+        html += '<span class="cal-grid-block-time">' + escapeHtml(range) + "</span>";
+        html += "</button>";
+      });
+    html += "</div></div></div></div></div>";
+
+    return html;
+  }
+
+  function wireMainCalendarEventClicks(host) {
+    if (!host) return;
+    host.querySelectorAll(".cal-grid-block, .cal-al-pill, .cal-event-chip").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var id = btn.getAttribute("data-cal-ev-id");
+        var ev = state.calendarEvents.find(function (x) {
+          return x.id === id;
+        });
+        if (ev) openCalendarEventEditor(ev);
+      });
+    });
+  }
+
+  function resetEventModalForAdd() {
+    var form = document.getElementById("form-event");
+    if (form) form.reset();
+    var hid = document.getElementById("evt-edit-id");
+    if (hid) hid.value = "";
+    var del = document.getElementById("btn-delete-event");
+    if (del) del.hidden = true;
+    var ot = document.getElementById("btn-evt-open-task");
+    if (ot) {
+      ot.hidden = true;
+      ot.removeAttribute("data-task-id");
+    }
+    var titleEl = document.getElementById("event-modal-title");
+    if (titleEl) titleEl.textContent = "Add event";
+  }
+
+  function openCalendarEventEditor(ev) {
+    if (!ev) return;
+    renderCourseSelects();
+    var hid = document.getElementById("evt-edit-id");
+    if (hid) hid.value = ev.id;
+    document.getElementById("evt-title").value = ev.title || "";
+    document.getElementById("evt-type").value = ev.type || "assignment";
+    document.getElementById("evt-course").value = ev.courseId || "";
+    document.getElementById("evt-date").value = ev.date || "";
+    document.getElementById("evt-time").value = ev.time || "";
+    document.getElementById("evt-priority").value = ev.priority || "medium";
+    document.getElementById("evt-notes").value = ev.notes != null ? String(ev.notes) : "";
+    var titleEl = document.getElementById("event-modal-title");
+    if (titleEl) titleEl.textContent = "Edit event";
+    var del = document.getElementById("btn-delete-event");
+    if (del) del.hidden = false;
+    var tid = resolveTaskIdForCalendarEvent(ev);
+    var ot = document.getElementById("btn-evt-open-task");
+    if (ot) {
+      if (tid) {
+        ot.hidden = false;
+        ot.setAttribute("data-task-id", tid);
+      } else {
+        ot.hidden = true;
+        ot.removeAttribute("data-task-id");
+      }
+    }
+    var em = document.getElementById("event-modal");
+    if (em) em.hidden = false;
+    setTimeout(function () {
+      var t = document.getElementById("evt-title");
+      if (t) t.focus();
+    }, 50);
+  }
+
   function renderGlobalSearchPanel() {
     var panel = document.getElementById("global-search-panel");
     if (!panel) return;
@@ -240,7 +609,20 @@
   }
 
   function switchView(name) {
-    document.body.setAttribute("data-current-view", name || "overview");
+    name = name || "overview";
+    if (name === "financial") {
+      window.location.href = "financial-aid.html";
+      return;
+    }
+    if (name === "communication") {
+      window.location.href = "communication.html";
+      return;
+    }
+    if (name === "settings") {
+      window.location.href = "settings.html";
+      return;
+    }
+    document.body.setAttribute("data-current-view", name);
     document.querySelectorAll("[data-view-panel]").forEach(function (panel) {
       panel.classList.toggle("view-active", panel.getAttribute("data-view-panel") === name);
     });
@@ -249,22 +631,61 @@
     });
     var title = document.getElementById("view-title");
     if (title) title.textContent = VIEW_TITLES[name] || "Dashboard";
+    if (name !== "calendar") {
+      setCalendarExpanded(false);
+    }
+    try {
+      var pathTail = (window.location.pathname || "").split("/").pop() || "";
+      if (/^dashboard\.html$/i.test(pathTail)) {
+        var hashByView = {
+          overview: "#overview",
+          calendar: "#calendar",
+          courses: "#courses",
+          tasks: "#tasks",
+          updates: "#updates",
+          grades: "#grades",
+          study: "#study",
+          communication: "#communication",
+          financial: "#financial",
+          settings: "#settings",
+        };
+        if (hashByView[name]) {
+          history.replaceState(null, "", hashByView[name]);
+        }
+      }
+    } catch (e) {}
+  }
+
+  function setCalendarExpanded(on) {
+    var panel = document.getElementById("view-calendar");
+    var btn = document.getElementById("btn-cal-expand");
+    if (panel) panel.classList.toggle("cal-expanded", !!on);
+    if (btn) {
+      btn.setAttribute("aria-expanded", on ? "true" : "false");
+      btn.setAttribute("aria-label", on ? "Exit expanded calendar" : "Expand calendar");
+      btn.title = on ? "Exit expanded view" : "Expand calendar";
+    }
   }
 
   function filteredCalendarEvents() {
-    function on(k) {
+    function typeOn(k) {
       var el = document.querySelector('[data-cal-filter="' + k + '"]');
       return el && el.checked;
     }
+    var master = document.getElementById("cal-filter-master-courses");
+    var masterOn = !master || master.checked;
     return state.calendarEvents.filter(function (ev) {
       if (!matchesSearch(eventSearchBlob(ev))) return false;
-      var hit = false;
-      if (on("course") && ev.courseId) hit = true;
-      if (on("exam") && ev.type === "exam") hit = true;
-      if (on("assignment") && ev.type === "assignment") hit = true;
-      if (on("study") && ev.type === "study") hit = true;
-      if (on("school") && ev.type === "school") hit = true;
-      return hit;
+      if (ev.courseId) {
+        if (!masterOn) return false;
+        var ccb = document.querySelector('[data-cal-course-id="' + ev.courseId + '"]');
+        if (ccb && !ccb.checked) return false;
+      }
+      if (ev.type === "exam" && typeOn("exam")) return true;
+      if (ev.type === "assignment" && typeOn("assignment")) return true;
+      if (ev.type === "study" && typeOn("study")) return true;
+      if (ev.type === "school" && typeOn("school")) return true;
+      return false;
     });
   }
 
@@ -301,6 +722,7 @@
       });
       if (prev && Array.prototype.some.call(sel.options, function (o) { return o.value === prev; })) sel.value = prev;
     });
+    renderCalendarCourseFilters();
   }
 
   function updateTopProfile() {
@@ -309,10 +731,6 @@
     document.getElementById("profile-major-line").textContent = [p.major, p.university].filter(Boolean).join(" · ") || "";
     var initials = (p.displayName || "S").split(/\s+/).map(function (x) { return x[0]; }).join("").slice(0, 2).toUpperCase();
     document.getElementById("profile-avatar").textContent = initials;
-    var badge = document.getElementById("notification-badge");
-    var n = state.notificationsUnread || 0;
-    badge.hidden = n <= 0;
-    badge.textContent = String(Math.min(n, 9));
     var wn = document.getElementById("ov-welcome-name");
     if (wn) wn.textContent = p.displayName || "Student";
   }
@@ -338,6 +756,9 @@
       save: save,
       switchView: switchView,
       selectTask: selectTaskAndShow,
+      selectCourse: selectCourseAndShow,
+      openCalendarDay: goToCalendarDay,
+      resolveTaskIdForCalendarEvent: resolveTaskIdForCalendarEvent,
     };
   }
 
@@ -363,7 +784,7 @@
       var prevDays = D.daysInMonth(y, m - 1);
       var curDays = D.daysInMonth(y, m);
       var html =
-        '<div class="calendar-shell card-elevated"><div class="cal-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid">';
+        '<div class="calendar-shell cal-month-scroll card-elevated"><div class="cal-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid">';
       var todayISO = D.isoFromDate(new Date());
       for (var i = 0; i < 42; i++) {
         var dayNum = i - startOffset + 1;
@@ -384,28 +805,50 @@
         });
         var cls = "cal-cell" + (muted ? " muted" : "") + (iso === todayISO ? " is-today" : "") + (iso === ui.selectedDayISO ? " is-selected" : "");
         html +=
-          '<button type="button" class="' +
+          '<div class="' +
           cls +
           '" data-day="' +
           iso +
-          '"><div class="cal-day-num">' +
+          '" tabindex="0" role="button" aria-label="Select this date on the calendar"><div class="cal-day-num">' +
           cellDate.getDate() +
-          '</div><div class="cal-dots">';
+          '</div><div class="cal-month-events">';
         cellEvs.slice(0, 4).forEach(function (e) {
           var col = (courseById(e.courseId) || {}).color || "#94a3b8";
-          html += '<span class="cal-dot" style="background:' + escapeHtml(col) + '" title="' + escapeHtml(e.title) + '"></span>';
+          var st = e.title.length > 24 ? e.title.slice(0, 22) + "…" : e.title;
+          html +=
+            '<button type="button" class="cal-event-chip" data-cal-ev-id="' +
+            escapeHtml(e.id) +
+            '" title="' +
+            escapeHtml(e.title) +
+            '" style="border-left-color:' +
+            escapeHtml(col) +
+            '"><span class="cal-event-chip-time">' +
+            escapeHtml(e.time || "") +
+            '</span><span class="cal-event-chip-title">' +
+            escapeHtml(st) +
+            "</span></button>";
         });
-        html += "</div></button>";
+        html += "</div></div>";
       }
       html += "</div></div>";
       host.innerHTML = html;
-      host.querySelectorAll("[data-day]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          ui.selectedDayISO = btn.getAttribute("data-day");
-          renderCalendar();
-          renderCalSidePanels();
+      host.querySelectorAll(".cal-cell").forEach(function (cell) {
+        function selectDay() {
+          navigateCalendarToDate(cell.getAttribute("data-day"));
+        }
+        cell.addEventListener("click", function (e) {
+          if (e.target.closest(".cal-event-chip")) return;
+          selectDay();
+        });
+        cell.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            if (e.target.closest(".cal-event-chip")) return;
+            e.preventDefault();
+            selectDay();
+          }
         });
       });
+      wireMainCalendarEventClicks(host);
     } else if (ui.calMode === "week") {
       var start = D.startOfWeekMonday(ui.calCursor);
       var end = D.addDays(start, 6);
@@ -414,71 +857,28 @@
           start.toLocaleDateString(undefined, { month: "short", day: "numeric" }) +
           " – " +
           end.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-      var whtml = '<div class="dp-week-grid">';
-      for (var d = 0; d < 7; d++) {
-        var dt = D.addDays(start, d);
-        var iso = D.isoFromDate(dt);
-        var isToday = iso === D.isoFromDate(new Date());
-        var colCls = "dp-week-col" + (isToday ? " is-today" : "");
-        whtml += '<div class="' + colCls + '" data-day-col="' + iso + '">';
-        whtml +=
-          '<div class="dp-week-head">' +
-          dt.toLocaleDateString(undefined, { weekday: "short" }) +
-          '</div><div class="dp-week-num">' +
-          dt.getDate() +
-          "</div>";
-        evs
-          .filter(function (e) {
-            return e.date === iso;
-          })
-          .forEach(function (e) {
-            var col = (courseById(e.courseId) || {}).color || "#64748b";
-            whtml +=
-              '<div class="dp-cal-chip" style="background:rgba(0,86,179,.08);border-left:3px solid ' +
-              escapeHtml(col) +
-              '" data-ev="' +
-              escapeHtml(e.id) +
-              '">' +
-              escapeHtml(e.title) +
-              "</div>";
-          });
-        whtml += "</div>";
-      }
-      whtml += "</div>";
-      host.innerHTML = whtml;
-      host.querySelectorAll("[data-day-col]").forEach(function (col) {
-        col.addEventListener("click", function () {
-          ui.selectedDayISO = col.getAttribute("data-day-col");
-          renderCalSidePanels();
+      host.innerHTML = buildCalWeekGridHtml(start, evs);
+      host.querySelectorAll(".cal-day-col-wrap").forEach(function (col) {
+        col.addEventListener("click", function (e) {
+          if (e.target.closest(".cal-grid-block, .cal-al-pill")) return;
+          var dayIso = col.getAttribute("data-day-col");
+          navigateCalendarToDate(dayIso);
         });
       });
+      wireMainCalendarEventClicks(host);
     } else {
       var dayISO = D.isoFromDate(ui.calCursor);
+      ui.selectedDayISO = dayISO;
       if (label) label.textContent = parseISO(dayISO).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-      var dayEvs = evs.filter(function (e) {
-        return e.date === dayISO;
+      host.innerHTML = buildCalDayViewHtml(dayISO, evs);
+      host.querySelectorAll(".cal-day-col-wrap").forEach(function (col) {
+        col.addEventListener("click", function (e) {
+          if (e.target.closest(".cal-grid-block, .cal-al-pill")) return;
+          var dayIso = col.getAttribute("data-day-col");
+          navigateCalendarToDate(dayIso);
+        });
       });
-      host.innerHTML =
-        '<div class="panel"><h3 class="panel-title">' +
-        dayEvs.length +
-        ' events</h3><div class="stack-list">' +
-        (dayEvs.length
-          ? dayEvs
-              .map(function (e) {
-                var c = courseById(e.courseId);
-                return (
-                  '<div class="stack-item"><h4>' +
-                  escapeHtml(e.title) +
-                  '</h4><p class="stack-meta">' +
-                  escapeHtml(e.time || "") +
-                  " · " +
-                  escapeHtml(c ? c.code : "") +
-                  "</p></div>"
-                );
-              })
-              .join("")
-          : '<div class="dp-empty">No events this day.</div>') +
-        "</div></div>";
+      wireMainCalendarEventClicks(host);
     }
     renderCalSidePanels();
   }
@@ -488,58 +888,172 @@
   }
 
   function renderCalSidePanels() {
-    document.getElementById("cal-selected-label").textContent = "Events on " + ui.selectedDayISO;
-    var host = document.getElementById("cal-day-events");
-    host.innerHTML = "";
-    filteredCalendarEvents()
-      .filter(function (e) {
-        return e.date === ui.selectedDayISO;
-      })
-      .forEach(function (e) {
-        var c = courseById(e.courseId);
-        var row = document.createElement("div");
-        row.className = "stack-item";
-        row.innerHTML =
-          "<h4>" +
-          escapeHtml(e.title) +
-          "</h4><p class=\"stack-meta\">" +
-          escapeHtml(e.time || "") +
-          " · " +
-          escapeHtml(c ? c.code : e.type) +
-          "</p>";
-        host.appendChild(row);
-      });
-    if (!host.children.length) host.innerHTML = '<p class="muted">No events.</p>';
+    var isoToday = D.isoFromDate(new Date());
+    var sel = ui.selectedDayISO ? D.parseISO(ui.selectedDayISO) : new Date();
+    var wd = document.getElementById("cal-agenda-weekday");
+    var dl = document.getElementById("cal-agenda-date-line");
+    var badge = document.getElementById("cal-agenda-today-badge");
+    var wtxt = document.getElementById("cal-weather-text");
+    if (wd) wd.textContent = sel.toLocaleDateString(undefined, { weekday: "long" }) + ",";
+    if (dl) dl.textContent = sel.toLocaleDateString(undefined, { month: "long", day: "numeric" });
+    if (badge) badge.hidden = D.isoFromDate(sel) !== isoToday;
 
-    var up = document.getElementById("cal-upcoming");
-    up.innerHTML = "";
-    filteredCalendarEvents()
-      .filter(function (e) {
-        return e.date >= D.isoFromDate(new Date());
-      })
-      .sort(function (a, b) {
-        return a.date.localeCompare(b.date);
-      })
-      .slice(0, 8)
-      .forEach(function (e) {
-        var c = courseById(e.courseId);
-        var row = document.createElement("div");
-        row.className = "stack-item";
-        row.innerHTML =
-          "<h4>" +
-          escapeHtml(e.title) +
-          "</h4><p class=\"stack-meta\">" +
-          escapeHtml(e.date) +
-          " · " +
-          escapeHtml(c ? c.code : "") +
-          "</p>";
-        up.appendChild(row);
+    if (wtxt) {
+      var city = (state.profile && state.profile.weatherCity) || "";
+      wtxt.textContent = city
+        ? "62°F PARTLY CLOUDY · " + city + " (demo — set in Profile / Settings)"
+        : "Add your city under Profile / Settings to show location on your calendar (demo weather).";
+    }
+
+    var timeline = document.getElementById("cal-day-timeline");
+    if (timeline) {
+      var dayEvs = filteredCalendarEvents()
+        .filter(function (e) {
+          return e.date === ui.selectedDayISO;
+        })
+        .slice()
+        .sort(function (a, b) {
+          var ma = parseTimeToMinutes(a.time) != null ? parseTimeToMinutes(a.time) : -1;
+          var mb = parseTimeToMinutes(b.time) != null ? parseTimeToMinutes(b.time) : -1;
+          return ma - mb;
+        });
+      if (!dayEvs.length) {
+        timeline.innerHTML = '<p class="muted cal-tl-empty">No events scheduled this day.</p>';
+      } else {
+        timeline.innerHTML = dayEvs
+          .map(function (e) {
+            var c = courseById(e.courseId);
+            var col = (c || {}).color || "#64748b";
+            var roomLine =
+              (e.notes && String(e.notes).trim()) ||
+              (c ? "Room / details · " + c.code : String(e.type || ""));
+            var dur = defaultDurationMinutes(e);
+            var sm = parseTimeToMinutes(e.time);
+            var range = sm != null ? formatTimeRange(sm, dur) : "All day";
+            return (
+              '<div class="cal-tl-item">' +
+              '<span class="cal-tl-dot" style="background:' +
+              escapeHtml(col) +
+              '"></span>' +
+              '<div class="cal-tl-body">' +
+              '<p class="cal-tl-time">' +
+              escapeHtml(e.time || "All day") +
+              "</p>" +
+              '<p class="cal-tl-title">' +
+              escapeHtml(e.title) +
+              (c ? " (" + escapeHtml(c.code) + ")" : "") +
+              "</p>" +
+              '<p class="cal-tl-meta">' +
+              escapeHtml(range) +
+              " · " +
+              escapeHtml(roomLine) +
+              "</p>" +
+              "</div></div>"
+            );
+          })
+          .join("");
+      }
+    }
+
+    var up = document.getElementById("cal-upcoming-week");
+    if (up) {
+      var weekEnd = D.isoFromDate(D.addDays(new Date(), 7));
+      var rows = [];
+      state.tasks.forEach(function (t) {
+        if (t.completed || !t.due || t.due < isoToday || t.due > weekEnd) return;
+        var c = courseById(t.courseId);
+        rows.push({
+          sort: t.due,
+          html:
+            '<button type="button" class="cal-up-row" data-cal-task-id="' +
+            escapeHtml(t.id) +
+            '">' +
+            '<div class="cal-up-date"><span>' +
+            new Date(t.due + "T12:00:00").toLocaleDateString(undefined, { month: "short" }).toUpperCase() +
+            '</span><strong>' +
+            new Date(t.due + "T12:00:00").getDate() +
+            '</strong></div><div class="cal-up-main"><strong>Task due</strong><p class="muted">' +
+            escapeHtml((c ? c.code + " · " : "") + t.title) +
+            '</p></div><span class="cal-up-dot"></span></button>',
+        });
       });
+      filteredCalendarEvents().forEach(function (e) {
+        if (e.type !== "assignment" || !e.date || e.date < isoToday || e.date > weekEnd) return;
+        var c = courseById(e.courseId);
+        var dt = D.parseISO(e.date);
+        var tid = resolveTaskIdForCalendarEvent(e);
+        var rowAttr =
+          tid != null
+            ? 'data-cal-task-id="' + escapeHtml(tid) + '"'
+            : 'data-cal-ev-id="' + escapeHtml(e.id) + '"';
+        rows.push({
+          sort: e.date,
+          html:
+            '<button type="button" class="cal-up-row" ' +
+            rowAttr +
+            '>' +
+            '<div class="cal-up-date"><span>' +
+            dt.toLocaleDateString(undefined, { month: "short" }).toUpperCase() +
+            '</span><strong>' +
+            dt.getDate() +
+            '</strong></div><div class="cal-up-main"><strong>Assignment</strong><p class="muted">' +
+            escapeHtml(e.title + (c ? " · " + c.code : "")) +
+            '</p></div><span class="cal-up-dot"></span></button>',
+        });
+      });
+      rows.sort(function (a, b) {
+        return a.sort.localeCompare(b.sort);
+      });
+      up.innerHTML = rows.length
+        ? rows
+            .slice(0, 6)
+            .map(function (r) {
+              return r.html;
+            })
+            .join("")
+        : '<p class="muted">Nothing due in the next 7 days.</p>';
+    }
+
+    var smart = document.getElementById("cal-smart-body");
+    if (smart) {
+      var tips = [];
+      var evs = filteredCalendarEvents();
+      var examSoon = evs.some(function (e) {
+        return e.type === "exam" && e.date >= isoToday && e.date <= D.isoFromDate(D.addDays(new Date(), 14));
+      });
+      var pile =
+        state.tasks.filter(function (t) {
+          return !t.completed && t.due === isoToday;
+        }).length >= 3;
+      if (examSoon)
+        tips.push(
+          "Exams on your calendar — carve focused review blocks 2–3 days ahead and shift lower-priority work."
+        );
+      if (pile)
+        tips.push(
+          "Heavy day — move one task or study block to a lighter day using Tasks and Calendar together."
+        );
+      tips.push(
+        "Use 45–50 minute focus blocks with a short reset; place hardest work in your most alert hours."
+      );
+      tips.push(
+        "When the grid is full, batch shallow tasks (email, readings) into short windows or defer non-urgent items."
+      );
+      smart.innerHTML =
+        '<ul class="cal-smart-list">' +
+        tips
+          .map(function (t) {
+            return "<li>" + escapeHtml(t) + "</li>";
+          })
+          .join("") +
+        "</ul>";
+    }
   }
 
   /* ---------- Courses ---------- */
   function renderCourses() {
     var list = document.getElementById("course-list-host");
+    if (!list) return;
     list.innerHTML = "";
     var items = state.courses.filter(function (c) {
       return matchesSearch(courseSearchBlob(c));
@@ -577,6 +1091,7 @@
 
   function renderCourseDetail() {
     var body = document.getElementById("course-detail-body");
+    if (!body) return;
     var c = courseById(ui.selectedCourseId);
     if (!c) {
       body.innerHTML = '<p class="dp-empty">Select a course from the list.</p>';
@@ -791,6 +1306,7 @@
   }
 
   function renderTasks() {
+    if (!document.getElementById("task-board")) return;
     if (
       ui.selectedTaskId &&
       !state.tasks.some(function (t) {
@@ -1383,6 +1899,7 @@
     v("pf-goal", p.academicGoal);
     v("pf-adv-name", p.advisorName);
     v("pf-adv-email", p.advisorEmail);
+    v("pf-weather-city", p.weatherCity);
     var th = document.getElementById("pf-theme");
     if (th) th.value = p.theme || "ocean";
     syncSampleCheckboxes();
@@ -1440,12 +1957,12 @@
 
   function bindNav() {
     document.querySelectorAll("#sidebar-nav .nav-item").forEach(function (btn) {
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", function (e) {
+        var href = btn.getAttribute("href") || "";
+        if (btn.tagName === "A" && href && /\.html/i.test(href)) return;
+        e.preventDefault();
         switchView(btn.getAttribute("data-view"));
       });
-    });
-    document.getElementById("btn-sidebar-view-plan").addEventListener("click", function () {
-      switchView("study");
     });
   }
 
@@ -1479,7 +1996,9 @@
     var syllBtn = document.getElementById("btn-add-course-syllabus");
     if (syllBtn)
       syllBtn.addEventListener("click", function () {
-        document.getElementById("btn-add-course").click();
+        var add = document.getElementById("btn-add-course");
+        if (add) add.click();
+        else window.location.href = "courses.html";
       });
 
     document.querySelectorAll(".dp-mode-toggle button").forEach(function (btn, idx) {
@@ -1506,34 +2025,157 @@
       });
     });
 
-    document.querySelectorAll("#cal-filters input").forEach(function (cb) {
+    document.querySelectorAll("#cal-filters-card input").forEach(function (cb) {
       cb.addEventListener("change", function () {
         renderCalendar();
         renderOverview();
       });
     });
 
+    var calClear = document.getElementById("cal-filters-clear");
+    if (calClear)
+      calClear.addEventListener("click", function () {
+        document.querySelectorAll("#cal-filters-card input[type=checkbox]").forEach(function (x) {
+          x.checked = false;
+        });
+        renderCalendar();
+        renderOverview();
+      });
+
     document.getElementById("cal-view-month").addEventListener("click", function () {
       ui.calMode = "month";
-      document.getElementById("cal-view-month").classList.add("is-active");
-      document.getElementById("cal-view-week").classList.remove("is-active");
-      document.getElementById("cal-view-day").classList.remove("is-active");
+      setCalViewSegment("month");
       renderCalendar();
     });
     document.getElementById("cal-view-week").addEventListener("click", function () {
       ui.calMode = "week";
-      document.getElementById("cal-view-week").classList.add("is-active");
-      document.getElementById("cal-view-month").classList.remove("is-active");
-      document.getElementById("cal-view-day").classList.remove("is-active");
+      setCalViewSegment("week");
       renderCalendar();
     });
     document.getElementById("cal-view-day").addEventListener("click", function () {
       ui.calMode = "day";
-      document.getElementById("cal-view-day").classList.add("is-active");
-      document.getElementById("cal-view-month").classList.remove("is-active");
-      document.getElementById("cal-view-week").classList.remove("is-active");
+      setCalViewSegment("day");
       renderCalendar();
     });
+
+    document.getElementById("cal-today").addEventListener("click", function () {
+      var n = new Date();
+      ui.calCursor = n;
+      ui.selectedDayISO = D.isoFromDate(n);
+      renderCalendar();
+    });
+
+    var btnCalExpand = document.getElementById("btn-cal-expand");
+    if (btnCalExpand) {
+      btnCalExpand.addEventListener("click", function () {
+        var panel = document.getElementById("view-calendar");
+        var next = !(panel && panel.classList.contains("cal-expanded"));
+        setCalendarExpanded(next);
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var evtModalOpen = document.getElementById("event-modal");
+      if (evtModalOpen && !evtModalOpen.hidden) return;
+      var panel = document.getElementById("view-calendar");
+      if (!panel || !panel.classList.contains("view-active") || !panel.classList.contains("cal-expanded")) return;
+      setCalendarExpanded(false);
+      e.preventDefault();
+    });
+
+    var btnAddEvt = document.getElementById("btn-cal-open-add-event");
+    var evtModal = document.getElementById("event-modal");
+    if (btnAddEvt && evtModal) {
+      btnAddEvt.addEventListener("click", function () {
+        resetEventModalForAdd();
+        evtModal.hidden = false;
+        var ed = document.getElementById("evt-date");
+        if (ed) ed.value = ui.selectedDayISO || D.isoFromDate(new Date());
+        setTimeout(function () {
+          var t = document.getElementById("evt-title");
+          if (t) t.focus();
+        }, 50);
+      });
+      document.getElementById("event-modal-close").addEventListener("click", function () {
+        evtModal.hidden = true;
+      });
+      evtModal.querySelector(".modal-backdrop").addEventListener("click", function () {
+        evtModal.hidden = true;
+      });
+    }
+
+    var btnDelEvt = document.getElementById("btn-delete-event");
+    if (btnDelEvt) {
+      btnDelEvt.addEventListener("click", function () {
+        var editId = document.getElementById("evt-edit-id").value;
+        if (!editId) return;
+        state.calendarEvents = state.calendarEvents.filter(function (x) {
+          return x.id !== editId;
+        });
+        save();
+        var emDel = document.getElementById("event-modal");
+        if (emDel) emDel.hidden = true;
+        renderAll();
+      });
+    }
+
+    var btnEvtOpenTask = document.getElementById("btn-evt-open-task");
+    if (btnEvtOpenTask) {
+      btnEvtOpenTask.addEventListener("click", function () {
+        var tid = btnEvtOpenTask.getAttribute("data-task-id");
+        if (!tid) return;
+        var emOt = document.getElementById("event-modal");
+        if (emOt) emOt.hidden = true;
+        selectTaskAndShow(tid);
+      });
+    }
+
+    var calUpcomingHost = document.getElementById("cal-upcoming-week");
+    if (calUpcomingHost) {
+      calUpcomingHost.addEventListener("click", function (e) {
+        var row = e.target.closest(".cal-up-row");
+        if (!row) return;
+        var taskId = row.getAttribute("data-cal-task-id");
+        if (taskId) {
+          selectTaskAndShow(taskId);
+          return;
+        }
+        var evId = row.getAttribute("data-cal-ev-id");
+        if (evId) {
+          var ev = state.calendarEvents.find(function (x) {
+            return x.id === evId;
+          });
+          if (ev) openCalendarEventEditor(ev);
+        }
+      });
+    }
+
+    var btnManage = document.getElementById("btn-cal-manage");
+    if (btnManage)
+      btnManage.addEventListener("click", function () {
+        switchView("settings");
+        var el = document.getElementById("settings-calendar-prefs");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+
+    var btnFullDay = document.getElementById("btn-cal-view-full-day");
+    if (btnFullDay)
+      btnFullDay.addEventListener("click", function () {
+        goToCalendarDay(ui.selectedDayISO || D.isoFromDate(new Date()));
+      });
+
+    var btnUpAll = document.getElementById("btn-cal-upcoming-view-all");
+    if (btnUpAll)
+      btnUpAll.addEventListener("click", function () {
+        switchView("tasks");
+      });
+
+    var btnSmart = document.getElementById("btn-cal-smart-see-all");
+    if (btnSmart)
+      btnSmart.addEventListener("click", function () {
+        switchView("study");
+      });
 
     document.getElementById("cal-prev").addEventListener("click", function () {
       if (ui.calMode === "month") ui.calCursor = new Date(ui.calCursor.getFullYear(), ui.calCursor.getMonth() - 1, 1);
@@ -1550,19 +2192,39 @@
 
     document.getElementById("form-event").addEventListener("submit", function (e) {
       e.preventDefault();
-      state.calendarEvents.push({
-        id: D.uid(),
+      var editId = document.getElementById("evt-edit-id").value;
+      var payload = {
         title: document.getElementById("evt-title").value.trim(),
         type: document.getElementById("evt-type").value,
         courseId: document.getElementById("evt-course").value,
         date: document.getElementById("evt-date").value,
         time: document.getElementById("evt-time").value.trim(),
         priority: document.getElementById("evt-priority").value,
-        color: "",
-        notes: "",
-      });
+        notes: document.getElementById("evt-notes").value.trim(),
+      };
+      if (editId) {
+        var existing = state.calendarEvents.find(function (x) {
+          return x.id === editId;
+        });
+        if (existing) {
+          Object.assign(existing, payload);
+        }
+      } else {
+        state.calendarEvents.push(
+          Object.assign(
+            {
+              id: D.uid(),
+              color: "",
+            },
+            payload
+          )
+        );
+      }
       save();
       e.target.reset();
+      resetEventModalForAdd();
+      var em = document.getElementById("event-modal");
+      if (em) em.hidden = true;
       renderAll();
     });
 
@@ -1593,9 +2255,12 @@
     document.getElementById("task-filter-type").addEventListener("change", renderTasks);
     document.getElementById("task-filter-course").addEventListener("change", renderTasks);
 
-    document.getElementById("btn-add-course").addEventListener("click", function () {
-      openCourseModal(null);
-    });
+    var btnAddCourseDash = document.getElementById("btn-add-course");
+    if (btnAddCourseDash) {
+      btnAddCourseDash.addEventListener("click", function () {
+        openCourseModal(null);
+      });
+    }
     document.getElementById("course-modal-close").addEventListener("click", closeCourseModal);
     document.querySelector("#course-modal .modal-backdrop").addEventListener("click", closeCourseModal);
 
@@ -1621,7 +2286,22 @@
       if (editId) {
         Object.assign(courseById(editId), payload);
       } else {
-        state.courses.push(Object.assign({ id: D.uid() }, payload));
+        var pasteEl = document.getElementById("c-syllabus-paste");
+        var parts = payload.code.split(/\s+/);
+        state.courses.push(
+          Object.assign(
+            {
+              id: D.uid(),
+              subject: parts[0] || "",
+              term: "current",
+              courseNotesList: [],
+              rateMyProfessorUrl: "",
+              syllabusPdfUrl: "",
+              syllabusPlainText: pasteEl ? pasteEl.value.trim() : "",
+            },
+            payload
+          )
+        );
       }
       var ll = document.getElementById("c-link-label").value.trim();
       var uu = document.getElementById("c-link-url").value.trim();
@@ -1998,10 +2678,12 @@
       p.academicGoal = document.getElementById("pf-goal").value.trim();
       p.advisorName = document.getElementById("pf-adv-name").value.trim();
       p.advisorEmail = document.getElementById("pf-adv-email").value.trim();
+      p.weatherCity = document.getElementById("pf-weather-city").value.trim();
       p.theme = document.getElementById("pf-theme").value;
       save();
       applyTheme(p.theme);
       updateTopProfile();
+      renderCalendar();
       document.getElementById("profile-saved").hidden = false;
       setTimeout(function () {
         document.getElementById("profile-saved").hidden = true;
@@ -2063,12 +2745,35 @@
     }
   }
 
+  function viewFromHash() {
+    var h = (window.location.hash || "").replace(/^#/, "").toLowerCase();
+    var map = {
+      "": "overview",
+      overview: "overview",
+      calendar: "calendar",
+      courses: "courses",
+      tasks: "tasks",
+      updates: "updates",
+      grades: "grades",
+      study: "study",
+      communication: "communication",
+      financial: "financial",
+      settings: "settings",
+    };
+    return Object.prototype.hasOwnProperty.call(map, h) ? map[h] : "overview";
+  }
+
   function init() {
     applyTheme(state.profile.theme);
     bindNav();
     bindForms();
-    switchView("overview");
+    switchView(viewFromHash());
     renderAll();
+    setCalViewSegment(ui.calMode);
+    window.addEventListener("hashchange", function () {
+      switchView(viewFromHash());
+      renderAll();
+    });
   }
 
   init();

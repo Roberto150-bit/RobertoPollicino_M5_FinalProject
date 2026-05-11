@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Study Center." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Study Center — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/study-center.css" />
+</head>
+<body class="dash-body" data-current-view="study-center">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <a href="tasks.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></a>
+        <a href="updates.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></a>
+        <a href="grades.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></span>
+        <a href="communication.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></a>
+        <a href="financial-aid.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></a>
+        <a href="settings.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="study-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="study-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="study-sidebar-week-label">Week — of —</p>
+        <a href="tasks.html" class="btn btn-secondary btn-sm btn-block">Open Tasks →</a>
+        <a href="dashboard.html#overview" class="btn btn-ghost btn-sm btn-block" style="margin-top:0.35rem;">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, notes…" autocomplete="off" />
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span></div>
+          <a href="settings.html" class="dp-avatar-wrap" title="Profile"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">S</div></a>
+        </div>
+        <h1 class="sr-only">Study Center</h1>
+      </header>
+
+      <main class="dash-content st-main">
+        <div class="st-hero">
+          <h1 class="st-hero-title">Study Center <span aria-hidden="true">📚</span></h1>
+          <p class="st-hero-sub muted">Your personalized hub to study smarter and excel.</p>
+        </div>
+
+        <div class="st-quote-card dp-card" role="figure" aria-label="Study tip">
+          <span class="st-quote-mark" aria-hidden="true">“</span>
+          <p class="st-quote-text">Small, consistent study habits lead to big academic wins.</p>
+          <span class="st-quote-ai" aria-hidden="true" title="Insight">✦</span>
+        </div>
+
+        <section class="st-toolbar dp-card" aria-label="Focus course">
+          <div class="st-toolbar-inner">
+            <label class="st-toolbar-label" for="st-focus-course">Focus course</label>
+            <select id="st-focus-course" class="st-select">
+              <option value="">All courses</option>
+            </select>
+            <p class="st-toolbar-hint muted">Filters deadlines, exam tools, and grade planning. Set syllabus letter bands under <a href="courses.html">Courses</a>.</p>
+          </div>
+        </section>
+
+        <article class="st-card dp-card st-grade-plan st-grade-plan--wide">
+          <div class="st-grade-plan-inner">
+            <div>
+              <h2 class="st-card-title">Grade goal planner</h2>
+              <p class="st-card-desc muted">Uses your logged grades and syllabus category weights. Goal letters follow each course when you analyze the syllabus on Courses.</p>
+            </div>
+            <div class="field st-field-row">
+              <label for="st-planner-goal">Goal grade</label>
+              <select id="st-planner-goal" class="st-select"></select>
+            </div>
+          </div>
+          <div id="st-planner-feasibility" class="st-feasibility" hidden role="status"></div>
+          <div class="st-plan-result-row">
+            <div class="st-plan-result">
+              <p class="muted small">Needed on remaining work</p>
+              <p class="st-plan-big" id="st-planner-needed">—</p>
+              <p class="muted st-plan-meta" id="st-planner-meta"></p>
+            </div>
+            <div class="st-plan-cats-wrap">
+              <p class="muted small">Range by category (remaining work)</p>
+              <ul class="st-plan-cat-list" id="st-planner-cats"></ul>
+              <p class="muted st-plan-note" id="st-planner-scale-note"></p>
+            </div>
+          </div>
+          <footer class="st-card-foot">
+            <a href="grades.html" class="st-link">Open Grades workspace <span aria-hidden="true">→</span></a>
+            <a href="courses.html" class="st-link">Syllabus &amp; grading rules <span aria-hidden="true">→</span></a>
+          </footer>
+        </article>
+
+        <section class="st-grid st-grid--3col st-grid--gap">
+          <article class="st-card dp-card st-plan-gen">
+            <div class="st-card-head-icon" aria-hidden="true">🪄</div>
+            <h2 class="st-card-title">Study Plan Generator</h2>
+            <p class="st-card-desc muted">Create a plan tailored to your goals and schedule.</p>
+            <p class="muted small">Based on</p>
+            <div class="st-segment" role="group" aria-label="Plan basis">
+              <button type="button" class="st-seg-btn is-active" id="st-gen-mode-deadlines" data-mode="deadlines">Deadlines</button>
+              <button type="button" class="st-seg-btn" id="st-gen-mode-grades" data-mode="grades">Grades</button>
+              <button type="button" class="st-seg-btn" id="st-gen-mode-confidence" data-mode="confidence">Confidence</button>
+            </div>
+            <div class="field">
+              <label for="st-gen-hours">Time available per day</label>
+              <select id="st-gen-hours" class="st-select">
+                <option value="0.5">30 minutes</option>
+                <option value="1">1 hour</option>
+                <option value="1.5">1.5 hours</option>
+                <option value="2" selected>2 hours</option>
+                <option value="3">3 hours</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-block st-gen-btn" id="st-gen-submit">Generate My Study Plan <span aria-hidden="true">✨</span></button>
+            <div id="st-gen-output" class="st-gen-output muted" hidden></div>
+          </article>
+
+          <article class="st-card dp-card st-deadlines-card">
+            <div class="st-card-head-row">
+              <span class="st-badge-num" id="st-dl-badge">0</span>
+              <h2 class="st-card-title st-card-title--inline">Upcoming Deadlines</h2>
+              <span class="st-card-tag muted">Next 7 days</span>
+            </div>
+            <ul class="st-dl-list" id="st-deadlines-list"></ul>
+            <p class="muted st-empty" id="st-deadlines-empty" hidden>No tasks in the next week.</p>
+            <footer class="st-card-foot st-card-foot--split">
+              <a href="dashboard.html#calendar" class="st-link">Go to full calendar <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+
+          <article class="st-card dp-card st-focus-card">
+            <div class="st-card-head-row">
+              <span class="st-badge-num">3</span>
+              <h2 class="st-card-title st-card-title--inline">Study Focus</h2>
+              <span class="st-card-tag muted">Today</span>
+            </div>
+            <div class="st-focus-split">
+              <div class="st-donut-wrap">
+                <div class="st-donut" id="st-focus-donut" style="--pct:68;">
+                  <div class="st-donut-inner">
+                    <span class="st-donut-pct" id="st-focus-pct">68%</span>
+                    <span class="muted small">Study Score</span>
+                    <span class="st-donut-label" id="st-focus-label">Good</span>
+                  </div>
+                </div>
+              </div>
+              <div class="st-focus-metrics" id="st-focus-metrics"></div>
+            </div>
+            <button type="button" class="st-foot-banner" id="st-focus-insights">View focus insights <span aria-hidden="true">→</span></button>
+          </article>
+        </section>
+
+        <section class="st-grid st-grid--2col st-grid--gap">
+          <article class="st-card dp-card st-toolkit">
+            <div class="st-card-head-row">
+              <span aria-hidden="true">📋</span>
+              <h2 class="st-card-title">Exam Prep Toolkit</h2>
+            </div>
+            <div class="st-tabs" role="tablist">
+              <button type="button" class="st-tab is-active" role="tab" aria-selected="true" data-tab="notes">Notes</button>
+              <button type="button" class="st-tab" role="tab" aria-selected="false" data-tab="flashcards">Flashcards</button>
+              <button type="button" class="st-tab" role="tab" aria-selected="false" data-tab="practice">Practice</button>
+              <button type="button" class="st-tab" role="tab" aria-selected="false" data-tab="review">Review Guides</button>
+            </div>
+            <label class="muted small" for="st-toolkit-course">Course</label>
+            <select id="st-toolkit-course" class="st-select"></select>
+            <ul class="st-toolkit-rows" id="st-toolkit-rows"></ul>
+          </article>
+
+          <article class="st-card dp-card st-exam-feedback">
+            <div class="st-card-head-row">
+              <div>
+                <h2 class="st-card-title">Exam Feedback</h2>
+                <p class="muted small">Upload your exam or quiz results</p>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" id="st-feedback-upload">Upload Results</button>
+            </div>
+            <p class="st-feedback-course" id="st-feedback-title">—</p>
+            <p class="muted small" id="st-feedback-date"></p>
+            <div class="st-feedback-body">
+              <div class="st-donut-wrap st-donut-wrap--sm">
+                <div class="st-donut st-donut--feedback" id="st-feedback-donut" style="--pct:72;">
+                  <div class="st-donut-inner">
+                    <span class="st-donut-pct" id="st-feedback-pct">72%</span>
+                    <span class="muted small">Overall Score</span>
+                  </div>
+                </div>
+              </div>
+              <div class="st-feedback-cols">
+                <div>
+                  <p class="st-fb-h st-fb-h--ok">🎯 Strengths</p>
+                  <ul class="st-fb-ul" id="st-feedback-strengths"></ul>
+                </div>
+                <div>
+                  <p class="st-fb-h st-fb-h--bad">⚠ Areas to Improve</p>
+                  <ul class="st-fb-ul" id="st-feedback-weak"></ul>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="st-foot-banner">View detailed feedback <span aria-hidden="true">→</span></button>
+          </article>
+        </section>
+
+        <article class="st-card dp-card st-visual-wide">
+          <div class="st-card-head-row">
+            <span aria-hidden="true">🖼</span>
+            <div>
+              <h2 class="st-card-title">Visual Study Aids</h2>
+              <p class="muted small">Diagrams, charts, and visual explanations</p>
+            </div>
+          </div>
+          <div class="st-visual-grid" id="st-visual-grid"></div>
+          <footer class="st-card-foot">
+            <a href="features.html" class="st-link">Explore more visual aids <span aria-hidden="true">→</span></a>
+          </footer>
+        </article>
+
+        <section class="st-grid st-grid--3col st-grid--gap st-bottom-row">
+          <article class="st-card dp-card">
+            <div class="st-card-head-row">
+              <span aria-hidden="true">🃏</span>
+              <h2 class="st-card-title">Flashcards</h2>
+              <a href="dashboard.html#study" class="st-link st-link--sm">View all</a>
+            </div>
+            <p class="muted small">Recent decks</p>
+            <ul class="st-flash-list" id="st-flash-list"></ul>
+            <button type="button" class="st-outline-btn btn-block" id="st-flash-study">Study Now</button>
+          </article>
+
+          <article class="st-card dp-card st-smart-notes">
+            <div class="st-card-head-row">
+              <span aria-hidden="true">📓</span>
+              <div>
+                <h2 class="st-card-title">Smart Notes</h2>
+                <p class="muted small">Convert your notes into organized study material.</p>
+              </div>
+            </div>
+            <div class="st-notes-grid">
+              <button type="button" class="st-note-tile" id="st-note-upload">
+                <span class="st-note-ico">📄</span>
+                <span class="st-note-t">Upload Notes</span>
+                <span class="muted st-note-d">PDF, DOCX, or Image</span>
+              </button>
+              <button type="button" class="st-note-tile" id="st-note-audio">
+                <span class="st-note-ico">🎙</span>
+                <span class="st-note-t">Record Audio</span>
+                <span class="muted st-note-d">Convert speech to notes</span>
+              </button>
+              <button type="button" class="st-note-tile" id="st-note-paste">
+                <span class="st-note-ico">📋</span>
+                <span class="st-note-t">Paste Text</span>
+                <span class="muted st-note-d">Turn text into notes</span>
+              </button>
+            </div>
+            <a href="dashboard.html#overview" class="st-outline-btn btn-block st-notes-viewall">View all notes <span aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="st-card dp-card">
+            <div class="st-card-head-row">
+              <span aria-hidden="true">✨</span>
+              <h2 class="st-card-title">Recommended for You</h2>
+            </div>
+            <ul class="st-rec-list">
+              <li class="st-rec-row">
+                <span class="st-rec-ico" style="background:rgba(37,99,235,0.12)">🛡</span>
+                <div><strong>Spaced Repetition</strong><span class="muted small">Review concepts at the right time</span></div>
+                <button type="button" class="btn btn-secondary btn-sm st-rec-btn" data-rec="spaced">Start</button>
+              </li>
+              <li class="st-rec-row">
+                <span class="st-rec-ico" style="background:rgba(147,51,234,0.12)">⏱</span>
+                <div><strong>Pomodoro Timer</strong><span class="muted small">Focus with timed study sessions</span></div>
+                <button type="button" class="btn btn-secondary btn-sm st-rec-btn" data-rec="pomodoro">Start</button>
+              </li>
+              <li class="st-rec-row">
+                <span class="st-rec-ico" style="background:rgba(22,163,74,0.12)">🧠</span>
+                <div><strong>Study with AI Tutor</strong><span class="muted small">Get help and explanations</span></div>
+                <button type="button" class="btn btn-secondary btn-sm st-rec-btn" data-rec="tutor">Ask</button>
+              </li>
+            </ul>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/seed.js"></script>
+  <script src="js/study-center-page.js"></script>
+</body>
+</html>

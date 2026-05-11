@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Communication Assistant." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Communication Assistant — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/communication.css" />
+</head>
+<body class="dash-body" data-current-view="communication">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg><span>Overview</span></a>
+        <a href="dashboard.html#calendar" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Calendar</span></a>
+        <a href="courses.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Courses</span></a>
+        <a href="tasks.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg><span>Tasks</span></a>
+        <a href="updates.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Updates</span></a>
+        <a href="grades.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Grades</span></a>
+        <a href="study-center.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Study Center</span></a>
+        <span class="nav-item is-active" aria-current="page"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Communication</span></span>
+        <a href="financial-aid.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Financial Aid</span></a>
+        <a href="settings.html" class="nav-item"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span>Profile / Settings</span></a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head"><span>Semester Progress</span><span class="sem-pct" id="comm-sidebar-sem-pct">—</span></div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="comm-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="comm-sidebar-week-label">Week — of —</p>
+        <a href="study-center.html" class="btn btn-secondary btn-sm btn-block">View Plan →</a>
+        <a href="dashboard.html#overview" class="btn btn-ghost btn-sm btn-block" style="margin-top:0.35rem;">Back to dashboard</a>
+      </div>
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, resources…" autocomplete="off" />
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <label class="dp-sample-pill"><input type="checkbox" id="toggle-sample-global" /><span>Sample data</span></label>
+          <div class="sr-only"><span id="profile-display-name">Student</span></div>
+          <a href="settings.html" class="dp-avatar-wrap" title="Profile"><div class="dp-avatar" id="profile-avatar" aria-hidden="true">S</div></a>
+        </div>
+        <h1 class="sr-only">Communication Assistant</h1>
+      </header>
+
+      <main class="dash-content comm-main">
+        <header class="comm-page-head">
+          <div class="comm-page-head-text">
+            <h2 class="comm-page-title">Communication Assistant <span class="comm-spark" aria-hidden="true">✨</span></h2>
+            <p class="comm-page-sub muted">Professional outreach made simple. Who to contact, and what to say.</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm comm-how-btn" id="comm-btn-how" aria-haspopup="dialog">
+            <span class="comm-info-ico" aria-hidden="true">ⓘ</span> How it works
+          </button>
+        </header>
+
+        <div class="comm-layout">
+          <div class="comm-col comm-col--left">
+            <section class="dp-card comm-card comm-scenarios" aria-labelledby="comm-scenarios-title">
+              <h3 id="comm-scenarios-title" class="comm-card-title">Communication Scenarios</h3>
+              <p class="comm-card-sub muted">Choose a situation to get started</p>
+              <div class="comm-scenario-list" role="listbox" aria-label="Email scenarios">
+                <button type="button" class="comm-scenario-item is-active" role="option" data-scenario="intro" aria-selected="true">
+                  <span class="comm-sc-ico comm-sc-ico--blue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                  <span class="comm-sc-text"><strong>Introduction Email</strong><span class="muted small">Introduce yourself and build a positive connection.</span></span>
+                  <span class="comm-sc-chev" aria-hidden="true">›</span>
+                </button>
+                <button type="button" class="comm-scenario-item" role="option" data-scenario="clarify" aria-selected="false">
+                  <span class="comm-sc-ico comm-sc-ico--purple" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+                  <span class="comm-sc-text"><strong>Clarification Email</strong><span class="muted small">Ask for clarification on course content or expectations.</span></span>
+                  <span class="comm-sc-chev" aria-hidden="true">›</span>
+                </button>
+                <button type="button" class="comm-scenario-item" role="option" data-scenario="extension" aria-selected="false">
+                  <span class="comm-sc-ico comm-sc-ico--blue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                  <span class="comm-sc-text"><strong>Extension Email</strong><span class="muted small">Request more time for an assignment or exam.</span></span>
+                  <span class="comm-sc-chev" aria-hidden="true">›</span>
+                </button>
+                <button type="button" class="comm-scenario-item" role="option" data-scenario="grade" aria-selected="false">
+                  <span class="comm-sc-ico comm-sc-ico--green" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M10 12h4"/></svg></span>
+                  <span class="comm-sc-text"><strong>Grade Concern Email</strong><span class="muted small">Ask about a grade or feedback respectfully.</span></span>
+                  <span class="comm-sc-chev" aria-hidden="true">›</span>
+                </button>
+                <button type="button" class="comm-scenario-item" role="option" data-scenario="advisor" aria-selected="false">
+                  <span class="comm-sc-ico comm-sc-ico--purple" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>
+                  <span class="comm-sc-text"><strong>Advisor Email</strong><span class="muted small">Ask for advice on courses, planning, or next steps.</span></span>
+                  <span class="comm-sc-chev" aria-hidden="true">›</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="comm-help-card dp-card" aria-labelledby="comm-help-title">
+              <span class="comm-help-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--dash-accent, #2563eb)" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
+              <div>
+                <h3 id="comm-help-title" class="comm-help-title">Not sure who to contact?</h3>
+                <p class="muted small comm-help-desc">We’ll help you find the right person and suggested points to include.</p>
+                <button type="button" class="comm-text-link" id="comm-scroll-contact">Find the right contact <span aria-hidden="true">→</span></button>
+              </div>
+            </section>
+          </div>
+
+          <div class="comm-col comm-col--center">
+            <section class="dp-card comm-card comm-editor-card" aria-labelledby="comm-editor-title">
+              <div class="comm-editor-head">
+                <div>
+                  <h3 id="comm-editor-title" class="comm-card-title">Professor Email Assistant</h3>
+                  <p class="comm-card-sub muted">Edit, personalize, and send with confidence. <span class="comm-badge-ai">AI Generated</span></p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" id="comm-btn-reset">Reset</button>
+              </div>
+
+              <div class="comm-field-row">
+                <label class="comm-label" for="comm-to">To</label>
+                <div class="comm-field-inline">
+                  <select id="comm-to" class="comm-select"></select>
+                  <a href="courses.html" class="comm-inline-link">Find professor <span class="comm-ext" aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+
+              <div class="comm-field-row">
+                <label class="comm-label" for="comm-subject">Subject</label>
+                <div class="comm-subject-wrap">
+                  <input type="text" id="comm-subject" class="comm-input" maxlength="120" autocomplete="off" />
+                  <span class="comm-counter" id="comm-subject-count" aria-live="polite">0/120</span>
+                </div>
+              </div>
+
+              <label class="sr-only" for="comm-body">Email body</label>
+              <div class="comm-body-shell">
+                <textarea id="comm-body" class="comm-body" rows="14" spellcheck="true"></textarea>
+                <div class="comm-body-foot">
+                  <div class="comm-insert-wrap">
+                    <label for="comm-insert" class="muted small">Insert details</label>
+                    <select id="comm-insert" class="comm-select comm-select--sm">
+                      <option value="">Choose placeholder…</option>
+                      <option value="[Assignment Name]">[Assignment Name]</option>
+                      <option value="[Due Date]">[Due Date]</option>
+                      <option value="[Course Section]">[Course Section]</option>
+                      <option value="[Your Question Here]">[Your Question Here]</option>
+                    </select>
+                  </div>
+                  <span class="muted small" id="comm-word-count">0 words</span>
+                  <span class="comm-privacy comm-privacy--ok" id="comm-privacy"><span class="comm-check" aria-hidden="true">✓</span> No sensitive data detected</span>
+                </div>
+              </div>
+
+              <div class="comm-actions">
+                <button type="button" class="btn btn-secondary" id="comm-btn-regen"><span aria-hidden="true">↻</span> Regenerate</button>
+                <button type="button" class="btn btn-secondary" id="comm-btn-save-tpl"><span aria-hidden="true">🔖</span> Save as Template</button>
+                <button type="button" class="btn btn-primary" id="comm-btn-copy"><span aria-hidden="true">📋</span> Copy Email</button>
+              </div>
+
+              <div class="comm-suggest">
+                <p class="comm-suggest-label">Suggested Additions</p>
+                <div class="comm-chip-row">
+                  <button type="button" class="comm-chip" data-chip="topic">Mention a specific class topic <span aria-hidden="true">+</span></button>
+                  <button type="button" class="comm-chip" data-chip="question">Ask a thoughtful question <span aria-hidden="true">+</span></button>
+                  <button type="button" class="comm-chip" data-chip="goals">Express learning goals <span aria-hidden="true">+</span></button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="comm-col comm-col--right">
+            <section class="dp-card comm-card" aria-labelledby="comm-guide-title">
+              <div class="comm-card-head-icon">
+                <span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dash-accent)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+                <div>
+                  <h3 id="comm-guide-title" class="comm-card-title">Communication Guide</h3>
+                  <p class="comm-card-sub muted">Best practices for professional outreach</p>
+                </div>
+              </div>
+              <ul class="comm-checklist">
+                <li><span class="comm-check-g" aria-hidden="true">✓</span> Be respectful and concise</li>
+                <li><span class="comm-check-g" aria-hidden="true">✓</span> Use a clear subject line</li>
+                <li><span class="comm-check-g" aria-hidden="true">✓</span> Include necessary context</li>
+                <li><span class="comm-check-g" aria-hidden="true">✓</span> Proofread before sending</li>
+                <li><span class="comm-check-g" aria-hidden="true">✓</span> Allow 1–2 business days for a response</li>
+              </ul>
+              <button type="button" class="comm-text-link" id="comm-btn-full-guide">View full guide <span aria-hidden="true">→</span></button>
+            </section>
+
+            <section class="dp-card comm-card" aria-labelledby="comm-tone-title">
+              <div class="comm-card-head-icon">
+                <span aria-hidden="true">✨</span>
+                <div>
+                  <h3 id="comm-tone-title" class="comm-card-title">Tone</h3>
+                  <p class="comm-card-sub muted">Adjust the tone of your email</p>
+                </div>
+              </div>
+              <div class="comm-tone-list" role="radiogroup" aria-label="Email tone">
+                <button type="button" class="comm-tone-opt is-selected" role="radio" aria-checked="true" data-tone="professional">
+                  <span class="comm-tone-ico" aria-hidden="true">✦</span>
+                  <span class="comm-tone-text"><strong>Professional</strong><span class="muted small">Polite and formal</span></span>
+                  <span class="comm-tone-check" aria-hidden="true">✓</span>
+                </button>
+                <button type="button" class="comm-tone-opt" role="radio" aria-checked="false" data-tone="friendly">
+                  <span class="comm-tone-ico" aria-hidden="true">👋</span>
+                  <span class="comm-tone-text"><strong>Friendly</strong><span class="muted small">Warm and personable</span></span>
+                  <span class="comm-tone-check" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="comm-tone-opt" role="radio" aria-checked="false" data-tone="veryformal">
+                  <span class="comm-tone-ico" aria-hidden="true">🎩</span>
+                  <span class="comm-tone-text"><strong>Very Formal</strong><span class="muted small">Highly formal and reserved</span></span>
+                  <span class="comm-tone-check" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="comm-tone-opt" role="radio" aria-checked="false" data-tone="casual">
+                  <span class="comm-tone-ico" aria-hidden="true">💬</span>
+                  <span class="comm-tone-text"><strong>Casual</strong><span class="muted small">Relaxed and informal</span></span>
+                  <span class="comm-tone-check" aria-hidden="true"></span>
+                </button>
+              </div>
+            </section>
+
+            <section class="dp-card comm-card comm-contact-card" id="comm-contact-card" aria-labelledby="comm-contact-title">
+              <h3 id="comm-contact-title" class="comm-contact-title">Who should I contact?</h3>
+              <p class="muted small">We recommend reaching out to:</p>
+              <div class="comm-contact-row">
+                <div class="comm-avatar" id="comm-contact-avatar" aria-hidden="true">JL</div>
+                <div>
+                  <p class="comm-contact-name" id="comm-contact-name">—</p>
+                  <p class="muted small" id="comm-contact-course">—</p>
+                  <p class="muted small" id="comm-contact-email">—</p>
+                </div>
+              </div>
+              <button type="button" class="comm-text-link" id="comm-btn-more-contacts">View more options <span aria-hidden="true">→</span></button>
+            </section>
+          </div>
+        </div>
+
+        <footer class="comm-footer-banner">
+          <div class="comm-footer-inner">
+            <span class="comm-footer-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg><span class="comm-footer-spark">✨</span></span>
+            <p class="comm-footer-text"><strong>Send smarter, not harder.</strong> Our AI helps you write better emails, so you can build strong relationships and get the support you need.</p>
+            <button type="button" class="btn btn-secondary" id="comm-btn-sent">View Sent Emails <span aria-hidden="true">→</span></button>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="comm-dialog-help" class="comm-dialog">
+    <button type="button" class="comm-dialog-close" id="comm-dialog-help-close" aria-label="Close">×</button>
+    <h3 class="comm-dialog-title">How Communication Assistant works</h3>
+    <ol class="comm-dialog-list">
+      <li>Pick a scenario and tone — the draft updates to match professional norms.</li>
+      <li>Choose who you’re emailing from your courses (or your advisor).</li>
+      <li>Edit the message, insert placeholders, and use chips to add helpful detail.</li>
+      <li>Copy to your email client — nothing is sent automatically in this prototype.</li>
+    </ol>
+  </dialog>
+
+  <dialog id="comm-dialog-sent" class="comm-dialog comm-dialog--wide">
+    <button type="button" class="comm-dialog-close" id="comm-dialog-sent-close" aria-label="Close">×</button>
+    <h3 class="comm-dialog-title">Saved templates &amp; drafts</h3>
+    <p class="muted small">Tap an entry to load it into the editor.</p>
+    <div id="comm-sent-list" class="comm-sent-list"></div>
+  </dialog>
+
+  <dialog id="comm-dialog-guide" class="comm-dialog">
+    <button type="button" class="comm-dialog-close" id="comm-dialog-guide-close" aria-label="Close">×</button>
+    <h3 class="comm-dialog-title">Full communication guide</h3>
+    <ul class="comm-dialog-bullets">
+      <li>Open with a respectful greeting that matches your tone choice.</li>
+      <li>State your course and purpose in the first few sentences.</li>
+      <li>Ask one focused question per email when possible.</li>
+      <li>Close with appreciation and your full name / class year if appropriate.</li>
+      <li>Follow campus policies and instructor preferences from the syllabus.</li>
+    </ul>
+  </dialog>
+
+  <dialog id="comm-dialog-contacts" class="comm-dialog comm-dialog--wide">
+    <button type="button" class="comm-dialog-close" id="comm-dialog-contacts-close" aria-label="Close">×</button>
+    <h3 class="comm-dialog-title">Contacts</h3>
+    <div id="comm-contacts-all" class="comm-contacts-all"></div>
+  </dialog>
+
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/seed.js"></script>
+  <script src="js/communication-page.js"></script>
+</body>
+</html>

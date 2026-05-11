@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DegreePilot AI — Courses workspace." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Courses — DegreePilot AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-circle.svg" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/dashboard/overview.css" />
+  <link rel="stylesheet" href="css/courses.css" />
+</head>
+<body class="dash-body" data-current-view="courses">
+  <div class="dash-app">
+    <aside class="dash-sidebar" aria-label="Primary">
+      <div class="sidebar-brand sidebar-brand--enhanced">
+        <a href="dashboard.html#overview" class="sidebar-logo-badge" style="text-decoration:none;"><img src="assets/logo-circle.svg" width="36" height="36" alt="DegreePilot AI" /></a>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">DegreePilot AI</span>
+          <span class="sidebar-brand-sub">Academic Center</span>
+        </div>
+      </div>
+      <p class="sidebar-note"><span class="tag-demo">Front-end prototype · local data only</span></p>
+
+      <nav class="sidebar-nav" aria-label="Main">
+        <a href="dashboard.html#overview" class="nav-item" data-view="overview">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+          <span>Overview</span>
+        </a>
+        <a href="dashboard.html#calendar" class="nav-item" data-view="calendar">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+          <span>Calendar</span>
+        </a>
+        <span class="nav-item is-active" data-view="courses" aria-current="page">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <span>Courses</span>
+        </span>
+        <a href="tasks.html" class="nav-item" data-view="tasks">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><circle cx="12" cy="12" r="10"/></svg>
+          <span>Tasks</span>
+        </a>
+        <a href="updates.html" class="nav-item" data-view="updates">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span>Updates</span>
+        </a>
+        <a href="grades.html" class="nav-item" data-view="grades">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>Grades</span>
+        </a>
+        <a href="study-center.html" class="nav-item" data-view="study">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <span>Study Center</span>
+        </a>
+        <a href="communication.html" class="nav-item">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span>Communication</span>
+        </a>
+        <a href="financial-aid.html" class="nav-item">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          <span>Financial Aid</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <span>Profile / Settings</span>
+        </a>
+      </nav>
+
+      <div class="semester-card ov-semester-card">
+        <div class="ov-sem-head">
+          <span>Semester Progress</span>
+          <span class="sem-pct" id="courses-sidebar-sem-pct">—</span>
+        </div>
+        <div class="sem-progress-track" aria-hidden="true"><div class="sem-progress-fill" id="courses-sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="muted ov-sem-week" id="courses-sidebar-week-label">Week — of —</p>
+        <a href="dashboard.html#overview" class="btn btn-secondary btn-sm btn-block">Back to dashboard</a>
+      </div>
+
+      <a class="sidebar-help" href="features.html"><span aria-hidden="true">❔</span> Help Center</a>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar dash-topbar--minimal">
+        <label class="search-wrap dp-search-wrap">
+          <span class="sr-only">Search</span>
+          <input type="search" id="global-search" class="search-input" placeholder="Search courses, tasks, syllabi, notes…" autocomplete="off" />
+          <div id="global-search-panel" class="dp-global-search-panel" hidden role="listbox" aria-label="Search results"></div>
+        </label>
+        <div class="topbar-cluster" role="toolbar" aria-label="Account tools">
+          <div class="dp-notify-wrap">
+            <button type="button" class="dp-notify-btn" id="btn-notifications" aria-label="Notifications" aria-expanded="false" aria-haspopup="true">
+              <span aria-hidden="true">🔔</span>
+              <span class="dp-badge" id="notification-badge" hidden>0</span>
+            </button>
+            <div id="notify-dropdown" class="ov-notify-dropdown" hidden role="region" aria-label="Notifications">
+              <div class="ov-notify-head">Notifications</div>
+              <div id="notify-dropdown-body"></div>
+            </div>
+          </div>
+          <label class="dp-sample-pill" title="Demo only — loads fictional data">
+            <input type="checkbox" id="toggle-sample-global" />
+            <span>Sample data</span>
+          </label>
+          <div class="sr-only">
+            <span id="profile-display-name">Student</span>
+            <span id="profile-major-line"></span>
+          </div>
+          <a href="settings.html" class="dp-avatar-wrap" id="top-profile-chip" title="Open dashboard — profile">
+            <div class="dp-avatar" id="profile-avatar" aria-hidden="true">A</div>
+          </a>
+        </div>
+        <h1 class="sr-only" id="view-title">Courses</h1>
+      </header>
+
+      <main class="dash-content courses-page-main">
+        <p class="banner-note">No cloud sync · data stays in this browser · prototype UI aligned to design reference mocks.</p>
+
+        <div class="courses-page-head">
+          <div>
+            <h1 class="dp-page-title">Courses</h1>
+            <p class="dp-page-sub muted">Schedule, LMS links, materials, syllabus archive, and professor contacts.</p>
+          </div>
+          <div class="courses-page-actions">
+            <button type="button" class="btn btn-secondary btn-sm" id="courses-btn-filter-icon" title="Focus filter field">Filter</button>
+            <button type="button" class="btn btn-primary btn-sm courses-btn-add" id="courses-btn-add-manual">
+              <svg class="courses-btn-add-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Add course
+            </button>
+          </div>
+        </div>
+
+        <div class="courses-toolbar">
+          <div class="courses-toolbar-tabs" role="tablist" aria-label="Enrollment period">
+            <button type="button" data-term-filter="all" class="is-active">All courses</button>
+            <button type="button" data-term-filter="current">This semester</button>
+            <button type="button" data-term-filter="next">Next semester</button>
+            <button type="button" data-term-filter="completed">Completed</button>
+          </div>
+        </div>
+
+        <div class="courses-split">
+          <div class="courses-col-main">
+            <div id="courses-list-host" class="courses-list"></div>
+            <div class="courses-upload-banner">
+              <div>
+                <p><strong>Upload a syllabus</strong> — we simulate reading the PDF and draft tasks, exams, and calendar items. Review and edit before saving.</p>
+                <p class="muted" style="margin:0.35rem 0 0;font-size:0.82rem;">Or add a course manually with basic info and enrich it later.</p>
+              </div>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <input type="file" id="courses-syllabus-file" accept=".pdf,.txt,application/pdf,text/plain" hidden />
+                <button type="button" class="btn btn-primary" id="courses-btn-upload-syllabus">Upload syllabus →</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="courses-col-detail" id="courses-detail-aside">
+            <div id="courses-detail-inner" class="courses-empty-panel">
+              Select a course to see overview, links, materials, and syllabus.
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Manual add / edit course -->
+  <div class="modal" id="courses-modal-manual" hidden>
+    <div class="modal-backdrop" data-close-courses-modal tabindex="-1"></div>
+    <div class="modal-card card-elevated courses-modal-wide-lg" role="dialog" aria-modal="true" aria-labelledby="courses-manual-title">
+      <div class="modal-head">
+        <h2 id="courses-manual-title">Add course</h2>
+        <button type="button" class="icon-btn" id="courses-manual-close" aria-label="Close">×</button>
+      </div>
+      <form id="courses-form-manual">
+        <input type="hidden" id="courses-manual-edit-id" value="" />
+        <div class="form-row-2">
+          <div class="field"><label for="courses-m-code">Code</label><input id="courses-m-code" required placeholder="CS 210" /></div>
+          <div class="field"><label for="courses-m-name">Title</label><input id="courses-m-name" required /></div>
+        </div>
+        <div class="field"><label for="courses-m-term">Term</label>
+          <select id="courses-m-term">
+            <option value="current">This semester</option>
+            <option value="next">Next semester</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="field"><label for="courses-m-prof">Professor</label><input id="courses-m-prof" /></div>
+        <div class="form-row-2">
+          <div class="field"><label for="courses-m-email">Email</label><input id="courses-m-email" type="email" /></div>
+          <div class="field"><label for="courses-m-hours">Office hours</label><input id="courses-m-hours" /></div>
+        </div>
+        <div class="form-row-2">
+          <div class="field"><label for="courses-m-format">Format</label><input id="courses-m-format" placeholder="Hybrid, online…" /></div>
+          <div class="field"><label for="courses-m-priority">Priority</label>
+            <select id="courses-m-priority"><option>High</option><option selected>Medium</option><option>Low</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label-like">Course color</span>
+          <div class="courses-color-presets" role="group" aria-label="Preset colors">
+            <button type="button" class="courses-preset-swatch" data-hex="#0056b3" style="--sw:#0056b3" title="Blue"></button>
+            <button type="button" class="courses-preset-swatch" data-hex="#16a34a" style="--sw:#16a34a" title="Green"></button>
+            <button type="button" class="courses-preset-swatch" data-hex="#7c3aed" style="--sw:#7c3aed" title="Violet"></button>
+            <button type="button" class="courses-preset-swatch" data-hex="#ea580c" style="--sw:#ea580c" title="Orange"></button>
+            <button type="button" class="courses-preset-swatch" data-hex="#0891b2" style="--sw:#0891b2" title="Teal"></button>
+            <button type="button" class="courses-preset-swatch" data-hex="#64748b" style="--sw:#64748b" title="Slate"></button>
+          </div>
+          <div class="field" style="margin-top:0.5rem;"><label for="courses-m-color">Custom</label><input id="courses-m-color" type="color" value="#0056b3" /></div>
+        </div>
+        <div class="field"><label for="courses-m-rmp">Rate My Professors (URL)</label><input id="courses-m-rmp" type="url" placeholder="https://…" /></div>
+        <div class="field"><label for="courses-m-notes">Notes</label><textarea id="courses-m-notes" rows="2"></textarea></div>
+        <p class="muted" style="font-size:0.82rem;">After saving, open the course to add LMS links, materials, structured notes, tasks, and exams.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="courses-manual-delete" hidden>Delete</button>
+          <button type="submit" class="btn btn-primary">Save course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Syllabus import preview -->
+  <div class="modal" id="courses-modal-syllabus" hidden>
+    <div class="modal-backdrop" data-close-syllabus-modal tabindex="-1"></div>
+    <div class="modal-card card-elevated courses-modal-wide-lg" role="dialog" aria-modal="true" aria-labelledby="courses-syllabus-title">
+      <div class="modal-head">
+        <h2 id="courses-syllabus-title">Review imported syllabus</h2>
+        <button type="button" class="icon-btn" id="courses-syllabus-close" aria-label="Close">×</button>
+      </div>
+      <p class="muted" id="courses-syllabus-filename" style="margin-top:0;font-size:0.82rem;"></p>
+      <div class="field"><label for="courses-syllabus-code">Course code</label><input id="courses-syllabus-code" /></div>
+      <div class="field"><label for="courses-syllabus-name">Course title</label><input id="courses-syllabus-name" /></div>
+      <div class="form-row-2">
+        <div class="field"><label for="courses-syllabus-prof">Professor</label><input id="courses-syllabus-prof" /></div>
+        <div class="field"><label for="courses-syllabus-email">Email</label><input id="courses-syllabus-email" type="email" /></div>
+      </div>
+      <div class="field"><label for="courses-syllabus-plain">Extracted text (editable)</label><textarea id="courses-syllabus-plain" rows="5"></textarea></div>
+      <div id="courses-syllabus-extraction-preview" class="analysis-output panel inset mt"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="courses-syllabus-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="courses-syllabus-confirm">Create course &amp; items</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/seed.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/dashboard/core.js"></script>
+  <script src="js/courses-page.js"></script>
+</body>
+</html>

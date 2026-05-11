@@ -43,15 +43,49 @@
         semesterLabel: "Spring 2025",
         classYear: "Junior",
         academicGoal: "",
+        goalHeadline: "",
+        goalFocusAreas: [],
+        email: "",
+        phone: "",
+        expectedGraduation: "",
         advisorName: "",
         advisorEmail: "",
+        advisorTitle: "Academic Advisor",
+        advisorPhone: "",
+        advisorOffice: "",
+        advisorHours: "",
         theme: "ocean",
+        weatherCity: "",
+      },
+      settingsAi: {
+        learningStyles: [],
+        interactionLevel: "balanced",
       },
       settings: {
         notifyAssignments: true,
         notifyGrades: true,
         notifyFinancial: true,
+        notifyScheduleUpdates: true,
+        notifyStudyReminders: false,
+        notifyWeeklySummary: true,
         prefCompactCalendar: false,
+        courseColorAccent: "blue",
+        courseLinks: {
+          syllabus: true,
+          canvas: true,
+          materials: true,
+          textbooks: false,
+        },
+        courseDisplay: {
+          progressBars: true,
+          deadlinesOnCards: true,
+          compactView: false,
+          showCompleted: true,
+          groupByTerm: true,
+        },
+        twoFactorEnabled: false,
+        notifyEmail: true,
+        notifyPush: true,
       },
       semesterMeta: {
         label: "Spring 2025",
@@ -78,7 +112,14 @@
       savedAnnouncementPaste: "",
       notificationsUnread: 0,
       pendingAiQuestions: [],
+      notificationDismissals: [],
       withdrawalDeadlineNote: "Many institutions publish withdrawal deadlines around mid-semester — confirm with your registrar.",
+      suggestedTasks: [],
+      tasksPreferences: {
+        progressScope: "week",
+        suggestionDisplayCap: 5,
+        upcomingDeadlineDays: 7,
+      },
     };
   }
 
@@ -103,18 +144,38 @@
     s.sampleDataMode = true;
     s.profile = {
       displayName: "Caleb White",
+      email: "caleb.white@stateu.edu",
+      phone: "(555) 987-6543",
       university: "State University",
       major: "Computer Science",
       minor: "Mathematics",
       semesterLabel: "Spring 2025",
       classYear: "Junior",
-      academicGoal: "Maintain solid standing in upper-level CS while balancing discrete math depth.",
-      advisorName: "Dr. Jordan Ellis",
-      advisorEmail: "jellis@demo-university.edu",
+      expectedGraduation: "May 2026",
+      academicGoal:
+        "I want to raise my GPA by the end of the semester while building stronger study habits and staying on top of deadlines.",
+      goalHeadline: "Improve my GPA to 3.7+",
+      goalFocusAreas: [
+        "Time management & consistency",
+        "Stronger performance in exams",
+        "Better understanding of core concepts",
+        "Reduce stress and last-minute cramming",
+      ],
+      advisorName: "Dr. Maya Thompson",
+      advisorTitle: "Academic Advisor",
+      advisorEmail: "mthompson@stateu.edu",
+      advisorPhone: "(555) 123-4567",
+      advisorOffice: "Engineering Building, Room 204",
+      advisorHours: "Mon, Wed 1:00 PM – 4:00 PM",
       theme: "ocean",
+      weatherCity: "Hamden, CT",
+    };
+    s.settingsAi = {
+      learningStyles: ["visual", "reading"],
+      interactionLevel: "balanced",
     };
     s.semesterMeta = { label: "Spring 2025", totalWeeks: 16, currentWeek: 8, lastSemesterGpaApprox: 3.6 };
-    s.notificationsUnread = 3;
+    s.notificationsUnread = 0;
     s.pendingAiQuestions = [
       { id: "pa1", text: "Which course should we prioritize if two assignments land on the same day?", dismissed: false },
       { id: "pa2", text: "Confirm your preferred deadline reminders: morning digest or night-before alerts?", dismissed: false },
@@ -125,6 +186,8 @@
       id: "sam-c1",
       code: "CS 210",
       name: "Data Structures",
+      subject: "CS",
+      term: "current",
       professor: "Prof. Lee Johnson",
       professorEmail: "ljohnson@demo-university.edu",
       officeHours: "Tue/Thu 2–4pm",
@@ -132,16 +195,37 @@
       color: "#0056b3",
       priority: "High",
       notes: "Focus on Big-O and trees before midterm.",
-      links: [{ label: "Syllabus PDF", url: "#" }],
+      links: [
+        { label: "Canvas", url: "https://canvas.instructure.com/", kind: "lms" },
+        { label: "Syllabus PDF", url: "#", kind: "syllabus" },
+      ],
       materials: [{ title: "Textbook", note: "OpenDSA modules online." }],
       syllabusExtracted: null,
       syllabusPlainText: fakeSyllabus("CS 210", "Data Structures"),
+      syllabusPdfUrl: "",
+      rateMyProfessorUrl: "https://www.ratemyprofessors.com/search/professors?query=Lee+Johnson",
+      courseNotesList: [
+        {
+          id: "cn-c1-1",
+          text: "Midterm emphasis: BST rotations and amortized heap operations.",
+          source: "syllabus",
+          created: isoFromDate(addDays(today, -10)),
+        },
+        {
+          id: "cn-c1-2",
+          text: "Office hour queue — bring printout of lab 4 runtime table.",
+          source: "lecture",
+          created: isoFromDate(addDays(today, -3)),
+        },
+      ],
       alerts: [],
     };
     var c2 = {
       id: "sam-c2",
       code: "CS 330",
       name: "Software Engineering",
+      subject: "CS",
+      term: "current",
       professor: "Dr. Maya Thompson",
       professorEmail: "mthompson@demo-university.edu",
       officeHours: "Wed 10–12pm",
@@ -149,10 +233,16 @@
       color: "#16a34a",
       priority: "High",
       notes: "Team project milestones tracked here.",
-      links: [{ label: "GitLab course group", url: "#" }],
+      links: [
+        { label: "Blackboard", url: "https://www.blackboard.com/", kind: "lms" },
+        { label: "GitLab course group", url: "#", kind: "other" },
+      ],
       materials: [],
       syllabusExtracted: null,
       syllabusPlainText: fakeSyllabus("CS 330", "Software Engineering"),
+      syllabusPdfUrl: "",
+      rateMyProfessorUrl: "https://www.ratemyprofessors.com/search/professors?query=Maya+Thompson",
+      courseNotesList: [],
       alerts: [
         { text: "Sprint review Friday — sync slides early.", level: "warn" },
         { text: "Class attendance slipped — in-class labs are weighted heavily.", level: "risk" },
@@ -162,6 +252,8 @@
       id: "sam-c3",
       code: "MATH 245",
       name: "Discrete Math",
+      subject: "MATH",
+      term: "current",
       professor: "Prof. Priya Patel",
       professorEmail: "ppatel@demo-university.edu",
       officeHours: "Mon 3–5pm",
@@ -169,16 +261,21 @@
       color: "#7c3aed",
       priority: "Medium",
       notes: "",
-      links: [],
-      materials: [],
+      links: [{ label: "Course site", url: "#", kind: "lms" }],
+      materials: [{ title: "Rosen (digital)", note: "Library reserve." }],
       syllabusExtracted: null,
       syllabusPlainText: fakeSyllabus("MATH 245", "Discrete Math"),
+      syllabusPdfUrl: "",
+      rateMyProfessorUrl: "",
+      courseNotesList: [],
       alerts: [],
     };
     var c4 = {
       id: "sam-c4",
       code: "CS 340",
       name: "Database Systems",
+      subject: "CS",
+      term: "current",
       professor: "Dr. Samuel Kim",
       professorEmail: "skim@demo-university.edu",
       officeHours: "Fri 1–3pm",
@@ -186,16 +283,21 @@
       color: "#ea580c",
       priority: "Medium",
       notes: "",
-      links: [],
+      links: [{ label: "Canvas shell", url: "#", kind: "lms" }],
       materials: [],
       syllabusExtracted: null,
       syllabusPlainText: fakeSyllabus("CS 340", "Database Systems"),
+      syllabusPdfUrl: "",
+      rateMyProfessorUrl: "",
+      courseNotesList: [],
       alerts: [{ text: "Professor updated the syllabus for the final project requirements.", level: "warn" }],
     };
     var c5 = {
       id: "sam-c5",
       code: "ENG 201",
       name: "Technical Writing",
+      subject: "ENG",
+      term: "completed",
       professor: "Prof. Maria Garcia",
       professorEmail: "mgarcia@demo-university.edu",
       officeHours: "Thu 11–1pm",
@@ -207,9 +309,34 @@
       materials: [],
       syllabusExtracted: null,
       syllabusPlainText: fakeSyllabus("ENG 201", "Technical Writing"),
+      syllabusPdfUrl: "",
+      rateMyProfessorUrl: "",
+      courseNotesList: [],
       alerts: [],
     };
-    s.courses = [c1, c2, c3, c4, c5];
+    var c6 = {
+      id: "sam-c6",
+      code: "CS 410",
+      name: "Algorithms",
+      subject: "CS",
+      term: "next",
+      professor: "TBA",
+      professorEmail: "",
+      officeHours: "",
+      classFormat: "Scheduled — Fall",
+      color: "#64748b",
+      priority: "Medium",
+      notes: "Pre-registering from degree plan.",
+      links: [],
+      materials: [],
+      syllabusExtracted: null,
+      syllabusPlainText: "",
+      syllabusPdfUrl: "",
+      rateMyProfessorUrl: "",
+      courseNotesList: [],
+      alerts: [],
+    };
+    s.courses = [c1, c2, c3, c4, c5, c6];
 
     var d2 = isoFromDate(addDays(today, 2));
     var d4 = isoFromDate(addDays(today, 4));
@@ -220,11 +347,38 @@
     var d10 = isoFromDate(addDays(today, 10));
     var d12 = isoFromDate(addDays(today, 12));
     var d14 = isoFromDate(addDays(today, 14));
+    var isoToday = isoFromDate(today);
 
     s.smartNotesText =
       "Transfer planning: compare CS 210 and CS 340 syllabi on file; confirm discrete math substitution with advisor; keep PDF exports of submitted work.";
 
     s.tasks = [
+      {
+        id: "sam-t0",
+        title: "Data Structures – Problem Set 4",
+        courseId: "sam-c1",
+        type: "assignment",
+        due: isoToday,
+        dueTime: "23:59",
+        priority: "High",
+        estMinutes: 150,
+        notes: "Focus on stacks & queues; cite two applications from lecture.",
+        completed: false,
+        source: "manual",
+        archived: false,
+        pointsPossible: 100,
+        tags: ["Stacks", "Queues", "Recursion"],
+        instructions: "Submit a single PDF: problems 1–6, include complexity for each. Use the course LaTeX template if available.",
+        resources: [
+          { id: "res1", name: "Problem Set 4.pdf", size: "240 KB" },
+          { id: "res2", name: "Starter code.zip", size: "18 KB" },
+        ],
+        subtasks: [
+          { id: "st1", text: "Implement stack using array", done: false },
+          { id: "st2", text: "Queue with two stacks", done: false },
+          { id: "st3", text: "Recursive tree size", done: false },
+        ],
+      },
       {
         id: "sam-t1",
         title: "Implement balanced BST rotations lab",
@@ -284,6 +438,7 @@
         notes: "Bring printed draft; peer review worksheet attached in LMS.",
         completed: true,
         source: "manual",
+        archived: true,
       },
       {
         id: "sam-t6",
@@ -443,6 +598,58 @@
       },
     ];
 
+    s.tasks.forEach(function (task) {
+      if (task.archived == null) task.archived = false;
+      if (!Array.isArray(task.tags)) task.tags = [];
+      if (!Array.isArray(task.resources)) task.resources = [];
+      if (!Array.isArray(task.subtasks)) task.subtasks = [];
+    });
+
+    s.suggestedTasks = [
+      {
+        id: "sug-1",
+        title: "Chapter 5 Reading",
+        sourceLine: "Data Structures Syllabus",
+        courseId: "sam-c1",
+        type: "reading",
+        priority: "Medium",
+        due: isoFromDate(addDays(today, 2)),
+        estMinutes: 45,
+        rationaleTemplate:
+          "This reading sets up the lecture on trees and is referenced on the midterm overview. Completing it now avoids cramming.",
+      },
+      {
+        id: "sug-2",
+        title: "Project Proposal Draft",
+        sourceLine: "Software Eng. Announcement",
+        courseId: "sam-c2",
+        type: "project",
+        priority: "High",
+        due: d4,
+        estMinutes: 120,
+        rationaleTemplate:
+          "The sprint board requires a written proposal before stand-up assigns roles. Submitting early gives time for TA feedback.",
+      },
+      {
+        id: "sug-3",
+        title: "Midterm Review Session",
+        sourceLine: "Class Notes (" + isoFromDate(addDays(today, -2)) + ")",
+        courseId: "sam-c3",
+        type: "study",
+        priority: "Medium",
+        due: d6,
+        estMinutes: 90,
+        rationaleTemplate:
+          "Practice problems flagged in lecture map directly to Exam 2. Blocking this yields better recall during timed conditions.",
+      },
+    ];
+
+    s.tasksPreferences = {
+      progressScope: "week",
+      suggestionDisplayCap: 6,
+      upcomingDeadlineDays: 7,
+    };
+
     s.calendarEvents = [
       {
         id: "sam-e1",
@@ -463,6 +670,7 @@
         time: "3:30 PM",
         priority: "medium",
         color: "",
+        taskId: "sam-t2",
       },
       {
         id: "sam-e3",
@@ -529,12 +737,65 @@
     ];
 
     s.scholarships = [
-      { id: "sam-sch1", name: "STEM Merit Supplement", amount: "$2,500", deadline: isoFromDate(addDays(today, 21)), status: "Planning", notes: "Needs faculty statement." },
-      { id: "sam-sch2", name: "Regional Honors Grant", amount: "$1,000", deadline: isoFromDate(addDays(today, 45)), status: "Applied", notes: "" },
+      {
+        id: "sam-sch1",
+        name: "Google Lime Scholarship",
+        amount: "$10,000",
+        deadline: isoFromDate(addDays(today, 7)),
+        status: "In Progress",
+        notes: "",
+      },
+      {
+        id: "sam-sch2",
+        name: "NSF S-STEM Scholarship",
+        amount: "$8,000",
+        deadline: isoFromDate(addDays(today, 22)),
+        status: "Not Started",
+        notes: "",
+      },
+      {
+        id: "sam-sch3",
+        name: "Women in Tech Scholarship",
+        amount: "$5,000",
+        deadline: isoFromDate(addDays(today, -18)),
+        status: "Submitted",
+        notes: "",
+      },
+      {
+        id: "sam-sch4",
+        name: "Code for Good Scholarship",
+        amount: "$2,500",
+        deadline: isoFromDate(addDays(today, 38)),
+        status: "Saved",
+        notes: "",
+      },
     ];
 
     s.recLetterRequests = [
-      { id: "sam-r1", professor: "Prof. Lee Johnson", status: "Requested", due: isoFromDate(addDays(today, 14)), notes: "Send resume packet." },
+      {
+        id: "sam-r1",
+        professor: "Prof. Johnson",
+        department: "Computer Science",
+        status: "Received",
+        due: isoFromDate(addDays(today, -19)),
+        notes: "",
+      },
+      {
+        id: "sam-r2",
+        professor: "Dr. Lee",
+        department: "Algorithms",
+        status: "In Progress",
+        due: isoFromDate(addDays(today, 5)),
+        notes: "",
+      },
+      {
+        id: "sam-r3",
+        professor: "Prof. Martinez",
+        department: "Data Structures",
+        status: "Requested",
+        due: isoFromDate(addDays(today, 10)),
+        notes: "",
+      },
     ];
 
     s.updates = [
@@ -556,9 +817,12 @@
       },
     ];
 
-    s.fafsaChecklist.forEach(function (row, i) {
-      row.done = i < 2;
-    });
+    s.fafsaChecklist = [
+      { id: "fa-s1", label: "Create FSA ID", done: true },
+      { id: "fa-s2", label: "Add Schools", done: true },
+      { id: "fa-s3", label: "Fill Out Application", done: true },
+      { id: "fa-s4", label: "Review & Submit", done: false },
+    ];
 
     return s;
   }

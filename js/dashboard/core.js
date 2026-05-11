@@ -183,6 +183,77 @@
     };
   }
 
+  function hashCourseId(courseId) {
+    var s = String(courseId || "");
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+
+  /** Coarse letter bands for UI — includes min thresholds (high → low). */
+  function defaultLetterGradeBands() {
+    return [
+      { letter: "A", min: 90, display: "90–100%" },
+      { letter: "B", min: 80, display: "80–89%" },
+      { letter: "C", min: 70, display: "70–79%" },
+      { letter: "D", min: 60, display: "60–69%" },
+      { letter: "F", min: 0, display: "Below 60%" },
+    ];
+  }
+
+  /** Stricter A cutoff (common in STEM syllabi). */
+  function strictLetterGradeBands() {
+    return [
+      { letter: "A", min: 93, display: "93–100%" },
+      { letter: "B", min: 83, display: "83–92%" },
+      { letter: "C", min: 73, display: "73–82%" },
+      { letter: "D", min: 63, display: "63–72%" },
+      { letter: "F", min: 0, display: "Below 63%" },
+    ];
+  }
+
+  /** Example curved / alternative scale for demos. */
+  function curvedLetterGradeBands() {
+    return [
+      { letter: "A", min: 85, display: "85–100%" },
+      { letter: "B", min: 75, display: "75–84%" },
+      { letter: "C", min: 65, display: "65–74%" },
+      { letter: "D", min: 55, display: "55–64%" },
+      { letter: "F", min: 0, display: "Below 55%" },
+    ];
+  }
+
+  function simulatedLetterBandsForCourseId(courseId) {
+    var v = hashCourseId(courseId) % 3;
+    if (v === 1) return strictLetterGradeBands();
+    if (v === 2) return curvedLetterGradeBands();
+    return defaultLetterGradeBands();
+  }
+
+  function letterGradeBandsForCourse(course) {
+    if (!course || typeof course !== "object") return defaultLetterGradeBands();
+    var ext = course.syllabusExtracted;
+    if (ext && Array.isArray(ext.letterGradeBands) && ext.letterGradeBands.length) {
+      return ext.letterGradeBands;
+    }
+    return defaultLetterGradeBands();
+  }
+
+  /** Map numeric percent to letter using coarse bands (min sorted high → low). */
+  function letterFromBands(pct, bands) {
+    if (pct == null || !isFinite(pct)) return "—";
+    var b = (bands || defaultLetterGradeBands())
+      .filter(Boolean)
+      .slice()
+      .sort(function (a, x) {
+        return (x.min || 0) - (a.min || 0);
+      });
+    for (var i = 0; i < b.length; i++) {
+      if (pct >= (b[i].min || 0)) return b[i].letter || "—";
+    }
+    return "—";
+  }
+
   function syllabusSimulation(courseId) {
     var base = isoFromDate(addDays(new Date(), 7));
     return {
@@ -193,6 +264,7 @@
       exams: [{ title: "Midterm examination", date: isoFromDate(addDays(new Date(), 35)), type: "exam" }],
       policies: ["Late work policy: 10% per day up to 3 days.", "Academic integrity applies to all submissions."],
       gradingRules: [{ label: "Homework", weight: 30 }, { label: "Exams", weight: 45 }, { label: "Project", weight: 25 }],
+      letterGradeBands: simulatedLetterBandsForCourseId(courseId),
     };
   }
 
@@ -536,6 +608,9 @@
     summarizeAnnouncementLines: summarizeAnnouncementLines,
     analyzeAnnouncementFull: analyzeAnnouncementFull,
     syllabusSimulation: syllabusSimulation,
+    defaultLetterGradeBands: defaultLetterGradeBands,
+    letterGradeBandsForCourse: letterGradeBandsForCourse,
+    letterFromBands: letterFromBands,
     screenshotSimulation: screenshotSimulation,
     audioSimulation: audioSimulation,
     weightedPercentFromEntries: weightedPercentFromEntries,

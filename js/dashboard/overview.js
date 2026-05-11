@@ -52,55 +52,30 @@
     return Math.min(180, Math.max(30, est));
   }
 
-  function defaultAiQuestions() {
-    return [
-      { id: "ai-q1", text: "Which course should we prioritize if two assignments land on the same day?", dismissed: false },
-      { id: "ai-q2", text: "Confirm your preferred deadline reminders: morning digest or night-before alerts?", dismissed: false },
-      { id: "ai-q3", text: "Do you want exam dates auto-added as study blocks on lighter class days?", dismissed: false },
-    ];
+  function normalizeAiQuestions(state) {
+    if (!state.pendingAiQuestions) state.pendingAiQuestions = [];
   }
 
-  function ensureAiQuestions(state) {
-    if (!state.pendingAiQuestions) state.pendingAiQuestions = [];
-    if (!state.pendingAiQuestions.length) state.pendingAiQuestions = defaultAiQuestions();
+  function isFeedDismissed(state, id) {
+    var d = state.notificationDismissals || [];
+    return d.indexOf(id) !== -1;
+  }
+
+  function pushFeedDismissal(state, id) {
+    state.notificationDismissals = state.notificationDismissals || [];
+    if (state.notificationDismissals.indexOf(id) === -1) state.notificationDismissals.push(id);
   }
 
   function buildNotificationEntries(state, ctx) {
-    var out = [];
+    var feeds = [];
+    var ai = [];
     var D = ctx.D;
-    var courseById = ctx.courseById;
     var isoToday = D.isoFromDate(new Date());
 
-    var examsSoon = (state.calendarEvents || []).filter(function (e) {
-      return e.type === "exam" && e.date >= isoToday;
-    }).length;
-    if (examsSoon > 0) {
-      out.push({
-        id: "nf-cal-exams",
-        kind: "calendar",
-        title: "Upcoming exams on your calendar",
-        detail: "You have " + examsSoon + " exam-related block(s) ahead — review prep time.",
-        action: "calendar",
-      });
-    }
-
-    var overdue = (state.tasks || []).filter(function (t) {
-      return !t.completed && t.due < isoToday;
-    }).length;
-    if (overdue > 0) {
-      out.push({
-        id: "nf-task-overdue",
-        kind: "calendar",
-        title: "Overdue tasks need attention",
-        detail: overdue + " task(s) are past due — reschedule or complete them.",
-        action: "tasks",
-      });
-    }
-
-    ensureAiQuestions(state);
+    normalizeAiQuestions(state);
     state.pendingAiQuestions.forEach(function (q) {
       if (!q.dismissed)
-        out.push({
+        ai.push({
           id: "nf-" + q.id,
           kind: "ai",
           title: "Clarify for smarter planning",
@@ -110,7 +85,93 @@
         });
     });
 
-    return out.slice(0, 6);
+    state.courses.forEach(function (c) {
+      (c.alerts || []).forEach(function (a, idx) {
+        if (a.level !== "warn") return;
+        var nid = "nf-warn-" + c.id + "-" + idx;
+        if (isFeedDismissed(state, nid)) return;
+        var syllabusHit = /syllabus/i.test(a.text || "");
+        feeds.push({
+          id: nid,
+          kind: "feed",
+          title: syllabusHit ? c.code + " — syllabus update" : c.code + " — reminder",
+          detail: a.text,
+          action: "courses",
+          courseId: c.id,
+        });
+      });
+    });
+
+    var examsSoon = (state.calendarEvents || []).filter(function (e) {
+      return e.type === "exam" && e.date >= isoToday;
+    }).length;
+    if (examsSoon > 0 && !isFeedDismissed(state, "nf-cal-exams"))
+      feeds.push({
+        id: "nf-cal-exams",
+        kind: "feed",
+        title: "Upcoming exams on your calendar",
+        detail: "You have " + examsSoon + " exam-related block(s) ahead — review prep time.",
+        action: "calendar",
+      });
+
+    if ((state.flashcards || []).length > 0 && !isFeedDismissed(state, "nf-flashcards"))
+      feeds.push({
+        id: "nf-flashcards",
+        kind: "feed",
+        title: "Flashcards ready",
+        detail: "Quick review decks are available — a short session boosts retention.",
+        action: "study",
+      });
+
+    var pendingUpd = (state.updates || []).filter(function (u) {
+      return !u.checked;
+    }).length;
+    if (pendingUpd > 0 && !isFeedDismissed(state, "nf-updates-pending"))
+      feeds.push({
+        id: "nf-updates-pending",
+        kind: "feed",
+        title: "Announcement-driven updates",
+        detail:
+          pendingUpd +
+          " pending item(s) from pasted announcements — confirm tasks or calendar suggestions.",
+        action: "updates",
+      });
+
+    var fafsaLeft = (state.fafsaChecklist || []).filter(function (x) {
+      return !x.done;
+    }).length;
+    if (
+      fafsaLeft > 0 &&
+      (!state.settings || state.settings.notifyFinancial !== false) &&
+      !isFeedDismissed(state, "nf-fafsa-open")
+    )
+      feeds.push({
+        id: "nf-fafsa-open",
+        kind: "feed",
+        title: "Financial aid checklist",
+        detail: "FAFSA steps remain — open Financial Aid to finish before priority deadlines.",
+        action: "financial",
+      });
+
+    var scholarships = state.scholarships || [];
+    var soonSch = null;
+    scholarships.forEach(function (s) {
+      if (!s.deadline || s.deadline < isoToday) return;
+      var t0 = new Date(isoToday + "T12:00:00");
+      var t1 = new Date(s.deadline + "T12:00:00");
+      var days = Math.round((t1 - t0) / 864e5);
+      if (days <= 45 && days >= 0 && (!soonSch || s.deadline < soonSch.deadline)) soonSch = s;
+    });
+    if (soonSch && !isFeedDismissed(state, "nf-sch-" + soonSch.id))
+      feeds.push({
+        id: "nf-sch-" + soonSch.id,
+        kind: "feed",
+        title: "Scholarship deadline approaching",
+        detail: soonSch.name + " — due " + soonSch.deadline + ". Review requirements in Financial Aid.",
+        action: "financial",
+      });
+
+    return feeds.concat(ai).slice(0, 8);
   }
 
   function renderNotifications(ctx) {
@@ -138,6 +199,17 @@
     entries.forEach(function (n) {
       var row = document.createElement("div");
       row.className = "ov-notify-item";
+      var dismissHtml = "";
+      if (n.questionId)
+        dismissHtml =
+          '<button type="button" class="btn btn-ghost btn-sm ov-notify-dismiss" data-qid="' +
+          ctx.escapeHtml(n.questionId) +
+          '">Dismiss</button>';
+      else if (n.kind === "feed")
+        dismissHtml =
+          '<button type="button" class="btn btn-ghost btn-sm ov-notify-feed-dismiss" data-feed-id="' +
+          ctx.escapeHtml(n.id) +
+          '">Dismiss</button>';
       row.innerHTML =
         '<p class="ov-notify-item-title">' +
         ctx.escapeHtml(n.title) +
@@ -146,19 +218,19 @@
         '</p><div class="ov-notify-item-actions">' +
         '<button type="button" class="btn btn-secondary btn-sm ov-notify-open" data-go="' +
         ctx.escapeHtml(n.action) +
-        '">Open</button>' +
-        (n.questionId
-          ? '<button type="button" class="btn btn-ghost btn-sm ov-notify-dismiss" data-qid="' +
-            ctx.escapeHtml(n.questionId) +
-            '">Dismiss</button>'
-          : "") +
+        '"' +
+        (n.courseId ? ' data-course-id="' + ctx.escapeHtml(n.courseId) + '"' : "") +
+        ">Open</button>" +
+        dismissHtml +
         "</div>";
       host.appendChild(row);
     });
 
     host.querySelectorAll(".ov-notify-open").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        ctx.switchView(btn.getAttribute("data-go"));
+        var cid = btn.getAttribute("data-course-id");
+        if (cid && ctx.selectCourse) ctx.selectCourse(cid);
+        else ctx.switchView(btn.getAttribute("data-go"));
         closeDropdown();
       });
     });
@@ -170,17 +242,16 @@
         });
         save();
         renderNotifications(ctx);
-        updateTopProfileMini(ctx);
       });
     });
-  }
-
-  function updateTopProfileMini(ctx) {
-    var badge = document.getElementById("notification-badge");
-    if (!badge) return;
-    var n = ctx.state.notificationsUnread || 0;
-    badge.hidden = n <= 0;
-    badge.textContent = String(Math.min(n, 9));
+    host.querySelectorAll(".ov-notify-feed-dismiss").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var fid = btn.getAttribute("data-feed-id");
+        if (fid) pushFeedDismissal(state, fid);
+        save();
+        renderNotifications(ctx);
+      });
+    });
   }
 
   function closeDropdown() {
@@ -201,15 +272,17 @@
             : "is-other";
     var title = e.title.length > 18 ? e.title.slice(0, 16) + "…" : e.title;
     return (
-      '<div class="ov-week-chip ' +
+      '<button type="button" class="ov-week-chip ' +
       cls +
+      '" data-cal-ev-id="' +
+      ctx.escapeHtml(e.id) +
       '" title="' +
       ctx.escapeHtml(e.title) +
       '"><span class="ov-week-chip-time">' +
       ctx.escapeHtml(e.time || "") +
       '</span><span class="ov-week-chip-title">' +
       ctx.escapeHtml(title) +
-      "</span></div>"
+      "</span></button>"
     );
   }
 
@@ -232,7 +305,7 @@
       var dayEvs = events.filter(function (e) {
         return e.date === iso;
       });
-      html += '<div class="ov-week-col' + (isToday ? " is-today" : "") + '">';
+      html += '<div class="ov-week-col' + (isToday ? " is-today" : "") + '" data-ov-day="' + ctx.escapeHtml(iso) + '">';
       html += '<div class="ov-week-col-head">' + ctx.escapeHtml(label) + "</div>";
       html += '<div class="ov-week-col-events">';
       if (!dayEvs.length) {
@@ -300,6 +373,8 @@
         '<div class="ov-month-cell' +
         (muted ? " is-muted" : "") +
         (isToday ? " is-today" : "") +
+        '" data-ov-day="' +
+        ctx.escapeHtml(iso) +
         '"><div class="ov-month-daynum">' +
         cellDate.getDate() +
         "</div>";
@@ -321,9 +396,16 @@
     }
   }
 
+  function updatePreviewTitle() {
+    var el = document.getElementById("ov-preview-title");
+    if (!el) return;
+    el.textContent = getPreviewMode() === "month" ? "Monthly Preview" : "Weekly Preview";
+  }
+
   function renderCalendarPreview(ctx) {
     if (getPreviewMode() === "month") renderMonthPreview(ctx);
     else renderWeekPreview(ctx);
+    updatePreviewTitle();
   }
 
   /**
@@ -335,7 +417,7 @@
     var courseById = ctx.courseById;
     var matchesSearch = ctx.matchesSearch;
 
-    ensureAiQuestions(state);
+    normalizeAiQuestions(state);
 
     var tasksOpen = state.tasks.filter(function (t) {
       return (
@@ -522,7 +604,7 @@
       }
     }
 
-    /* Course alerts — badge cards */
+    /* Course alerts — actionable / critical only (info-style reminders live under the bell) */
     var alerts = document.getElementById("ov-alerts");
     if (alerts) {
       alerts.innerHTML = "";
@@ -533,43 +615,52 @@
         if (g != null && g < 75)
           items.push({
             kind: "critical",
-            course: c.code,
-            body: "Average near " + g + "% — consider office hours or tutoring.",
+            courseLabel: c.code,
+            body: "Average near " + g + "% — schedule support.",
+            courseId: c.id,
+            taskId: null,
           });
       });
       tasksOpen.forEach(function (t) {
         if (t.due < D.isoFromDate(new Date()))
           items.push({
             kind: "critical",
-            course: "Tasks",
+            courseLabel: "Tasks",
             body: "Overdue: " + t.title,
+            courseId: null,
+            taskId: t.id,
           });
       });
       state.courses.forEach(function (c) {
         (c.alerts || []).forEach(function (a) {
+          if (a.level === "warn") return;
           items.push({
-            kind: a.level === "warn" ? "info" : "critical",
-            course: c.code,
+            kind: "critical",
+            courseLabel: c.code,
             body: a.text,
+            courseId: c.id,
+            taskId: null,
           });
         });
       });
 
       if (!items.length) {
-        alerts.innerHTML = '<div class="ov-empty-soft">No course alerts right now.</div>';
+        alerts.innerHTML = '<div class="ov-empty-soft">No critical course alerts right now.</div>';
       } else {
-        items.slice(0, 4).forEach(function (it) {
-          var card = document.createElement("div");
-          card.className =
-            "ov-alert-card " + (it.kind === "critical" ? "ov-alert-card--critical" : "ov-alert-card--info");
+        items.slice(0, 6).forEach(function (it) {
+          var card = document.createElement("button");
+          card.type = "button";
+          card.className = "ov-alert-card ov-alert-card--critical ov-alert-card--link";
           card.innerHTML =
             '<div class="ov-alert-head"><strong>' +
-            ctx.escapeHtml(it.course) +
-            '</strong><span class="ov-alert-badge">' +
-            (it.kind === "critical" ? "CRITICAL" : "INFO") +
-            "</span></div><p>" +
+            ctx.escapeHtml(it.courseLabel) +
+            '</strong><span class="ov-alert-badge">CRITICAL</span></div><p>' +
             ctx.escapeHtml(it.body) +
             "</p>";
+          card.addEventListener("click", function () {
+            if (it.taskId && ctx.selectTask) ctx.selectTask(it.taskId);
+            else if (it.courseId && ctx.selectCourse) ctx.selectCourse(it.courseId);
+          });
           alerts.appendChild(card);
         });
       }
@@ -683,6 +774,44 @@
     on("ov-btn-cal-header", "click", function () {
       ctx.switchView("calendar");
     });
+
+    var ovGrid = document.getElementById("ov-week-grid");
+    if (ovGrid) {
+      ovGrid.addEventListener("click", function (e) {
+        var chip = e.target.closest(".ov-week-chip[data-cal-ev-id]");
+        if (chip) {
+          e.preventDefault();
+          var evid = chip.getAttribute("data-cal-ev-id");
+          var ev =
+            ctx.state.calendarEvents &&
+            ctx.state.calendarEvents.find(function (x) {
+              return x.id === evid;
+            });
+          if (!ev && ctx.filteredCalendarEvents) {
+            ev = ctx.filteredCalendarEvents().find(function (x) {
+              return x.id === evid;
+            });
+          }
+          if (!ev) return;
+          var tid =
+            ctx.resolveTaskIdForCalendarEvent && ctx.resolveTaskIdForCalendarEvent(ev);
+          if (tid && ctx.selectTask) ctx.selectTask(tid);
+          else if (ctx.openCalendarDay) ctx.openCalendarDay(ev.date);
+          return;
+        }
+        var weekCol = e.target.closest(".ov-week-col[data-ov-day]");
+        if (weekCol && ctx.openCalendarDay) {
+          if (e.target.closest(".ov-week-chip")) return;
+          ctx.openCalendarDay(weekCol.getAttribute("data-ov-day"));
+          return;
+        }
+        var monthCell = e.target.closest(".ov-month-cell[data-ov-day]");
+        if (monthCell && ctx.openCalendarDay) {
+          if (e.target.closest(".ov-week-chip")) return;
+          ctx.openCalendarDay(monthCell.getAttribute("data-ov-day"));
+        }
+      });
+    }
   }
 
   global.DegreePilotOverview = {

@@ -127,7 +127,14 @@
     if (!Array.isArray(state.recLetterRequests)) state.recLetterRequests = [];
     if (!Array.isArray(state.fafsaChecklist)) state.fafsaChecklist = blank.fafsaChecklist;
     if (!Array.isArray(state.pendingAiQuestions)) state.pendingAiQuestions = [];
+    if (!Array.isArray(state.notificationDismissals)) state.notificationDismissals = [];
     if (typeof state.smartNotesText !== "string") state.smartNotesText = blank.smartNotesText || "";
+    if (!Array.isArray(state.suggestedTasks)) state.suggestedTasks = [];
+    if (!state.tasksPreferences || typeof state.tasksPreferences !== "object") state.tasksPreferences = {};
+    var tpDefaults = blank.tasksPreferences || {};
+    Object.keys(tpDefaults).forEach(function (k) {
+      if (state.tasksPreferences[k] == null) state.tasksPreferences[k] = tpDefaults[k];
+    });
     return state;
   }
 
